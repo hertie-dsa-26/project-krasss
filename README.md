@@ -1,4 +1,4 @@
-# Project Krass 
+# Project Krasss 
 **Members:** Santiago Arciniegas, Sanjeev Dasgupta, Sophie Latham, Trayda Murakami, Konstantina Panagiotopoulou, Alex Richter, Rudranshi Vishnoi
 
 ## Research question 
