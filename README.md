@@ -5,7 +5,10 @@
 To be updated. 
 
 ## Datasets
-To be updated. 
+- NOAA GSOY | Station → MSA-year | 2013–2022 | [NOAA](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-year) |
+- CDC Places | Place/MSA | 2013–2022 | [CDC](https://data.cdc.gov/browse?category=500+Cities+%26+Places) |
+- US Census ACS | MSA (CBSA) | 2013–2022 | [Census](https://data.census.gov/table) |
+
 
 ## Work flow and development practices
 1. Meaningful Commit Messages<br>
