@@ -1,0 +1,14 @@
+[project]
+name = "lablib"
+version = "0.1.0"
+description = "Machine Learning course code"
+requires-python = "==3.12.*"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scikit-learn",
+    "matplotlib",
+    "jupyterlab",
+    "statsmodels",
+    "seaborn"
+]
