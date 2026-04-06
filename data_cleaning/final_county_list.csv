@@ -1,0 +1,896 @@
+CountyFIPS,County name,StateAbbr
+02013,ALEUTIANS EAST BOROUGH                            ,AK
+02016,ALEUTIANS WEST CENSUS AREA                        ,AK
+02020,ANCHORAGE MUNICIPALITY                            ,AK
+02050,BETHEL CENSUS AREA                                ,AK
+02060,BRISTOL BAY BOROUGH                               ,AK
+02068,DENALI BOROUGH                                    ,AK
+02070,DILLINGHAM CENSUS AREA                            ,AK
+02090,FAIRBANKS NORTH STAR BOROUGH                      ,AK
+02100,HAINES BOROUGH                                    ,AK
+02110,JUNEAU CITY AND BOROUGH                           ,AK
+02122,KENAI PENINSULA BOROUGH                           ,AK
+02130,KETCHIKAN GATEWAY BOROUGH                         ,AK
+02150,KODIAK ISLAND BOROUGH                             ,AK
+02164,LAKE AND PENINSULA BOROUGH                        ,AK
+02170,MATANUSKA-SUSITNA BOROUGH                         ,AK
+02180,NOME CENSUS AREA                                  ,AK
+02185,NORTH SLOPE BOROUGH                               ,AK
+02198,PRINCE OF WALES-HYDER CENSUS AREA                 ,AK
+02220,SITKA CITY AND BOROUGH                            ,AK
+02240,SOUTHEAST FAIRBANKS CENSUS AREA                   ,AK
+02282,YAKUTAT CITY AND BOROUGH                          ,AK
+02290,YUKON-KOYUKUK CENSUS AREA                         ,AK
+01003,BALDWIN COUNTY                                    ,AL
+01015,CALHOUN COUNTY                                    ,AL
+01021,CHILTON COUNTY                                    ,AL
+01025,CLARKE COUNTY                                     ,AL
+01033,COLBERT COUNTY                                    ,AL
+01035,CONECUH COUNTY                                    ,AL
+01039,COVINGTON COUNTY                                  ,AL
+01041,CRENSHAW COUNTY                                   ,AL
+01043,CULLMAN COUNTY                                    ,AL
+01047,DALLAS COUNTY                                     ,AL
+01049,DEKALB COUNTY                                     ,AL
+01053,ESCAMBIA COUNTY                                   ,AL
+01059,FRANKLIN COUNTY                                   ,AL
+01065,HALE COUNTY                                       ,AL
+01069,HOUSTON COUNTY                                    ,AL
+01071,JACKSON COUNTY                                    ,AL
+01073,JEFFERSON COUNTY                                  ,AL
+01079,LAWRENCE COUNTY                                   ,AL
+01083,LIMESTONE COUNTY                                  ,AL
+01089,MADISON COUNTY                                    ,AL
+01097,MOBILE COUNTY                                     ,AL
+01101,MONTGOMERY COUNTY                                 ,AL
+01109,PIKE COUNTY                                       ,AL
+01117,SHELBY COUNTY                                     ,AL
+01119,SUMTER COUNTY                                     ,AL
+01121,TALLADEGA COUNTY                                  ,AL
+01125,TUSCALOOSA COUNTY                                 ,AL
+05005,BAXTER COUNTY                                     ,AR
+05007,BENTON COUNTY                                     ,AR
+05009,BOONE COUNTY                                      ,AR
+05031,CRAIGHEAD COUNTY                                  ,AR
+05035,CRITTENDEN COUNTY                                 ,AR
+05043,DREW COUNTY                                       ,AR
+05051,GARLAND COUNTY                                    ,AR
+05063,INDEPENDENCE COUNTY                               ,AR
+05067,JACKSON COUNTY                                    ,AR
+05069,JEFFERSON COUNTY                                  ,AR
+05089,MARION COUNTY                                     ,AR
+05091,MILLER COUNTY                                     ,AR
+05093,MISSISSIPPI COUNTY                                ,AR
+05097,MONTGOMERY COUNTY                                 ,AR
+05115,POPE COUNTY                                       ,AR
+05119,PULASKI COUNTY                                    ,AR
+05131,SEBASTIAN COUNTY                                  ,AR
+05133,SEVIER COUNTY                                     ,AR
+05139,UNION COUNTY                                      ,AR
+05141,VAN BUREN COUNTY                                  ,AR
+05143,WASHINGTON COUNTY                                 ,AR
+04001,APACHE COUNTY                                     ,AZ
+04003,COCHISE COUNTY                                    ,AZ
+04005,COCONINO COUNTY                                   ,AZ
+04007,GILA COUNTY                                       ,AZ
+04009,GRAHAM COUNTY                                     ,AZ
+04013,MARICOPA COUNTY                                   ,AZ
+04015,MOHAVE COUNTY                                     ,AZ
+04017,NAVAJO COUNTY                                     ,AZ
+04019,PIMA COUNTY                                       ,AZ
+04023,SANTA CRUZ COUNTY                                 ,AZ
+04025,YAVAPAI COUNTY                                    ,AZ
+04027,YUMA COUNTY                                       ,AZ
+06001,ALAMEDA COUNTY                                    ,CA
+06007,BUTTE COUNTY                                      ,CA
+06013,CONTRA COSTA COUNTY                               ,CA
+06015,DEL NORTE COUNTY                                  ,CA
+06017,EL DORADO COUNTY                                  ,CA
+06019,FRESNO COUNTY                                     ,CA
+06023,HUMBOLDT COUNTY                                   ,CA
+06027,INYO COUNTY                                       ,CA
+06029,KERN COUNTY                                       ,CA
+06031,KINGS COUNTY                                      ,CA
+06035,LASSEN COUNTY                                     ,CA
+06037,LOS ANGELES COUNTY                                ,CA
+06039,MADERA COUNTY                                     ,CA
+06043,MARIPOSA COUNTY                                   ,CA
+06045,MENDOCINO COUNTY                                  ,CA
+06047,MERCED COUNTY                                     ,CA
+06049,MODOC COUNTY                                      ,CA
+06053,MONTEREY COUNTY                                   ,CA
+06055,NAPA COUNTY                                       ,CA
+06059,ORANGE COUNTY                                     ,CA
+06061,PLACER COUNTY                                     ,CA
+06065,RIVERSIDE COUNTY                                  ,CA
+06067,SACRAMENTO COUNTY                                 ,CA
+06071,SAN BERNARDINO COUNTY                             ,CA
+06073,SAN DIEGO COUNTY                                  ,CA
+06075,SAN FRANCISCO COUNTY                              ,CA
+06077,SAN JOAQUIN COUNTY                                ,CA
+06079,SAN LUIS OBISPO COUNTY                            ,CA
+06081,SAN MATEO COUNTY                                  ,CA
+06083,SANTA BARBARA COUNTY                              ,CA
+06085,SANTA CLARA COUNTY                                ,CA
+06087,SANTA CRUZ COUNTY                                 ,CA
+06089,SHASTA COUNTY                                     ,CA
+06093,SISKIYOU COUNTY                                   ,CA
+06095,SOLANO COUNTY                                     ,CA
+06097,SONOMA COUNTY                                     ,CA
+06099,STANISLAUS COUNTY                                 ,CA
+06103,TEHAMA COUNTY                                     ,CA
+06111,VENTURA COUNTY                                    ,CA
+06115,YUBA COUNTY                                       ,CA
+08003,ALAMOSA COUNTY                                    ,CO
+08005,ARAPAHOE COUNTY                                   ,CO
+08013,BOULDER COUNTY                                    ,CO
+08031,DENVER COUNTY                                     ,CO
+08041,EL PASO COUNTY                                    ,CO
+08045,GARFIELD COUNTY                                   ,CO
+08051,GUNNISON COUNTY                                   ,CO
+08063,KIT CARSON COUNTY                                 ,CO
+08067,LA PLATA COUNTY                                   ,CO
+08065,LAKE COUNTY                                       ,CO
+08069,LARIMER COUNTY                                    ,CO
+08071,LAS ANIMAS COUNTY                                 ,CO
+08073,LINCOLN COUNTY                                    ,CO
+08077,MESA COUNTY                                       ,CO
+08081,MOFFAT COUNTY                                     ,CO
+08083,MONTEZUMA COUNTY                                  ,CO
+08085,MONTROSE COUNTY                                   ,CO
+08089,OTERO COUNTY                                      ,CO
+08097,PITKIN COUNTY                                     ,CO
+08099,PROWERS COUNTY                                    ,CO
+08101,PUEBLO COUNTY                                     ,CO
+08103,RIO BLANCO COUNTY                                 ,CO
+08107,ROUTT COUNTY                                      ,CO
+08117,SUMMIT COUNTY                                     ,CO
+08123,WELD COUNTY                                       ,CO
+09001,FAIRFIELD COUNTY                                  ,CT
+09003,HARTFORD COUNTY                                   ,CT
+09009,NEW HAVEN COUNTY                                  ,CT
+09011,NEW LONDON COUNTY                                 ,CT
+09015,WINDHAM COUNTY                                    ,CT
+10003,NEW CASTLE COUNTY                                 ,DE
+10005,SUSSEX COUNTY                                     ,DE
+12001,ALACHUA COUNTY                                    ,FL
+12005,BAY COUNTY                                        ,FL
+12009,BREVARD COUNTY                                    ,FL
+12011,BROWARD COUNTY                                    ,FL
+12015,CHARLOTTE COUNTY                                  ,FL
+12021,COLLIER COUNTY                                    ,FL
+12029,DIXIE COUNTY                                      ,FL
+12031,DUVAL COUNTY                                      ,FL
+12033,ESCAMBIA COUNTY                                   ,FL
+12037,FRANKLIN COUNTY                                   ,FL
+12053,HERNANDO COUNTY                                   ,FL
+12055,HIGHLANDS COUNTY                                  ,FL
+12057,HILLSBOROUGH COUNTY                               ,FL
+12061,INDIAN RIVER COUNTY                               ,FL
+12063,JACKSON COUNTY                                    ,FL
+12071,LEE COUNTY                                        ,FL
+12073,LEON COUNTY                                       ,FL
+12086,MIAMI-DADE COUNTY                                 ,FL
+12087,MONROE COUNTY                                     ,FL
+12091,OKALOOSA COUNTY                                   ,FL
+12095,ORANGE COUNTY                                     ,FL
+12099,PALM BEACH COUNTY                                 ,FL
+12103,PINELLAS COUNTY                                   ,FL
+12105,POLK COUNTY                                       ,FL
+12115,SARASOTA COUNTY                                   ,FL
+12117,SEMINOLE COUNTY                                   ,FL
+12109,ST. JOHNS COUNTY                                  ,FL
+12111,ST. LUCIE COUNTY                                  ,FL
+12127,VOLUSIA COUNTY                                    ,FL
+13005,BACON COUNTY                                      ,GA
+13007,BAKER COUNTY                                      ,GA
+13015,BARTOW COUNTY                                     ,GA
+13021,BIBB COUNTY                                       ,GA
+13039,CAMDEN COUNTY                                     ,GA
+13051,CHATHAM COUNTY                                    ,GA
+13059,CLARKE COUNTY                                     ,GA
+13067,COBB COUNTY                                       ,GA
+13089,DEKALB COUNTY                                     ,GA
+13095,DOUGHERTY COUNTY                                  ,GA
+13113,FAYETTE COUNTY                                    ,GA
+13115,FLOYD COUNTY                                      ,GA
+13121,FULTON COUNTY                                     ,GA
+13127,GLYNN COUNTY                                      ,GA
+13135,GWINNETT COUNTY                                   ,GA
+13139,HALL COUNTY                                       ,GA
+13185,LOWNDES COUNTY                                    ,GA
+13215,MUSCOGEE COUNTY                                   ,GA
+13219,OCONEE COUNTY                                     ,GA
+13245,RICHMOND COUNTY                                   ,GA
+15001,HAWAII COUNTY                                     ,HI
+15003,HONOLULU COUNTY                                   ,HI
+15007,KAUAI COUNTY                                      ,HI
+15009,MAUI COUNTY                                       ,HI
+19013,BLACK HAWK COUNTY                                 ,IA
+19033,CERRO GORDO COUNTY                                ,IA
+19041,CLAY COUNTY                                       ,IA
+19053,DECATUR COUNTY                                    ,IA
+19057,DES MOINES COUNTY                                 ,IA
+19061,DUBUQUE COUNTY                                    ,IA
+19063,EMMET COUNTY                                      ,IA
+19099,JASPER COUNTY                                     ,IA
+19103,JOHNSON COUNTY                                    ,IA
+19111,LEE COUNTY                                        ,IA
+19113,LINN COUNTY                                       ,IA
+19127,MARSHALL COUNTY                                   ,IA
+19153,POLK COUNTY                                       ,IA
+19163,SCOTT COUNTY                                      ,IA
+19169,STORY COUNTY                                      ,IA
+19179,WAPELLO COUNTY                                    ,IA
+19187,WEBSTER COUNTY                                    ,IA
+19193,WOODBURY COUNTY                                   ,IA
+16001,ADA COUNTY                                        ,ID
+16019,BONNEVILLE COUNTY                                 ,ID
+16021,BOUNDARY COUNTY                                   ,ID
+16023,BUTTE COUNTY                                      ,ID
+16029,CARIBOU COUNTY                                    ,ID
+16031,CASSIA COUNTY                                     ,ID
+16037,CUSTER COUNTY                                     ,ID
+16039,ELMORE COUNTY                                     ,ID
+16053,JEROME COUNTY                                     ,ID
+16059,LEMHI COUNTY                                      ,ID
+16065,MADISON COUNTY                                    ,ID
+16069,NEZ PERCE COUNTY                                  ,ID
+16071,ONEIDA COUNTY                                     ,ID
+16073,OWYHEE COUNTY                                     ,ID
+16077,POWER COUNTY                                      ,ID
+16079,SHOSHONE COUNTY                                   ,ID
+16083,TWIN FALLS COUNTY                                 ,ID
+16085,VALLEY COUNTY                                     ,ID
+17001,ADAMS COUNTY                                      ,IL
+17019,CHAMPAIGN COUNTY                                  ,IL
+17029,COLES COUNTY                                      ,IL
+17031,COOK COUNTY                                       ,IL
+17037,DEKALB COUNTY                                     ,IL
+17043,DUPAGE COUNTY                                     ,IL
+17077,JACKSON COUNTY                                    ,IL
+17081,JEFFERSON COUNTY                                  ,IL
+17089,KANE COUNTY                                       ,IL
+17097,LAKE COUNTY                                       ,IL
+17101,LAWRENCE COUNTY                                   ,IL
+17115,MACON COUNTY                                      ,IL
+17121,MARION COUNTY                                     ,IL
+17113,MCLEAN COUNTY                                     ,IL
+17143,PEORIA COUNTY                                     ,IL
+17161,ROCK ISLAND COUNTY                                ,IL
+17167,SANGAMON COUNTY                                   ,IL
+17163,ST. CLAIR COUNTY                                  ,IL
+17197,WILL COUNTY                                       ,IL
+17201,WINNEBAGO COUNTY                                  ,IL
+18003,ALLEN COUNTY                                      ,IN
+18035,DELAWARE COUNTY                                   ,IN
+18039,ELKHART COUNTY                                    ,IN
+18093,LAWRENCE COUNTY                                   ,IN
+18097,MARION COUNTY                                     ,IN
+18105,MONROE COUNTY                                     ,IN
+18127,PORTER COUNTY                                     ,IN
+18145,SHELBY COUNTY                                     ,IN
+18141,ST. JOSEPH COUNTY                                 ,IN
+18157,TIPPECANOE COUNTY                                 ,IN
+18163,VANDERBURGH COUNTY                                ,IN
+18167,VIGO COUNTY                                       ,IN
+20007,BARBER COUNTY                                     ,KS
+20009,BARTON COUNTY                                     ,KS
+20029,CLOUD COUNTY                                      ,KS
+20035,COWLEY COUNTY                                     ,KS
+20045,DOUGLAS COUNTY                                    ,KS
+20055,FINNEY COUNTY                                     ,KS
+20057,FORD COUNTY                                       ,KS
+20065,GRAHAM COUNTY                                     ,KS
+20077,HARPER COUNTY                                     ,KS
+20091,JOHNSON COUNTY                                    ,KS
+20099,LABETTE COUNTY                                    ,KS
+20109,LOGAN COUNTY                                      ,KS
+20111,LYON COUNTY                                       ,KS
+20125,MONTGOMERY COUNTY                                 ,KS
+20133,NEOSHO COUNTY                                     ,KS
+20155,RENO COUNTY                                       ,KS
+20161,RILEY COUNTY                                      ,KS
+20167,RUSSELL COUNTY                                    ,KS
+20169,SALINE COUNTY                                     ,KS
+20173,SEDGWICK COUNTY                                   ,KS
+20175,SEWARD COUNTY                                     ,KS
+20177,SHAWNEE COUNTY                                    ,KS
+20181,SHERMAN COUNTY                                    ,KS
+21015,BOONE COUNTY                                      ,KY
+21025,BREATHITT COUNTY                                  ,KY
+21059,DAVIESS COUNTY                                    ,KY
+21061,EDMONSON COUNTY                                   ,KY
+21067,FAYETTE COUNTY                                    ,KY
+21073,FRANKLIN COUNTY                                   ,KY
+21111,JEFFERSON COUNTY                                  ,KY
+21125,LAUREL COUNTY                                     ,KY
+21145,MCCRACKEN COUNTY                                  ,KY
+21227,WARREN COUNTY                                     ,KY
+21239,WOODFORD COUNTY                                   ,KY
+22017,CADDO PARISH                                      ,LA
+22019,CALCASIEU PARISH                                  ,LA
+22033,EAST BATON ROUGE PARISH                           ,LA
+22045,IBERIA PARISH                                     ,LA
+22051,JEFFERSON PARISH                                  ,LA
+22055,LAFAYETTE PARISH                                  ,LA
+22065,MADISON PARISH                                    ,LA
+22071,ORLEANS PARISH                                    ,LA
+22073,OUACHITA PARISH                                   ,LA
+22079,RAPIDES PARISH                                    ,LA
+22099,ST. MARTIN PARISH                                 ,LA
+22103,ST. TAMMANY PARISH                                ,LA
+22111,UNION PARISH                                      ,LA
+25001,BARNSTABLE COUNTY                                 ,MA
+25003,BERKSHIRE COUNTY                                  ,MA
+25005,BRISTOL COUNTY                                    ,MA
+25007,DUKES COUNTY                                      ,MA
+25009,ESSEX COUNTY                                      ,MA
+25011,FRANKLIN COUNTY                                   ,MA
+25013,HAMPDEN COUNTY                                    ,MA
+25017,MIDDLESEX COUNTY                                  ,MA
+25019,NANTUCKET COUNTY                                  ,MA
+25021,NORFOLK COUNTY                                    ,MA
+25023,PLYMOUTH COUNTY                                   ,MA
+25025,SUFFOLK COUNTY                                    ,MA
+25027,WORCESTER COUNTY                                  ,MA
+24003,ANNE ARUNDEL COUNTY                               ,MD
+24009,CALVERT COUNTY                                    ,MD
+24025,HARFORD COUNTY                                    ,MD
+24037,ST. MARY'S COUNTY                                 ,MD
+24043,WASHINGTON COUNTY                                 ,MD
+24045,WICOMICO COUNTY                                   ,MD
+24047,WORCESTER COUNTY                                  ,MD
+23003,AROOSTOOK COUNTY                                  ,ME
+23005,CUMBERLAND COUNTY                                 ,ME
+23011,KENNEBEC COUNTY                                   ,ME
+23015,LINCOLN COUNTY                                    ,ME
+23017,OXFORD COUNTY                                     ,ME
+23019,PENOBSCOT COUNTY                                  ,ME
+23021,PISCATAQUIS COUNTY                                ,ME
+23031,YORK COUNTY                                       ,ME
+26003,ALGER COUNTY                                      ,MI
+26005,ALLEGAN COUNTY                                    ,MI
+26007,ALPENA COUNTY                                     ,MI
+26021,BERRIEN COUNTY                                    ,MI
+26025,CALHOUN COUNTY                                    ,MI
+26033,CHIPPEWA COUNTY                                   ,MI
+26037,CLINTON COUNTY                                    ,MI
+26041,DELTA COUNTY                                      ,MI
+26043,DICKINSON COUNTY                                  ,MI
+26047,EMMET COUNTY                                      ,MI
+26049,GENESEE COUNTY                                    ,MI
+26051,GLADWIN COUNTY                                    ,MI
+26055,GRAND TRAVERSE COUNTY                             ,MI
+26061,HOUGHTON COUNTY                                   ,MI
+26063,HURON COUNTY                                      ,MI
+26075,JACKSON COUNTY                                    ,MI
+26077,KALAMAZOO COUNTY                                  ,MI
+26081,KENT COUNTY                                       ,MI
+26083,KEWEENAW COUNTY                                   ,MI
+26091,LENAWEE COUNTY                                    ,MI
+26103,MARQUETTE COUNTY                                  ,MI
+26121,MUSKEGON COUNTY                                   ,MI
+26125,OAKLAND COUNTY                                    ,MI
+26137,OTSEGO COUNTY                                     ,MI
+26143,ROSCOMMON COUNTY                                  ,MI
+26145,SAGINAW COUNTY                                    ,MI
+26161,WASHTENAW COUNTY                                  ,MI
+26163,WAYNE COUNTY                                      ,MI
+26165,WEXFORD COUNTY                                    ,MI
+27013,BLUE EARTH COUNTY                                 ,MN
+27031,COOK COUNTY                                       ,MN
+27035,CROW WING COUNTY                                  ,MN
+27037,DAKOTA COUNTY                                     ,MN
+27041,DOUGLAS COUNTY                                    ,MN
+27053,HENNEPIN COUNTY                                   ,MN
+27057,HUBBARD COUNTY                                    ,MN
+27071,KOOCHICHING COUNTY                                ,MN
+27077,LAKE OF THE WOODS COUNTY                          ,MN
+27083,LYON COUNTY                                       ,MN
+27089,MARSHALL COUNTY                                   ,MN
+27099,MOWER COUNTY                                      ,MN
+27105,NOBLES COUNTY                                     ,MN
+27109,OLMSTED COUNTY                                    ,MN
+27115,PINE COUNTY                                       ,MN
+27127,REDWOOD COUNTY                                    ,MN
+27141,SHERBURNE COUNTY                                  ,MN
+27137,ST. LOUIS COUNTY                                  ,MN
+29001,ADAIR COUNTY                                      ,MO
+29009,BARRY COUNTY                                      ,MO
+29011,BARTON COUNTY                                     ,MO
+29019,BOONE COUNTY                                      ,MO
+29021,BUCHANAN COUNTY                                   ,MO
+29023,BUTLER COUNTY                                     ,MO
+29027,CALLAWAY COUNTY                                   ,MO
+29037,CASS COUNTY                                       ,MO
+29047,CLAY COUNTY                                       ,MO
+29065,DENT COUNTY                                       ,MO
+29077,GREENE COUNTY                                     ,MO
+29079,GRUNDY COUNTY                                     ,MO
+29095,JACKSON COUNTY                                    ,MO
+29097,JASPER COUNTY                                     ,MO
+29115,LINN COUNTY                                       ,MO
+29117,LIVINGSTON COUNTY                                 ,MO
+29125,MARIES COUNTY                                     ,MO
+29159,PETTIS COUNTY                                     ,MO
+29165,PLATTE COUNTY                                     ,MO
+29195,SALINE COUNTY                                     ,MO
+29201,SCOTT COUNTY                                      ,MO
+29183,ST. CHARLES COUNTY                                ,MO
+29189,ST. LOUIS COUNTY                                  ,MO
+28015,CARROLL COUNTY                                    ,MS
+28035,FORREST COUNTY                                    ,MS
+28047,HARRISON COUNTY                                   ,MS
+28049,HINDS COUNTY                                      ,MS
+28059,JACKSON COUNTY                                    ,MS
+28075,LAUDERDALE COUNTY                                 ,MS
+28081,LEE COUNTY                                        ,MS
+28093,MARSHALL COUNTY                                   ,MS
+28101,NEWTON COUNTY                                     ,MS
+28113,PIKE COUNTY                                       ,MS
+28121,RANKIN COUNTY                                     ,MS
+28151,WASHINGTON COUNTY                                 ,MS
+30001,BEAVERHEAD COUNTY                                 ,MT
+30013,CASCADE COUNTY                                    ,MT
+30017,CUSTER COUNTY                                     ,MT
+30025,FALLON COUNTY                                     ,MT
+30027,FERGUS COUNTY                                     ,MT
+30031,GALLATIN COUNTY                                   ,MT
+30033,GARFIELD COUNTY                                   ,MT
+30035,GLACIER COUNTY                                    ,MT
+30041,HILL COUNTY                                       ,MT
+30045,JUDITH BASIN COUNTY                               ,MT
+30049,LEWIS AND CLARK COUNTY                            ,MT
+30063,MISSOULA COUNTY                                   ,MT
+30067,PARK COUNTY                                       ,MT
+30075,POWDER RIVER COUNTY                               ,MT
+30085,ROOSEVELT COUNTY                                  ,MT
+30089,SANDERS COUNTY                                    ,MT
+30093,SILVER BOW COUNTY                                 ,MT
+30105,VALLEY COUNTY                                     ,MT
+30111,YELLOWSTONE COUNTY                                ,MT
+37001,ALAMANCE COUNTY                                   ,NC
+37021,BUNCOMBE COUNTY                                   ,NC
+37023,BURKE COUNTY                                      ,NC
+37031,CARTERET COUNTY                                   ,NC
+37049,CRAVEN COUNTY                                     ,NC
+37051,CUMBERLAND COUNTY                                 ,NC
+37055,DARE COUNTY                                       ,NC
+37067,FORSYTH COUNTY                                    ,NC
+37071,GASTON COUNTY                                     ,NC
+37081,GUILFORD COUNTY                                   ,NC
+37089,HENDERSON COUNTY                                  ,NC
+37119,MECKLENBURG COUNTY                                ,NC
+37127,NASH COUNTY                                       ,NC
+37129,NEW HANOVER COUNTY                                ,NC
+37133,ONSLOW COUNTY                                     ,NC
+37135,ORANGE COUNTY                                     ,NC
+37139,PASQUOTANK COUNTY                                 ,NC
+37155,ROBESON COUNTY                                    ,NC
+37165,SCOTLAND COUNTY                                   ,NC
+37179,UNION COUNTY                                      ,NC
+37183,WAKE COUNTY                                       ,NC
+38001,ADAMS COUNTY                                      ,ND
+38007,BILLINGS COUNTY                                   ,ND
+38013,BURKE COUNTY                                      ,ND
+38015,BURLEIGH COUNTY                                   ,ND
+38017,CASS COUNTY                                       ,ND
+38035,GRAND FORKS COUNTY                                ,ND
+38043,KIDDER COUNTY                                     ,ND
+38055,MCLEAN COUNTY                                     ,ND
+38067,PEMBINA COUNTY                                    ,ND
+38089,STARK COUNTY                                      ,ND
+38093,STUTSMAN COUNTY                                   ,ND
+38101,WARD COUNTY                                       ,ND
+31001,ADAMS COUNTY                                      ,NE
+31013,BOX BUTTE COUNTY                                  ,NE
+31019,BUFFALO COUNTY                                    ,NE
+31021,BURT COUNTY                                       ,NE
+31029,CHASE COUNTY                                      ,NE
+31031,CHERRY COUNTY                                     ,NE
+31033,CHEYENNE COUNTY                                   ,NE
+31041,CUSTER COUNTY                                     ,NE
+31045,DAWES COUNTY                                      ,NE
+31047,DAWSON COUNTY                                     ,NE
+31055,DOUGLAS COUNTY                                    ,NE
+31079,HALL COUNTY                                       ,NE
+31081,HAMILTON COUNTY                                   ,NE
+31085,HAYES COUNTY                                      ,NE
+31091,HOOKER COUNTY                                     ,NE
+31109,LANCASTER COUNTY                                  ,NE
+31111,LINCOLN COUNTY                                    ,NE
+31137,PHELPS COUNTY                                     ,NE
+31141,PLATTE COUNTY                                     ,NE
+31145,RED WILLOW COUNTY                                 ,NE
+31147,RICHARDSON COUNTY                                 ,NE
+31157,SCOTTS BLUFF COUNTY                               ,NE
+31165,SIOUX COUNTY                                      ,NE
+31169,THAYER COUNTY                                     ,NE
+31175,VALLEY COUNTY                                     ,NE
+31185,YORK COUNTY                                       ,NE
+33005,CHESHIRE COUNTY                                   ,NH
+33007,COOS COUNTY                                       ,NH
+33009,GRAFTON COUNTY                                    ,NH
+33011,HILLSBOROUGH COUNTY                               ,NH
+33013,MERRIMACK COUNTY                                  ,NH
+33017,STRAFFORD COUNTY                                  ,NH
+34001,ATLANTIC COUNTY                                   ,NJ
+34011,CUMBERLAND COUNTY                                 ,NJ
+34013,ESSEX COUNTY                                      ,NJ
+34021,MERCER COUNTY                                     ,NJ
+34035,SOMERSET COUNTY                                   ,NJ
+34037,SUSSEX COUNTY                                     ,NJ
+34039,UNION COUNTY                                      ,NJ
+35001,BERNALILLO COUNTY                                 ,NM
+35005,CHAVES COUNTY                                     ,NM
+35007,COLFAX COUNTY                                     ,NM
+35009,CURRY COUNTY                                      ,NM
+35013,DONA ANA COUNTY                                   ,NM
+35015,EDDY COUNTY                                       ,NM
+35017,GRANT COUNTY                                      ,NM
+35025,LEA COUNTY                                        ,NM
+35027,LINCOLN COUNTY                                    ,NM
+35029,LUNA COUNTY                                       ,NM
+35031,MCKINLEY COUNTY                                   ,NM
+35037,QUAY COUNTY                                       ,NM
+35043,SANDOVAL COUNTY                                   ,NM
+35049,SANTA FE COUNTY                                   ,NM
+35051,SIERRA COUNTY                                     ,NM
+35053,SOCORRO COUNTY                                    ,NM
+35055,TAOS COUNTY                                       ,NM
+35057,TORRANCE COUNTY                                   ,NM
+35059,UNION COUNTY                                      ,NM
+32003,CLARK COUNTY                                      ,NV
+32007,ELKO COUNTY                                       ,NV
+32011,EUREKA COUNTY                                     ,NV
+32013,HUMBOLDT COUNTY                                   ,NV
+32015,LANDER COUNTY                                     ,NV
+32023,NYE COUNTY                                        ,NV
+32027,PERSHING COUNTY                                   ,NV
+32031,WASHOE COUNTY                                     ,NV
+32033,WHITE PINE COUNTY                                 ,NV
+36001,ALBANY COUNTY                                     ,NY
+36003,ALLEGANY COUNTY                                   ,NY
+36007,BROOME COUNTY                                     ,NY
+36013,CHAUTAUQUA COUNTY                                 ,NY
+36015,CHEMUNG COUNTY                                    ,NY
+36019,CLINTON COUNTY                                    ,NY
+36023,CORTLAND COUNTY                                   ,NY
+36027,DUTCHESS COUNTY                                   ,NY
+36029,ERIE COUNTY                                       ,NY
+36033,FRANKLIN COUNTY                                   ,NY
+36037,GENESEE COUNTY                                    ,NY
+36045,JEFFERSON COUNTY                                  ,NY
+36051,LIVINGSTON COUNTY                                 ,NY
+36055,MONROE COUNTY                                     ,NY
+36061,NEW YORK COUNTY                                   ,NY
+36063,NIAGARA COUNTY                                    ,NY
+36065,ONEIDA COUNTY                                     ,NY
+36067,ONONDAGA COUNTY                                   ,NY
+36071,ORANGE COUNTY                                     ,NY
+36075,OSWEGO COUNTY                                     ,NY
+36081,QUEENS COUNTY                                     ,NY
+36089,ST. LAWRENCE COUNTY                               ,NY
+36103,SUFFOLK COUNTY                                    ,NY
+36113,WARREN COUNTY                                     ,NY
+36119,WESTCHESTER COUNTY                                ,NY
+36123,YATES COUNTY                                      ,NY
+39003,ALLEN COUNTY                                      ,OH
+39007,ASHTABULA COUNTY                                  ,OH
+39017,BUTLER COUNTY                                     ,OH
+39027,CLINTON COUNTY                                    ,OH
+39035,CUYAHOGA COUNTY                                   ,OH
+39039,DEFIANCE COUNTY                                   ,OH
+39043,ERIE COUNTY                                       ,OH
+39045,FAIRFIELD COUNTY                                  ,OH
+39049,FRANKLIN COUNTY                                   ,OH
+39063,HANCOCK COUNTY                                    ,OH
+39089,LICKING COUNTY                                    ,OH
+39093,LORAIN COUNTY                                     ,OH
+39095,LUCAS COUNTY                                      ,OH
+39101,MARION COUNTY                                     ,OH
+39113,MONTGOMERY COUNTY                                 ,OH
+39119,MUSKINGUM COUNTY                                  ,OH
+39139,RICHLAND COUNTY                                   ,OH
+39153,SUMMIT COUNTY                                     ,OH
+39155,TRUMBULL COUNTY                                   ,OH
+39157,TUSCARAWAS COUNTY                                 ,OH
+39169,WAYNE COUNTY                                      ,OH
+39173,WOOD COUNTY                                       ,OH
+40009,BECKHAM COUNTY                                    ,OK
+40031,COMANCHE COUNTY                                   ,OK
+40045,ELLIS COUNTY                                      ,OK
+40071,KAY COUNTY                                        ,OK
+40075,KIOWA COUNTY                                      ,OK
+40083,LOGAN COUNTY                                      ,OK
+40101,MUSKOGEE COUNTY                                   ,OK
+40109,OKLAHOMA COUNTY                                   ,OK
+40113,OSAGE COUNTY                                      ,OK
+40119,PAYNE COUNTY                                      ,OK
+40121,PITTSBURG COUNTY                                  ,OK
+40139,TEXAS COUNTY                                      ,OK
+40141,TILLMAN COUNTY                                    ,OK
+40143,TULSA COUNTY                                      ,OK
+40149,WASHITA COUNTY                                    ,OK
+40151,WOODS COUNTY                                      ,OK
+41001,BAKER COUNTY                                      ,OR
+41003,BENTON COUNTY                                     ,OR
+41007,CLATSOP COUNTY                                    ,OR
+41009,COLUMBIA COUNTY                                   ,OR
+41011,COOS COUNTY                                       ,OR
+41017,DESCHUTES COUNTY                                  ,OR
+41019,DOUGLAS COUNTY                                    ,OR
+41023,GRANT COUNTY                                      ,OR
+41025,HARNEY COUNTY                                     ,OR
+41029,JACKSON COUNTY                                    ,OR
+41033,JOSEPHINE COUNTY                                  ,OR
+41035,KLAMATH COUNTY                                    ,OR
+41039,LANE COUNTY                                       ,OR
+41045,MALHEUR COUNTY                                    ,OR
+41047,MARION COUNTY                                     ,OR
+41051,MULTNOMAH COUNTY                                  ,OR
+41059,UMATILLA COUNTY                                   ,OR
+41067,WASHINGTON COUNTY                                 ,OR
+41071,YAMHILL COUNTY                                    ,OR
+42003,ALLEGHENY COUNTY                                  ,PA
+42011,BERKS COUNTY                                      ,PA
+42013,BLAIR COUNTY                                      ,PA
+42017,BUCKS COUNTY                                      ,PA
+42019,BUTLER COUNTY                                     ,PA
+42021,CAMBRIA COUNTY                                    ,PA
+42033,CLEARFIELD COUNTY                                 ,PA
+42039,CRAWFORD COUNTY                                   ,PA
+42043,DAUPHIN COUNTY                                    ,PA
+42049,ERIE COUNTY                                       ,PA
+42065,JEFFERSON COUNTY                                  ,PA
+42071,LANCASTER COUNTY                                  ,PA
+42077,LEHIGH COUNTY                                     ,PA
+42079,LUZERNE COUNTY                                    ,PA
+42081,LYCOMING COUNTY                                   ,PA
+42083,MCKEAN COUNTY                                     ,PA
+42089,MONROE COUNTY                                     ,PA
+42091,MONTGOMERY COUNTY                                 ,PA
+42101,PHILADELPHIA COUNTY                               ,PA
+42109,SNYDER COUNTY                                     ,PA
+42125,WASHINGTON COUNTY                                 ,PA
+42133,YORK COUNTY                                       ,PA
+44003,KENT COUNTY                                       ,RI
+44005,NEWPORT COUNTY                                    ,RI
+44009,WASHINGTON COUNTY                                 ,RI
+45007,ANDERSON COUNTY                                   ,SC
+45011,BARNWELL COUNTY                                   ,SC
+45013,BEAUFORT COUNTY                                   ,SC
+45019,CHARLESTON COUNTY                                 ,SC
+45041,FLORENCE COUNTY                                   ,SC
+45045,GREENVILLE COUNTY                                 ,SC
+45047,GREENWOOD COUNTY                                  ,SC
+45051,HORRY COUNTY                                      ,SC
+45063,LEXINGTON COUNTY                                  ,SC
+45073,OCONEE COUNTY                                     ,SC
+45075,ORANGEBURG COUNTY                                 ,SC
+45079,RICHLAND COUNTY                                   ,SC
+45083,SPARTANBURG COUNTY                                ,SC
+45091,YORK COUNTY                                       ,SC
+46005,BEADLE COUNTY                                     ,SD
+46009,BON HOMME COUNTY                                  ,SD
+46011,BROOKINGS COUNTY                                  ,SD
+46013,BROWN COUNTY                                      ,SD
+46029,CODINGTON COUNTY                                  ,SD
+46033,CUSTER COUNTY                                     ,SD
+46035,DAVISON COUNTY                                    ,SD
+46055,HAAKON COUNTY                                     ,SD
+46063,HARDING COUNTY                                    ,SD
+46065,HUGHES COUNTY                                     ,SD
+46081,LAWRENCE COUNTY                                   ,SD
+46085,LYMAN COUNTY                                      ,SD
+46089,MCPHERSON COUNTY                                  ,SD
+46093,MEADE COUNTY                                      ,SD
+46099,MINNEHAHA COUNTY                                  ,SD
+46103,PENNINGTON COUNTY                                 ,SD
+46105,PERKINS COUNTY                                    ,SD
+46109,ROBERTS COUNTY                                    ,SD
+46123,TRIPP COUNTY                                      ,SD
+46129,WALWORTH COUNTY                                   ,SD
+46135,YANKTON COUNTY                                    ,SD
+47001,ANDERSON COUNTY                                   ,TN
+47009,BLOUNT COUNTY                                     ,TN
+47035,CUMBERLAND COUNTY                                 ,TN
+47037,DAVIDSON COUNTY                                   ,TN
+47045,DYER COUNTY                                       ,TN
+47061,GRUNDY COUNTY                                     ,TN
+47065,HAMILTON COUNTY                                   ,TN
+47113,MADISON COUNTY                                    ,TN
+47125,MONTGOMERY COUNTY                                 ,TN
+47157,SHELBY COUNTY                                     ,TN
+47163,SULLIVAN COUNTY                                   ,TN
+48001,ANDERSON COUNTY                                   ,TX
+48005,ANGELINA COUNTY                                   ,TX
+48013,ATASCOSA COUNTY                                   ,TX
+48017,BAILEY COUNTY                                     ,TX
+48025,BEE COUNTY                                        ,TX
+48027,BELL COUNTY                                       ,TX
+48029,BEXAR COUNTY                                      ,TX
+48039,BRAZORIA COUNTY                                   ,TX
+48041,BRAZOS COUNTY                                     ,TX
+48043,BREWSTER COUNTY                                   ,TX
+48053,BURNET COUNTY                                     ,TX
+48055,CALDWELL COUNTY                                   ,TX
+48061,CAMERON COUNTY                                    ,TX
+48075,CHILDRESS COUNTY                                  ,TX
+48081,COKE COUNTY                                       ,TX
+48085,COLLIN COUNTY                                     ,TX
+48093,COMANCHE COUNTY                                   ,TX
+48099,CORYELL COUNTY                                    ,TX
+48111,DALLAM COUNTY                                     ,TX
+48113,DALLAS COUNTY                                     ,TX
+48121,DENTON COUNTY                                     ,TX
+48135,ECTOR COUNTY                                      ,TX
+48137,EDWARDS COUNTY                                    ,TX
+48141,EL PASO COUNTY                                    ,TX
+48139,ELLIS COUNTY                                      ,TX
+48143,ERATH COUNTY                                      ,TX
+48157,FORT BEND COUNTY                                  ,TX
+48165,GAINES COUNTY                                     ,TX
+48167,GALVESTON COUNTY                                  ,TX
+48171,GILLESPIE COUNTY                                  ,TX
+48177,GONZALES COUNTY                                   ,TX
+48181,GRAYSON COUNTY                                    ,TX
+48183,GREGG COUNTY                                      ,TX
+48187,GUADALUPE COUNTY                                  ,TX
+48201,HARRIS COUNTY                                     ,TX
+48215,HIDALGO COUNTY                                    ,TX
+48221,HOOD COUNTY                                       ,TX
+48223,HOPKINS COUNTY                                    ,TX
+48231,HUNT COUNTY                                       ,TX
+48233,HUTCHINSON COUNTY                                 ,TX
+48245,JEFFERSON COUNTY                                  ,TX
+48249,JIM WELLS COUNTY                                  ,TX
+48257,KAUFMAN COUNTY                                    ,TX
+48265,KERR COUNTY                                       ,TX
+48267,KIMBLE COUNTY                                     ,TX
+48273,KLEBERG COUNTY                                    ,TX
+48283,LA SALLE COUNTY                                   ,TX
+48277,LAMAR COUNTY                                      ,TX
+48285,LAVACA COUNTY                                     ,TX
+48287,LEE COUNTY                                        ,TX
+48299,LLANO COUNTY                                      ,TX
+48303,LUBBOCK COUNTY                                    ,TX
+48321,MATAGORDA COUNTY                                  ,TX
+48309,MCLENNAN COUNTY                                   ,TX
+48325,MEDINA COUNTY                                     ,TX
+48329,MIDLAND COUNTY                                    ,TX
+48331,MILAM COUNTY                                      ,TX
+48337,MONTAGUE COUNTY                                   ,TX
+48339,MONTGOMERY COUNTY                                 ,TX
+48349,NAVARRO COUNTY                                    ,TX
+48355,NUECES COUNTY                                     ,TX
+48363,PALO PINTO COUNTY                                 ,TX
+48371,PECOS COUNTY                                      ,TX
+48375,POTTER COUNTY                                     ,TX
+48395,ROBERTSON COUNTY                                  ,TX
+48415,SCURRY COUNTY                                     ,TX
+48423,SMITH COUNTY                                      ,TX
+48439,TARRANT COUNTY                                    ,TX
+48441,TAYLOR COUNTY                                     ,TX
+48443,TERRELL COUNTY                                    ,TX
+48451,TOM GREEN COUNTY                                  ,TX
+48453,TRAVIS COUNTY                                     ,TX
+48463,UVALDE COUNTY                                     ,TX
+48465,VAL VERDE COUNTY                                  ,TX
+48469,VICTORIA COUNTY                                   ,TX
+48471,WALKER COUNTY                                     ,TX
+48475,WARD COUNTY                                       ,TX
+48477,WASHINGTON COUNTY                                 ,TX
+48479,WEBB COUNTY                                       ,TX
+48485,WICHITA COUNTY                                    ,TX
+48495,WINKLER COUNTY                                    ,TX
+48503,YOUNG COUNTY                                      ,TX
+49003,BOX ELDER COUNTY                                  ,UT
+49005,CACHE COUNTY                                      ,UT
+49013,DUCHESNE COUNTY                                   ,UT
+49019,GRAND COUNTY                                      ,UT
+49021,IRON COUNTY                                       ,UT
+49035,SALT LAKE COUNTY                                  ,UT
+49047,UINTAH COUNTY                                     ,UT
+49055,WAYNE COUNTY                                      ,UT
+49057,WEBER COUNTY                                      ,UT
+51001,ACCOMACK COUNTY                                   ,VA
+51003,ALBEMARLE COUNTY                                  ,VA
+51013,ARLINGTON COUNTY                                  ,VA
+51031,CAMPBELL COUNTY                                   ,VA
+51083,HALIFAX COUNTY                                    ,VA
+51085,HANOVER COUNTY                                    ,VA
+51087,HENRICO COUNTY                                    ,VA
+51107,LOUDOUN COUNTY                                    ,VA
+51700,NEWPORT NEWS CITY                                 ,VA
+51710,NORFOLK CITY                                      ,VA
+51131,NORTHAMPTON COUNTY                                ,VA
+51143,PITTSYLVANIA COUNTY                               ,VA
+51161,ROANOKE COUNTY                                    ,VA
+51179,STAFFORD COUNTY                                   ,VA
+51183,SUSSEX COUNTY                                     ,VA
+51810,VIRGINIA BEACH CITY                               ,VA
+50003,BENNINGTON COUNTY                                 ,VT
+50005,CALEDONIA COUNTY                                  ,VT
+50007,CHITTENDEN COUNTY                                 ,VT
+50015,LAMOILLE COUNTY                                   ,VT
+50019,ORLEANS COUNTY                                    ,VT
+50021,RUTLAND COUNTY                                    ,VT
+50023,WASHINGTON COUNTY                                 ,VT
+50027,WINDSOR COUNTY                                    ,VT
+53007,CHELAN COUNTY                                     ,WA
+53009,CLALLAM COUNTY                                    ,WA
+53011,CLARK COUNTY                                      ,WA
+53021,FRANKLIN COUNTY                                   ,WA
+53025,GRANT COUNTY                                      ,WA
+53027,GRAYS HARBOR COUNTY                               ,WA
+53033,KING COUNTY                                       ,WA
+53035,KITSAP COUNTY                                     ,WA
+53037,KITTITAS COUNTY                                   ,WA
+53039,KLICKITAT COUNTY                                  ,WA
+53045,MASON COUNTY                                      ,WA
+53047,OKANOGAN COUNTY                                   ,WA
+53053,PIERCE COUNTY                                     ,WA
+53055,SAN JUAN COUNTY                                   ,WA
+53057,SKAGIT COUNTY                                     ,WA
+53061,SNOHOMISH COUNTY                                  ,WA
+53063,SPOKANE COUNTY                                    ,WA
+53067,THURSTON COUNTY                                   ,WA
+53071,WALLA WALLA COUNTY                                ,WA
+53073,WHATCOM COUNTY                                    ,WA
+53075,WHITMAN COUNTY                                    ,WA
+53077,YAKIMA COUNTY                                     ,WA
+55003,ASHLAND COUNTY                                    ,WI
+55005,BARRON COUNTY                                     ,WI
+55009,BROWN COUNTY                                      ,WI
+55013,BURNETT COUNTY                                    ,WI
+55017,CHIPPEWA COUNTY                                   ,WI
+55025,DANE COUNTY                                       ,WI
+55039,FOND DU LAC COUNTY                                ,WI
+55043,GRANT COUNTY                                      ,WI
+55055,JEFFERSON COUNTY                                  ,WI
+55057,JUNEAU COUNTY                                     ,WI
+55059,KENOSHA COUNTY                                    ,WI
+55063,LA CROSSE COUNTY                                  ,WI
+55073,MARATHON COUNTY                                   ,WI
+55079,MILWAUKEE COUNTY                                  ,WI
+55085,ONEIDA COUNTY                                     ,WI
+55101,RACINE COUNTY                                     ,WI
+55111,SAUK COUNTY                                       ,WI
+55113,SAWYER COUNTY                                     ,WI
+55117,SHEBOYGAN COUNTY                                  ,WI
+55119,TAYLOR COUNTY                                     ,WI
+55137,WAUSHARA COUNTY                                   ,WI
+55139,WINNEBAGO COUNTY                                  ,WI
+55141,WOOD COUNTY                                       ,WI
+54003,BERKELEY COUNTY                                   ,WV
+54009,BROOKE COUNTY                                     ,WV
+54011,CABELL COUNTY                                     ,WV
+54033,HARRISON COUNTY                                   ,WV
+54039,KANAWHA COUNTY                                    ,WV
+54055,MERCER COUNTY                                     ,WV
+54061,MONONGALIA COUNTY                                 ,WV
+54081,RALEIGH COUNTY                                    ,WV
+54083,RANDOLPH COUNTY                                   ,WV
+54093,TUCKER COUNTY                                     ,WV
+54107,WOOD COUNTY                                       ,WV
+56001,ALBANY COUNTY                                     ,WY
+56003,BIG HORN COUNTY                                   ,WY
+56005,CAMPBELL COUNTY                                   ,WY
+56007,CARBON COUNTY                                     ,WY
+56009,CONVERSE COUNTY                                   ,WY
+56011,CROOK COUNTY                                      ,WY
+56013,FREMONT COUNTY                                    ,WY
+56015,GOSHEN COUNTY                                     ,WY
+56019,JOHNSON COUNTY                                    ,WY
+56021,LARAMIE COUNTY                                    ,WY
+56025,NATRONA COUNTY                                    ,WY
+56029,PARK COUNTY                                       ,WY
+56033,SHERIDAN COUNTY                                   ,WY
+56035,SUBLETTE COUNTY                                   ,WY
+56037,SWEETWATER COUNTY                                 ,WY
+56039,TETON COUNTY                                      ,WY
+56041,UINTA COUNTY                                      ,WY
+56043,WASHAKIE COUNTY                                   ,WY
+56045,WESTON COUNTY                                     ,WY
