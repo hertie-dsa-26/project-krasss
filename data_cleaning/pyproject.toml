@@ -7,7 +7,13 @@ dependencies = [
     "ipykernel>=6.0.0",
     "jupyter>=1.1.1",
     "jupyterlab>=4.5.6",
+    "matplotlib>=3.10.8",
+    "numpy>=2.4.4",
     "pandas>=3.0.2",
     "pyarrow>=23.0.1",
     "rapidfuzz>=3.14.3",
+    "scikit-learn>=1.8.0",
+    "scipy>=1.17.1",
+    "seaborn>=0.13.2",
+    "statsmodels>=0.14.6",
 ]
