@@ -2,7 +2,7 @@
 **Members:** Santiago Arciniegas, Sanjeev Dasgupta, Sophie Latham, Trayda Murakami, Konstantina Panagiotopoulou, Alex Richter, Rudranshi Vishnoi
 
 ## Research question 
-Using county-level weather data, how accurately can supervised machine learning models predict everyday health outcomes across U.S. cities and counties?
+Using county-level weather data, how accurately can supervised machine learning models predict everyday health outcomes across US cities and counties?
 
 ## Datasets
 - NOAA GSOY | Station → MSA-year | 2013–2022 | [NOAA](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-year) |
