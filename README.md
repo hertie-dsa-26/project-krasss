@@ -2,7 +2,7 @@
 **Members:** Santiago Arciniegas, Sanjeev Dasgupta, Sophie Latham, Trayda Murakami, Konstantina Panagiotopoulou, Alex Richter, Rudranshi Vishnoi
 
 ## Research question 
-To be updated. 
+Using county-level weather data, how accurately can supervised machine learning models predict everyday health outcomes across U.S. cities and counties?
 
 ## Datasets
 - NOAA GSOY | Station → MSA-year | 2013–2022 | [NOAA](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-year) |
@@ -45,7 +45,7 @@ Pull Request Template:
 
 8. Documenting Changes<br>
 
-Be sure to document major changes and be thorough in explanations. Code should be readable and **you should be able to explain all the code you submit!!!!** <br>
+Be sure to document major changes and be thorough in explanations. Code should be readable and **you should be able to explain all the code you submit!** <br>
 
 Best practices were taken from this [resource](https://dev.to/speaklouder/be-a-better-developer-with-these-git-good-practices-13j9).
 
