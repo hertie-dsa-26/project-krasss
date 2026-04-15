@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Explore — Climate & Health Explorer{% endblock %}
+
+{% block content %}
+<h1>Explore</h1>
+
+<h3>Summary Statistics</h3>
+
+<!-- Dropdown populated from Flask -->
+<label for="summary-column">Select a variable:</label>
+<select id="summary-column">
+    {% for col in df_columns %}
+        <option value="{{ col }}">{{ col }}</option>
+    {% endfor %}
+</select>
+
+<button id="summary-btn">Get Summary</button>
+
+<!-- Output area -->
+<pre id="summary-output" style="margin-top: 20px; background:#111; padding:10px; border-radius:6px;"></pre>
+
+<script>
+document.getElementById("summary-btn").addEventListener("click", function () {
+    const col = document.getElementById("summary-column").value;
+
+    fetch("/api/summary", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ column: col })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.error) {
+            document.getElementById("summary-output").textContent = data.error;
+        } else {
+            document.getElementById("summary-output").textContent =
+                JSON.stringify(data.stats, null, 2);
+        }
+    });
+});
+</script>
+
+{% endblock %}
