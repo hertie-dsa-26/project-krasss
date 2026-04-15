@@ -9,6 +9,8 @@ Using county-level weather data, how accurately can supervised machine learning 
 - CDC Places | Place/MSA | 2013–2022 | [CDC](https://data.cdc.gov/browse?category=500+Cities+%26+Places) |
 - US Census ACS | MSA (CBSA) | 2013–2022 | [Census](https://data.census.gov/table) |
 
+## App Outline 
+app_map_final (4).html 
 
 ## Work flow and development practices
 1. Meaningful Commit Messages<br>
