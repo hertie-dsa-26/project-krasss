@@ -11,6 +11,7 @@ Team: **KRASSS**
 * Alex Richter
 * Rudranshi Vishnoi
 
+
 ## Description
 
 _[Insert Project (App) Name]_ is an interactive **data science web application** developed as part of the Data Structures and Algorithms (DSA) course at the Hertie School.
@@ -86,8 +87,6 @@ project-krasss/
 
 ## Installation & Usage
 _[Fill in instructions on how to clone the repository, install dependencies, and run the Flask app.]_
-
-
 
 
 ## Deadline

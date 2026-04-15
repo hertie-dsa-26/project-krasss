@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Climate & Health Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Instrument+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0d1211;--s1:#141c17;--s2:#1a2420;--s3:#202e28;
+  --border:#263530;--border2:#2e4038;
+  --moss:#4a7c59;--mossl:#72b588;--mossd:#2d4f38;
+  --sky:#3d7fa8;--skyl:#65a8d4;--skyd:#234d6a;
+  --gold:#c49a3c;--goldl:#ddb84e;--goldd:#7a5f1e;
+  --rust:#c4603c;--rustl:#e07850;--rustd:#7a3820;
+  --purple:#8060c4;--purplel:#a080e0;
+  --muted:#5a7060;--text:#dce8e0;--textsub:#7a9880;--textdim:#4a6058;
+}
+
+body{background:var(--bg);font-family:'Instrument Sans',sans-serif;color:var(--text);min-height:100vh;padding:0;}
+
+/* subtle grid bg */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:
+    linear-gradient(rgba(74,124,89,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,124,89,0.03) 1px, transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;z-index:0;
+}
+
+.page{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:56px 32px 80px;}
+
+/* ── HEADER ── */
+.header{margin-bottom:52px;}
+.header-top{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;margin-bottom:20px;}
+.title-block h1{font-family:'Instrument Serif',serif;font-size:clamp(30px,5vw,52px);font-weight:400;line-height:1.05;letter-spacing:-0.5px;}
+.title-block h1 em{font-style:italic;color:var(--mossl);}
+.title-block p{margin-top:10px;font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+.user-pills{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px;}
+.upill{font-size:10px;padding:5px 13px;border-radius:20px;border:1px solid;letter-spacing:0.3px;display:flex;align-items:center;gap:5px;}
+.upill.p{border-color:var(--moss);color:var(--mossl);background:rgba(74,124,89,0.08);}
+.upill.r{border-color:var(--sky);color:var(--skyl);background:rgba(61,127,168,0.08);}
+.upill.g{border-color:var(--gold);color:var(--goldl);background:rgba(196,154,60,0.08);}
+
+.legend{background:var(--s1);border:1px solid var(--border);border-radius:10px;padding:16px 20px;min-width:180px;}
+.legend h4{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+.li{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--textsub);margin-bottom:6px;}
+.ldot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* ── FLASK PAGES ROW ── */
+.pages-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:40px;}
+.flask-page{border-radius:10px;border:1px solid;overflow:hidden;transition:transform 0.2s;}
+.flask-page:hover{transform:translateY(-2px);}
+.flask-page.docs{border-color:var(--mossd);background:linear-gradient(135deg,var(--s1),rgba(45,79,56,0.2));}
+.flask-page.explore{border-color:var(--skyd);background:linear-gradient(135deg,var(--s1),rgba(35,77,106,0.2));}
+.flask-page.predict{border-color:var(--rustd);background:linear-gradient(135deg,var(--s1),rgba(122,56,32,0.2));}
+.fp-top{padding:12px 14px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.fp-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.fp-top h3{font-size:12px;font-weight:600;}
+.fp-top p{font-size:9px;color:var(--muted);margin-top:1px;}
+.fp-body{padding:10px 14px 12px;}
+.route-tag{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--muted);display:inline-block;margin-bottom:8px;}
+.fp-li{font-size:10px;color:var(--textsub);padding-left:10px;position:relative;margin-bottom:2px;line-height:1.5;}
+.fp-li::before{content:'·';position:absolute;left:0;color:var(--muted);}
+.fp-un{font-size:9px;color:var(--textdim);margin-top:7px;font-family:'JetBrains Mono',monospace;}
+
+/* ── FLOW ── */
+.flow{display:flex;flex-direction:column;align-items:center;gap:0;}
+
+.arrow{display:flex;flex-direction:column;align-items:center;gap:0;margin:0;padding:4px 0;}
+.arrow-line{width:1px;height:28px;background:linear-gradient(to bottom,var(--border2),var(--border));}
+.arrow-head{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid var(--border2);}
+.arrow-label{font-size:9px;color:var(--textdim);letter-spacing:1px;text-transform:uppercase;margin-top:4px;font-family:'JetBrains Mono',monospace;}
+
+/* ── BLOCKS ── */
+.block{width:100%;border-radius:12px;border:1px solid;overflow:hidden;transition:border-color 0.2s,box-shadow 0.2s;}
+.block:hover{box-shadow:0 4px 32px rgba(0,0,0,0.3);}
+
+.block-hdr{padding:11px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;}
+.block-hdr h2{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;}
+.block-hdr .phase-tag{font-size:9px;color:var(--muted);letter-spacing:1px;font-family:'JetBrains Mono',monospace;}
+.block-body{padding:16px 20px;background:var(--s1);}
+
+/* colour themes */
+.block.sources{border-color:var(--border2);background:var(--s2);}
+.block.sources .block-hdr{background:var(--s3);border-bottom:1px solid var(--border2);}
+.block.sources .block-hdr h2{color:var(--textsub);}
+
+.block.pipe{border-color:var(--mossd);}
+.block.pipe .block-hdr{background:rgba(45,79,56,0.5);border-bottom:1px solid var(--mossd);}
+.block.pipe .block-hdr h2{color:var(--mossl);}
+
+.block.stat{border-color:var(--skyd);}
+.block.stat .block-hdr{background:rgba(35,77,106,0.5);border-bottom:1px solid var(--skyd);}
+.block.stat .block-hdr h2{color:var(--skyl);}
+
+.block.model{border-color:var(--goldd);}
+.block.model .block-hdr{background:rgba(122,95,30,0.5);border-bottom:1px solid var(--goldd);}
+.block.model .block-hdr h2{color:var(--goldl);}
+
+.block.outcomes{border-color:var(--goldd);background:rgba(122,95,30,0.08);}
+.block.outcomes .block-hdr{background:rgba(122,95,30,0.3);border-bottom:1px solid var(--goldd);}
+.block.outcomes .block-hdr h2{color:var(--goldl);}
+
+.block.app{border-color:var(--rustd);}
+.block.app .block-hdr{background:rgba(122,56,32,0.5);border-bottom:1px solid var(--rustd);}
+.block.app .block-hdr h2{color:var(--rustl);}
+
+.block.stretch{border-color:var(--border);border-style:dashed;}
+.block.stretch .block-hdr{background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border);}
+.block.stretch .block-hdr h2{color:var(--muted);}
+
+/* sources grid */
+.sources-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.src-card{background:var(--s3);border:1px solid var(--border2);border-radius:8px;padding:10px 12px;}
+.src-card .src-name{font-size:12px;font-weight:600;margin-bottom:3px;}
+.src-card .src-desc{font-size:10px;color:var(--textsub);line-height:1.5;}
+.src-card.noaa .src-name{color:var(--skyl);}
+.src-card.cdc .src-name{color:var(--mossl);}
+.src-card.census .src-name{color:var(--goldl);}
+
+.outcomes-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+.oc{background:var(--s3);border:1px solid var(--border2);border-radius:7px;padding:9px 8px;text-align:center;}
+.oc-icon{font-size:16px;margin-bottom:4px;}
+.oc-name{font-size:10px;font-weight:500;color:var(--text);}
+
+/* steps */
+.steps{display:flex;flex-direction:column;gap:12px;}
+.step{display:flex;gap:12px;align-items:flex-start;}
+.step-num{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;flex-shrink:0;margin-top:1px;}
+.pipe .step-num{background:rgba(74,124,89,0.2);color:var(--mossl);border:1px solid var(--mossd);}
+.stat .step-num{background:rgba(61,127,168,0.2);color:var(--skyl);border:1px solid var(--skyd);}
+.model .step-num{background:rgba(196,154,60,0.2);color:var(--goldl);border:1px solid var(--goldd);}
+.app .step-num{background:rgba(196,96,60,0.2);color:var(--rustl);border:1px solid var(--rustd);}
+.step-content h4{font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.step-content p{font-size:11px;color:var(--textsub);line-height:1.6;}
+.step-content p span{color:var(--text);font-weight:500;}
+
+/* two-col app */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.app-box{background:var(--s2);border:1px solid var(--rustd);border-radius:9px;padding:14px;}
+.app-box h4{font-size:12px;font-weight:600;color:var(--rustl);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.app-li{font-size:11px;color:var(--textsub);padding-left:12px;position:relative;margin-bottom:3px;line-height:1.5;}
+.app-li::before{content:'→';position:absolute;left:0;font-size:9px;color:var(--rust);}
+.app-route{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 8px;border-radius:4px;background:rgba(196,96,60,0.1);border:1px solid var(--rustd);color:var(--rust);display:inline-block;margin-top:8px;}
+.app-users{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap;}
+.au{font-size:9px;padding:1px 6px;border-radius:3px;}
+.au.p{background:rgba(74,124,89,0.15);color:var(--mossl);}
+.au.r{background:rgba(61,127,168,0.15);color:var(--skyl);}
+.au.g{background:rgba(196,154,60,0.15);color:var(--goldl);}
+
+/* stretch grid */
+.stretch-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.sg{background:var(--s2);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+.sg h4{font-size:11px;font-weight:600;color:var(--textsub);margin-bottom:5px;}
+.sg p{font-size:10px;color:var(--textdim);line-height:1.5;}
+
+/* outcomes block inline */
+.outcomes-inline{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+
+/* connector between modelling and outcomes */
+.side-connector{display:flex;align-items:center;gap:0;margin:12px 0;padding-left:20px;}
+.sc-line{height:1px;flex:1;background:var(--goldd);}
+.sc-text{font-size:9px;color:var(--goldd);letter-spacing:1px;padding:0 8px;font-family:'JetBrains Mono',monospace;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.block{animation:fadeUp 0.5s ease both;}
+.block:nth-child(1){animation-delay:0.05s}.block:nth-child(3){animation-delay:0.10s}
+.block:nth-child(5){animation-delay:0.15s}.block:nth-child(7){animation-delay:0.20s}
+.block:nth-child(9){animation-delay:0.25s}.block:nth-child(11){animation-delay:0.30s}
+.block:nth-child(13){animation-delay:0.35s}.block:nth-child(15){animation-delay:0.40s}
+.pages-row{animation:fadeUp 0.4s ease both;}
+.header{animation:fadeUp 0.3s ease both;}
+
+@media(max-width:700px){
+  .pages-row,.sources-grid,.outcomes-row,.two-col,.stretch-grid,.outcomes-inline{grid-template-columns:1fr;}
+  .legend{display:none;}
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="title-block">
+      <h1>Climate &amp; Health <em>Explorer</em></h1>
+      <p>App Architecture Map · Group Project 2025 · Hertie School</p>
+      <div class="user-pills">
+        <span class="upill p">🏛 Policy Practitioners</span>
+        <span class="upill r">🔬 Researchers</span>
+        <span class="upill g">👤 General Public</span>
+      </div>
+    </div>
+    <div class="legend">
+      <h4>Phases</h4>
+      <div class="li"><div class="ldot" style="background:#4a7c59"></div>Data Pipeline</div>
+      <div class="li"><div class="ldot" style="background:#3d7fa8"></div>Statistical Analysis</div>
+      <div class="li"><div class="ldot" style="background:#c49a3c"></div>Modelling</div>
+      <div class="li"><div class="ldot" style="background:#c4603c"></div>App Features</div>
+      <div class="li"><div class="ldot" style="background:#5a7060"></div>Stretch Goals</div>
+    </div>
+  </div>
+</div>
+
+<!-- FLASK PAGES -->
+<div class="section-label" style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;">Flask Application — Three Pages</div>
+<div class="pages-row">
+  <div class="flask-page docs">
+    <div class="fp-top">
+      <div class="fp-icon" style="background:rgba(74,124,89,0.15);">📄</div>
+      <div><h3 style="color:var(--mossl)">Documentation</h3><p>Background &amp; context</p></div>
+    </div>
+    <div class="fp-body">
+      <div class="route-tag">GET /docs</div>
+      <div class="fp-li">App purpose &amp; navigation</div>
+      <div class="fp-li">Dataset &amp; variable descriptions</div>
+      <div class="fp-li">Literature review (plain English)</div>
+      <div class="fp-li">ML methodology &amp; eval stats</div>
+      <div class="fp-li">Limitations &amp; caveats</div>
+      <div class="fp-un">UN-01 → UN-07 · FR-01</div>
+    </div>
+  </div>
+  <div class="flask-page explore">
+    <div class="fp-top">
+      <div class="fp-icon" style="background:rgba(61,127,168,0.15);">🗺</div>
+      <div><h3 style="color:var(--skyl)">Exploratory Analysis</h3><p>Interactive map &amp; charts</p></div>
+    </div>
+    <div class="fp-body">
+      <div class="route-tag">GET /explore</div>
+      <div class="fp-li">Interactive MSA map + hover tooltips</div>
+      <div class="fp-li">Variable filters: Weather / Demo / Health</div>
+      <div class="fp-li">Time series charts (3 themes)</div>
+      <div class="fp-li">Summary stats table by climate zone</div>
+      <div class="fp-li">Year &amp; geographic filters</div>
+      <div class="fp-un">UN-08 → UN-15 · FR-02</div>
+    </div>
+  </div>
+  <div class="flask-page predict">
+    <div class="fp-top">
+      <div class="fp-icon" style="background:rgba(196,96,60,0.15);">📊</div>
+      <div><h3 style="color:var(--rustl)">Predictions</h3><p>Scenarios &amp; move simulation</p></div>
+    </div>
+    <div class="fp-body">
+      <div class="route-tag">GET /predict</div>
+      <div class="fp-li">Default future trend predictions</div>
+      <div class="fp-li">Custom scenario builder (5/10-yr)</div>
+      <div class="fp-li">Multi-scenario comparison chart</div>
+      <div class="fp-li">Move simulation (origin → destination)</div>
+      <div class="fp-li">Limitation warnings throughout</div>
+      <div class="fp-un">UN-16 → UN-22 · FR-03</div>
+    </div>
+  </div>
+</div>
+
+<!-- FLOW -->
+<div style="font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Analysis Pipeline</div>
+<div class="flow">
+
+  <!-- DATA SOURCES -->
+  <div class="block sources" style="width:100%">
+    <div class="block-hdr">
+      <h2>Data Sources</h2>
+      <span class="phase-tag">INPUTS</span>
+    </div>
+    <div class="block-body">
+      <div class="sources-grid">
+        <div class="src-card noaa">
+          <div class="src-name">NOAA GSOY</div>
+          <div class="src-desc">Climate inputs · Station-level · Annual · 7–12 variables</div>
+        </div>
+        <div class="src-card cdc">
+          <div class="src-name">CDC Places</div>
+          <div class="src-desc">Health targets · MSA / city level · 2013–2023 · modelled estimates</div>
+        </div>
+        <div class="src-card census">
+          <div class="src-name">US Census ACS</div>
+          <div class="src-desc">Demographic controls · MSA level · 5-year rolling estimates</div>
+        </div>
+      </div>
+      <div class="outcomes-row">
+        <div class="oc"><div class="oc-icon">🧠</div><div class="oc-name">Mental Distress</div></div>
+        <div class="oc"><div class="oc-icon">🫀</div><div class="oc-name">Physical Distress</div></div>
+        <div class="oc"><div class="oc-icon">😴</div><div class="oc-name">Sleep Health</div></div>
+        <div class="oc"><div class="oc-icon">🌬️</div><div class="oc-name">Asthma</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div><div class="arrow-label">raw station data</div></div>
+
+  <!-- PIPELINE -->
+  <div class="block pipe" style="width:100%">
+    <div class="block-hdr">
+      <h2>Data Engineering Pipeline</h2>
+      <span class="phase-tag">PHASE 1</span>
+    </div>
+    <div class="block-body">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Climate Aggregation</h4>
+            <p>Aggregate NOAA stations → <span>MSA-year level</span>. Compute <span>absolute values</span> (avg temp) + <span>year-on-year changes</span> (Δ temp). Validate station coverage per MSA; exclude MSAs below threshold.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Climate Zone Classification</h4>
+            <p>Assign each MSA to a <span>NOAA climate region</span>. Use region as a <span>control variable</span> in the model and as a <span>grouping layer</span> in exploratory analysis. Enables region-level fallback for MSAs with thin data coverage.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Merge &amp; Clean Master Panel</h4>
+            <p>Join <span>CDC Places + NOAA + Census</span> on MSA identifier × year. Audit missing data; document drop rate. Check CDC Places variable consistency across all years. Group into three themes: <span>Weather / Demographics / Health</span>. Output: one clean MSA-year panel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div><div class="arrow-label">clean MSA-year panel</div></div>
+
+  <!-- STATISTICAL -->
+  <div class="block stat" style="width:100%">
+    <div class="block-hdr">
+      <h2>Statistical Analysis</h2>
+      <span class="phase-tag">PHASE 2</span>
+    </div>
+    <div class="block-body">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Descriptive Climate–Health Analysis</h4>
+            <p>Summary stats, distribution plots, <span>correlation matrices</span> (climate ↔ health, climate ↔ demographics). <span>10-year trend lines</span> per outcome grouped by MSA and climate zone. Both <span>absolute</span> and <span>year-on-year relative</span> climate values computed and compared. Feeds directly into /explore page.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Climate Gradient Comparisons</h4>
+            <p><span>Primary:</span> compare health outcomes across climate quintiles — hottest vs. coolest MSAs, wettest vs. driest, most vs. fewest extreme heat days. <span>Secondary:</span> compare across NOAA climate zones for geographic map visualisation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div><div class="arrow-label">validated signal</div></div>
+
+  <!-- MODELLING -->
+  <div class="block model" style="width:100%">
+    <div class="block-hdr">
+      <h2>Modelling</h2>
+      <span class="phase-tag">PHASE 3</span>
+    </div>
+    <div class="block-body">
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-content">
+            <h4>Predictive Model — Linear Regression (main model)</h4>
+            <p><span>X:</span> NOAA climate variables + Census demographic controls + climate zone classification<br>
+            <span>Y:</span> each of the 4 CDC Places outcomes separately<br>
+            Also used for <span>5 and 10-year forward projections</span> with confidence intervals. Climate zone fallback for MSAs with limited data, displayed with a clear limitation warning.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">7</div>
+          <div class="step-content">
+            <h4>Model Evaluation</h4>
+            <p><span>Cross-validation</span> across MSA-years + <span>out-of-time test</span> (train on earlier years, test on most recent year). Assess whether absolute or relative climate values perform better as predictors. Evaluation stats documented in /docs page for researchers.</p>
+          </div>
+        </div>
+      </div>
+      <div class="side-connector">
+        <div class="sc-line"></div>
+        <div class="sc-text">Y → 4 predicted outcomes</div>
+        <div class="sc-line" style="max-width:40px"></div>
+      </div>
+      <div class="outcomes-inline">
+        <div class="oc" style="background:var(--s3);border-color:var(--goldd)"><div class="oc-icon">🧠</div><div class="oc-name">Mental Distress</div></div>
+        <div class="oc" style="background:var(--s3);border-color:var(--goldd)"><div class="oc-icon">🫀</div><div class="oc-name">Physical Distress</div></div>
+        <div class="oc" style="background:var(--s3);border-color:var(--goldd)"><div class="oc-icon">😴</div><div class="oc-name">Sleep Health</div></div>
+        <div class="oc" style="background:var(--s3);border-color:var(--goldd)"><div class="oc-icon">🌬️</div><div class="oc-name">Asthma</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div><div class="arrow-label">trained model → Flask app</div></div>
+
+  <!-- APP FEATURES -->
+  <div class="block app" style="width:100%">
+    <div class="block-hdr">
+      <h2>App Features</h2>
+      <span class="phase-tag">PHASE 4</span>
+    </div>
+    <div class="block-body">
+      <div class="two-col">
+        <div class="app-box">
+          <h4>📈 Scenario Builder</h4>
+          <div class="app-li">Select input variables from Weather / Demo / Health</div>
+          <div class="app-li">Set custom future values per variable</div>
+          <div class="app-li">Choose 5-year or 10-year projection horizon</div>
+          <div class="app-li">Compare multiple scenarios in one line chart</div>
+          <div class="app-li">Uncertainty bands shown on all projections</div>
+          <div class="app-route">POST /predict → JSON</div>
+          <div class="app-users"><span class="au p">Policy</span><span class="au r">Research</span></div>
+          <div style="font-size:9px;color:var(--textdim);margin-top:6px;font-family:'JetBrains Mono',monospace;">UN-16 → UN-20</div>
+        </div>
+        <div class="app-box">
+          <h4>🗺 Move Simulation</h4>
+          <div class="app-li">User selects origin + destination MSA on map</div>
+          <div class="app-li">Census demographic profile held fixed at origin</div>
+          <div class="app-li">Swap in destination MSA's NOAA climate vector</div>
+          <div class="app-li">Rerun linear regression → Δ for all 4 outcomes</div>
+          <div class="app-li">Multi-destination comparison supported</div>
+          <div class="app-li">Limitation warnings displayed prominently</div>
+          <div class="app-route">GET /compare → JSON</div>
+          <div class="app-users"><span class="au g">Public</span><span class="au p">Policy</span></div>
+          <div style="font-size:9px;color:var(--textdim);margin-top:6px;font-family:'JetBrains Mono',monospace;">UN-21 → UN-22</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div><div class="arrow-label">if time permits</div></div>
+
+  <!-- STRETCH -->
+  <div class="block stretch" style="width:100%">
+    <div class="block-hdr">
+      <h2>Stretch Goals</h2>
+      <span class="phase-tag">OPTIONAL</span>
+    </div>
+    <div class="block-body">
+      <div class="stretch-grid">
+        <div class="sg">
+          <h4>Random Forest</h4>
+          <p>Upgrade on linear regression. Same X and Y. Captures non-linear climate-health relationships. Core app runs on LR alone if not completed.</p>
+        </div>
+        <div class="sg">
+          <h4>SHAP Feature Importance</h4>
+          <p>Requires Random Forest. Identifies which NOAA variables drive predictions. Decomposes into climate vs. demographic contributions.</p>
+        </div>
+        <div class="sg">
+          <h4>Fixed-Effects Panel Regression</h4>
+          <p>MSA + year fixed effects. Framed as association analysis, not causal estimation. Limitations flagged explicitly in /docs.</p>
+        </div>
+        <div class="sg">
+          <h4>Spatial Autocorrelation</h4>
+          <p>Moran's I + LISA cluster maps on CDC Places outcomes. Requires geopandas. Most policy-friendly visual output in the app.</p>
+        </div>
+        <div class="sg">
+          <h4>Extreme Event Studies</h4>
+          <p>Use NOAA extreme temp / precipitation variables to examine whether shock years produce measurable CDC Places health spikes.</p>
+        </div>
+        <div class="sg" style="border-color:transparent;background:transparent;"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div style="margin-top:48px;padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:gap;gap:12px;">
+  <div style="font-size:10px;color:var(--textdim);">Hertie School · Group Project 2025 · Climate &amp; Health Explorer</div>
+  <div style="font-size:10px;color:var(--textdim);font-family:'JetBrains Mono',monospace;">Flask · Python · scikit-learn · pandas · geopandas</div>
+</div>
+
+</div>
+</body>
+</html>
