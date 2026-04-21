@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.stats import norm
 
 def gaussian_kernel(x: np.ndarray, y: np.ndarray, sigma2: float = 2.0) -> np.ndarray:
     """Compute the Gaussian (RBF) kernel matrix between 1-D+ arrays *x* and *y*.
@@ -6,11 +7,11 @@ def gaussian_kernel(x: np.ndarray, y: np.ndarray, sigma2: float = 2.0) -> np.nda
     Returns an (n, m) matrix where entry (i, j) is
     exp(-||x_i - y_j||^2 / (2 * sigma2)).
     """
-    x = np.atleast_2d(x)
-    y = np.atleast_2d(y)
-    # Squared Euclidean distance: ||x_i - y_j||^2
-    diff = x[:, None, :] - y[None, :, :]   # (n, m, d)
-    sq_dists = np.sum(diff**2, axis=-1)     # (n, m)
+    x_sq = np.sum(x**2, axis=1, keepdims=True)  # (n, 1)
+    y_sq = np.sum(y**2, axis=1, keepdims=True)  # (m, 1)
+    sq_dists = x_sq + y_sq.T - 2 * (x @ y.T)        # (n, m)
+    # clip floating point negatives to 0
+    sq_dists = np.maximum(sq_dists, 0)
     return np.exp(-sq_dists / (2 * sigma2))
 
 class KernelRidgeRegression:
@@ -62,8 +63,12 @@ class KernelRidgeRegression:
         """
         
         K_train = gaussian_kernel(X_train, X_train, sigma2=self.sigma2)
-        self.coef_ = np.linalg.solve(K_train + self.lamb * np.eye(len(X_train)), y_train)
+        A = K_train + self.lamb * np.eye(len(X_train))
+        self.coef_ = np.linalg.solve(A, y_train)
         self.X_train_ = X_train
+        # store K_inv once during training to speed up use during calculation of prediction intervals
+        self.K_inv_ = np.linalg.inv(A) 
+        return self.coef_
 
 
     def predict(self, X_test:np.ndarray) -> np.ndarray:
@@ -79,3 +84,25 @@ class KernelRidgeRegression:
         """
         K_test = gaussian_kernel(X_test, self.X_train_, sigma2=self.sigma2)
         return K_test @ self.coef_
+    
+    
+    def prediction_intervals(self, X_test: np.ndarray,
+    confidence: float = 0.95) -> tuple:
+        
+        """
+        Setting up prediction intervals.
+
+        Bootstrapping might be methodologically more robust but hard to do with a stored model
+        and would also need a lot more time to re-run every time if we don't store the model.
+
+        So for efficiency reasons, this Bayesian approach using a Gaussian Process might be faster.
+        """
+
+        K_star  = gaussian_kernel(X_test, self.X_train_, sigma2=self.sigma2)
+        K_ss    = gaussian_kernel(X_test, X_test, sigma2=self.sigma2)
+        var     = np.diag(K_ss - K_star @ self.K_inv_ @ K_star.T)
+        var     = np.maximum(var, 0)
+        std     = np.sqrt(var)
+        z       = norm.ppf(1 - (1 - confidence) / 2)
+        y_pred  = self.predict(X_test)
+        return y_pred, y_pred - z * std, y_pred + z * std

@@ -2,7 +2,6 @@ import numpy as np
 
 class Assessment:
     def __init__(self):
-        self.cv_scores = []
     
     def r2_score(self, y_test:np.ndarray, y_pred:np.ndarray) -> float:
         '''
@@ -22,9 +21,7 @@ class Assessment:
         mean_y_test = np.mean(y_test)
         TSS = np.sum((y_test - mean_y_test) ** 2)
         RSS = np.sum((y_test - y_pred) ** 2)
-        score = 1 - (RSS / TSS) 
-        self.cv_scores.append(score)
-        return np.array(self.cv_scores)
+        return 1 - (RSS/TSS)
 
     def mean_squared_error(self, y_test:np.ndarray, y_pred:np.ndarray) -> float:
         '''
@@ -40,6 +37,5 @@ class Assessment:
         Returns: 
             MSE (float): the average squared difference between the actual and predicted values 
         '''
-        score = np.square(np.subtract(y_test, y_pred)).mean()
-        self.cv_scores.append(score)
-        return np.array(self.cv_scores)
+        
+        return np.square(np.subtract(y_test, y_pred)).mean()
