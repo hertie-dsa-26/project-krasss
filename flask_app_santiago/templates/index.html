@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Health Outcome Predictor</title>
+</head>
+<body>
+
+    <h1>Health Outcome Predictor</h1>
+    <p>Select a county, health variable and climate scenario to generate a 10-year prediction.</p>
+
+    <form action="/predict" method="POST">
+
+        <label>County:</label><br>
+        <select name="county_state">
+            {% for c in counties %}
+                <option value="{{ c.county }}|{{ c.state }}"
+                    {% if c.county == county and c.state == state %}selected{% endif %}>
+                    {{ c.label }}
+                </option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <label>Health Variable:</label><br>
+        <select name="target">
+            {% for t in targets %}
+                <option value="{{ t }}" {% if t == target %}selected{% endif %}>
+                    {{ t }}
+                </option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <label>Climate Scenario:</label><br>
+        <select name="scenario">
+            {% for key, val in scenarios.items() %}
+                <option value="{{ key }}" {% if key == scenario_key %}selected{% endif %}>
+                    {{ val.description }}
+                </option>
+            {% endfor %}
+        </select>
+        <br><br>
+
+        <button type="submit">Predict</button>
+
+    </form>
+
+    {% if results %}
+        <hr>
+        <h2>Results — {{ target }} in {{ county }}, {{ state }}</h2>
+        <p>Scenario: {{ description }}</p>
+
+        <table border="1" cellpadding="5">
+            <tr>
+                <th>Year</th>
+                <th>Predicted {{ target }} (%)</th>
+            </tr>
+            {% for year, pred in results %}
+                <tr>
+                    <td>{{ year }}</td>
+                    <td>{{ pred }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
+</body>
+</html>
