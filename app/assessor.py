@@ -1,7 +1,6 @@
 import numpy as np
 
 class Assessment:
-    def __init__(self):
     
     def r2_score(self, y_test:np.ndarray, y_pred:np.ndarray) -> float:
         '''

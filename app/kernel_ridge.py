@@ -68,7 +68,6 @@ class KernelRidgeRegression:
         self.X_train_ = X_train
         # store K_inv once during training to speed up use during calculation of prediction intervals
         self.K_inv_ = np.linalg.inv(A) 
-        return self.coef_
 
 
     def predict(self, X_test:np.ndarray) -> np.ndarray:
