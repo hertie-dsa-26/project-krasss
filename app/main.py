@@ -42,7 +42,6 @@ def predict():
     counties = sorted(df['County name'].unique().tolist())
     return render_template('predict.html', counties=counties)
 
-# MOVE THIS ABOVE app.run()
 @app.route('/api/summary', methods=['POST'])
 def summary_stats():
     data = request.json
@@ -58,7 +57,6 @@ def summary_stats():
         "stats": stats
     })
 
-# Replace your existing /api/map-data and /api/snapshot and /api/timeseries routes in main.py with these
 
 @app.route('/api/snapshot')
 def snapshot():
@@ -77,50 +75,63 @@ def snapshot():
 
 @app.route('/api/map-data')
 def map_data():
-    health_var = request.args.get('var', 'MHLTH')
+    health_var  = request.args.get('var', 'MHLTH')
     weather_var = request.args.get('weather', '')
+    demo_vars   = request.args.get('demo', '')  # comma-separated list e.g. "median_household_income,pct_less_than_hs"
     year_start  = int(request.args.get('year_start', 2013))
     year_end    = int(request.args.get('year_end', 2023))
-
+ 
     if health_var not in df.columns:
         return jsonify({"error": "Invalid variable"}), 400
-
+ 
     filtered = df[(df['year'] >= year_start) & (df['year'] <= year_end)]
-
+ 
+    # Build aggregation dict
     agg_dict = {
         'health_val': (health_var, 'mean'),
         'population': ('total_population', 'mean'),
     }
     if weather_var and weather_var in df.columns:
         agg_dict['weather_val'] = (weather_var, 'mean')
-
+ 
+    # Add demographic variables
+    demo_list = [d for d in demo_vars.split(',') if d and d in df.columns] if demo_vars else []
+    for i, dv in enumerate(demo_list[:3]):  # max 3
+        agg_dict[f'demo_{i}'] = (dv, 'mean')
+ 
     grouped = filtered.groupby(['CountyFIPS', 'County name', 'StateAbbr']).agg(**agg_dict).reset_index()
-
+ 
     health_nat_avg  = round(grouped['health_val'].mean(), 2)
     weather_nat_avg = round(grouped['weather_val'].mean(), 2) if 'weather_val' in grouped.columns else None
-
+ 
     result = []
     for _, row in grouped.iterrows():
         entry = {
-            'fips':        str(int(row['CountyFIPS'])).zfill(5),
-            'county':      row['County name'].title(),
-            'state':       row['StateAbbr'],
-            'health_val':  round(row['health_val'], 2),
-            'population':  int(row['population']) if not pd.isna(row['population']) else 0,
+            'fips':       str(int(row['CountyFIPS'])).zfill(5),
+            'county':     row['County name'].title(),
+            'state':      row['StateAbbr'],
+            'health_val': round(row['health_val'], 2),
+            'population': int(row['population']) if not pd.isna(row['population']) else 0,
         }
         if 'weather_val' in grouped.columns:
             entry['weather_val'] = round(row['weather_val'], 2) if not pd.isna(row['weather_val']) else None
+        # Add demo values
+        for i, dv in enumerate(demo_list[:3]):
+            val = row.get(f'demo_{i}')
+            entry[f'demo_{i}'] = round(val, 1) if val is not None and not pd.isna(val) else None
         result.append(entry)
-
+ 
     return jsonify({
-        'data':             result,
-        'health_nat_avg':   health_nat_avg,
-        'weather_nat_avg':  weather_nat_avg,
-        'health_var':       health_var,
-        'weather_var':      weather_var,
-        'year_start':       year_start,
-        'year_end':         year_end
+        'data':            result,
+        'health_nat_avg':  health_nat_avg,
+        'weather_nat_avg': weather_nat_avg,
+        'health_var':      health_var,
+        'weather_var':     weather_var,
+        'demo_vars':       demo_list,
+        'year_start':      year_start,
+        'year_end':        year_end
     })
+ 
 
 
 @app.route('/api/timeseries')

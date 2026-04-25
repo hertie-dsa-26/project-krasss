@@ -126,7 +126,7 @@
   <!-- FILTERS -->
   <div class="card">
     <div class="section-label">Filters</div>
-    <div class="filter-bar">
+    <div style="display:grid;grid-template-columns:1fr 1fr 2fr auto;gap:12px;align-items:end;margin-bottom:12px;">
       <div class="filter-group">
         <label>Health variable</label>
         <select id="var-health">
@@ -140,7 +140,7 @@
         </select>
       </div>
       <div class="filter-group">
-        <label>Weather variable (shown in tooltip)</label>
+        <label>Weather variable (tooltip)</label>
         <select id="var-weather">
           <option value="">— none —</option>
           <option value="TAVG">Avg temperature (TAVG)</option>
@@ -165,6 +165,42 @@
         <button class="apply-btn" onclick="loadMap()">Apply filters</button>
       </div>
     </div>
+ 
+    <!-- Demographic multi-select row -->
+    <div style="border-top:1px solid #f0f0f0;padding-top:12px;">
+      <div style="font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">
+        Demographic context (shown in tooltip · select up to 3)
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;" id="demo-checkboxes">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="median_household_income" onchange="handleDemoCheck(this)"> Median income
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="pct_less_than_hs" onchange="handleDemoCheck(this)"> % less than HS
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="pct_bachelors_plus" onchange="handleDemoCheck(this)"> % college educated
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="pct_white" onchange="handleDemoCheck(this)"> % white
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="pct_black" onchange="handleDemoCheck(this)"> % Black
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="pct_hispanic" onchange="handleDemoCheck(this)"> % Hispanic
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="pct_asian" onchange="handleDemoCheck(this)"> % Asian
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="pct_female" onchange="handleDemoCheck(this)"> % female
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="pct_male" onchange="handleDemoCheck(this)"> % male
+        </label>
+      </div>
+    </div>
   </div>
 
   <!-- MAP -->
@@ -175,25 +211,28 @@
       <svg id="map-svg" viewBox="0 0 960 600"></svg>
       <div id="tooltip">
         <div class="t-county" id="t-name"></div>
-
-        <div class="t-section" id="t-health-label">Health</div>
+        
+        <div class="t-section">Health</div>
         <div class="t-row">
           <span class="t-lbl" id="t-h-lbl"></span>
           <span class="t-val" id="t-h-val"></span>
         </div>
         <div class="t-compare" id="t-h-compare"></div>
-
+        
         <div class="t-divider" id="t-weather-divider" style="display:none;"></div>
         <div class="t-section" id="t-weather-section" style="display:none;">Weather</div>
         <div class="t-row" id="t-weather-row" style="display:none;">
           <span class="t-lbl" id="t-w-lbl"></span>
           <span class="t-val" id="t-w-val"></span>
-        </div>
-        <div class="t-compare" id="t-w-compare" style="display:none;"></div>
+          </div>
+          <div class="t-compare" id="t-w-compare" style="display:none;"></div>
+          <div class="t-divider" id="t-demo-divider" style="display:none;"></div>
+          <div class="t-section" id="t-demo-section" style="display:none;">Demographics</div>
+          <div id="t-demo-rows"></div>
 
-        <div class="t-divider"></div>
-        <div class="t-pop">Population: <strong id="t-pop"></strong></div>
-      </div>
+          <div class="t-divider"></div>
+          <div class="t-pop">Population: <strong id="t-pop"></strong></div>
+        </div>
       <div id="map-legend">
         <div class="leg-title" id="leg-title">Health variable (%)</div>
         <div id="legend-bar"></div>
@@ -300,38 +339,57 @@
   </div>
 
   <!-- KEY PATTERNS -->
-  <hr class="section-divider">
+<hr class="section-divider">
   <div class="section-header">
     <h2>Key patterns in the data</h2>
-    <span>Preliminary findings · for discussion</span>
   </div>
   <div class="insight-grid">
+ 
     <div class="insight-card">
-      <div class="insight-icon" style="background:#dbeafe;">🌡️</div>
-      <div class="insight-title">Heat and sleep quality</div>
-      <div class="insight-body">Counties with more days above 90°F (DX90) show higher rates of poor sleep. The effect is strongest in lower-income counties with less air conditioning access.</div>
-      <div class="insight-stat" style="color:#1d4ed8;">↑ Higher sleep problems in hot counties</div>
+      <div class="insight-icon" style="background:#fef3c7;">💰</div>
+      <div class="insight-title">Income is the strongest predictor of health</div>
+      <div class="insight-body">
+        Median household income shows the strongest correlations with health outcomes across the dataset.
+        Counties in the lowest income quartile report 15.9% mental distress on average vs 14.6% in the highest —
+        and the gap is even larger for COPD (r = −0.57) and stroke (r = −0.51).
+      </div>
+      <div class="insight-stat" style="color:#92400e;">r = −0.57 with COPD · strongest signal in dataset</div>
     </div>
+ 
     <div class="insight-card">
-      <div class="insight-icon" style="background:#fce7f3;">🧠</div>
-      <div class="insight-title">Demographics and mental distress</div>
-      <div class="insight-body">Counties with higher proportions of residents without a high school degree show consistently higher mental distress rates, independent of temperature effects.</div>
-      <div class="insight-stat" style="color:#9d174d;">Strong correlation with education levels</div>
+      <div class="insight-icon" style="background:#dbeafe;">🎓</div>
+      <div class="insight-title">Education tracks closely with income effects</div>
+      <div class="insight-body">
+        Counties with higher shares of college-educated residents show significantly lower rates of physical
+        distress (r = −0.52), COPD (r = −0.50), and high blood pressure (r = −0.35). Education and income
+        effects are strongly intertwined across all health outcomes.
+      </div>
+      <div class="insight-stat" style="color:#1d4ed8;">r = −0.52 with physical distress</div>
     </div>
+ 
     <div class="insight-card">
-      <div class="insight-icon" style="background:#d1fae5;">❄️</div>
-      <div class="insight-title">Cold extremes and physical health</div>
-      <div class="insight-body">Extreme cold events (EMNT) correlate with spikes in physical distress (PHLTH) and COPD rates, clearest in northern counties.</div>
-      <div class="insight-stat" style="color:#065f46;">Signal strongest above 45°N latitude</div>
+      <div class="insight-icon" style="background:#fce7f3;">🌡️</div>
+      <div class="insight-title">Heat linked to higher blood pressure and sleep problems</div>
+      <div class="insight-body">
+        Warmer counties show consistently higher rates of high blood pressure — TAVG correlates at r = 0.29
+        and precipitation at r = 0.33 with BPHIGH. Counties in the hottest quartile (DX90) also report
+        15.8% mental distress vs 14.8% in the coolest quartile — a 1pp gap across all counties.
+      </div>
+      <div class="insight-stat" style="color:#9d174d;">+1pp mental distress in hottest vs coolest counties</div>
     </div>
+ 
     <div class="insight-card">
-      <div class="insight-icon" style="background:#fef3c7;">📈</div>
-      <div class="insight-title">Rising trends 2013–2023</div>
-      <div class="insight-body">Average mental distress has risen across most counties over the decade. This trend appears faster in counties that also saw rising average max temperatures.</div>
-      <div class="insight-stat" style="color:#92400e;">Upward trend across all health outcomes</div>
+      <div class="insight-icon" style="background:#d1fae5;">📍</div>
+      <div class="insight-title">Large geographic variation in mental distress</div>
+      <div class="insight-body">
+        West Virginia has the highest average mental distress at 19.2%, followed by Arkansas (17.8%) and
+        Louisiana (17.7%). South Dakota has the lowest at 12.6%, with North Dakota (12.7%) and Nebraska
+        (12.8%) also among the best. That's a 6.6pp gap between best and worst states.
+      </div>
+      <div class="insight-stat" style="color:#065f46;">WV 19.2% vs SD 12.6% — 6.6pp gap</div>
     </div>
+ 
   </div>
-</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
@@ -398,6 +456,7 @@ let countyGeo      = null;
 let currentMapData = {};
 let currentHealthNat = 0;
 let currentWeatherNat = null;
+let currentDemoVars = [];
 
 d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json").then(us => {
   countyGeo = us;
@@ -407,43 +466,78 @@ d3.json("https://cdn.jsdelivr.net/npm/us-atlas@3/counties-10m.json").then(us => 
   document.getElementById("map-loading").textContent = "Map could not load — check internet connection.";
 });
 
+// Demo checkbox — max 3
+function handleDemoCheck(cb) {
+  const checked = document.querySelectorAll('#demo-checkboxes input:checked');
+  if (checked.length > 3) {
+    cb.checked = false;
+    alert('You can select up to 3 demographic variables.');
+  }
+  // Update label styles
+  document.querySelectorAll('#demo-checkboxes label').forEach(lbl => {
+    const input = lbl.querySelector('input');
+    lbl.style.background   = input.checked ? '#1a3a2a' : '#f7f9f7';
+    lbl.style.color        = input.checked ? '#fff'    : '#555';
+    lbl.style.borderColor  = input.checked ? '#1a3a2a' : '#e0e0e0';
+    lbl.querySelector('input').style.accentColor = input.checked ? '#fff' : '#1a3a2a';
+  });
+}
+ 
+const demoLabels = {
+  median_household_income: { label: 'Median income',      prefix: '$', suffix: '' },
+  pct_less_than_hs:        { label: '% less than HS',     prefix: '',  suffix: '%' },
+  pct_bachelors_plus:      { label: '% college educated', prefix: '',  suffix: '%' },
+  pct_white:               { label: '% white',            prefix: '',  suffix: '%' },
+  pct_black:               { label: '% Black',            prefix: '',  suffix: '%' },
+  pct_hispanic:            { label: '% Hispanic',         prefix: '',  suffix: '%' },
+  pct_asian:               { label: '% Asian',            prefix: '',  suffix: '%' },
+  pct_female:              { label: '% female',           prefix: '',  suffix: '%' },
+  pct_male:                { label: '% male',             prefix: '',  suffix: '%' },
+};
+ 
+function getSelectedDemos() {
+  return Array.from(document.querySelectorAll('#demo-checkboxes input:checked')).map(cb => cb.value);
+}
+ 
 function loadMap() {
-  const hv  = document.getElementById('var-health').value;
-  const wv  = document.getElementById('var-weather').value;
-  const s   = parseInt(yrStart.value), e = parseInt(yrEnd.value);
-  const ys  = Math.min(s, e), ye = Math.max(s, e);
-
-  document.getElementById("map-loading").style.display = "block";
-  document.getElementById("map-loading").textContent   = "Loading data...";
-
-  fetch(`/api/map-data?var=${hv}&weather=${wv}&year_start=${ys}&year_end=${ye}`)
+  const hv    = document.getElementById('var-health').value;
+  const wv    = document.getElementById('var-weather').value;
+  const demos = getSelectedDemos();
+  const s     = parseInt(yrStart.value), e = parseInt(yrEnd.value);
+  const ys    = Math.min(s, e), ye = Math.max(s, e);
+ 
+  document.getElementById("map-loading").style.display  = "block";
+  document.getElementById("map-loading").textContent    = "Loading data...";
+ 
+  fetch(`/api/map-data?var=${hv}&weather=${wv}&demo=${demos.join(',')}&year_start=${ys}&year_end=${ye}`)
     .then(r => r.json())
     .then(data => {
       document.getElementById("map-loading").style.display = "none";
       currentHealthNat  = data.health_nat_avg;
       currentWeatherNat = data.weather_nat_avg;
+      currentDemoVars   = data.demo_vars;
       currentMapData    = {};
       data.data.forEach(d => { currentMapData[d.fips] = d; });
-      drawMap(hv, wv, data.data, data.health_nat_avg, data.weather_nat_avg);
+      drawMap(hv, wv, data.demo_vars, data.data, data.health_nat_avg, data.weather_nat_avg);
     })
     .catch(() => { document.getElementById("map-loading").textContent = "Error loading data."; });
 }
-
-function drawMap(hv, wv, data, healthNat, weatherNat) {
+ 
+function drawMap(hv, wv, demoVars, data, healthNat, weatherNat) {
   if (!countyGeo) return;
-  const hmeta  = varMeta[hv] || { label: hv, color:["#e5e7eb","#1a3a2a"], unit:"%" };
-  const wmeta  = wv ? (varMeta[wv] || { label: wv, unit:"" }) : null;
+  const hmeta  = varMeta[hv] || { label: hv, color: ["#e5e7eb","#1a3a2a"], unit: "%" };
+  const wmeta  = wv ? (varMeta[wv] || { label: wv, unit: "" }) : null;
   const values = data.map(d => d.health_val).filter(x => x > 0 && isFinite(x));
   const vMin   = d3.quantile(values.sort(d3.ascending), 0.05);
   const vMax   = d3.quantile(values, 0.95);
   const colorScale = d3.scaleSequential(d3.interpolateRgb(hmeta.color[0], hmeta.color[1])).domain([vMin, vMax]);
-
+ 
   const svg = d3.select("#map-svg");
   svg.selectAll("*").remove();
-  const proj   = d3.geoAlbersUsa().scale(1100).translate([480, 300]);
-  const path   = d3.geoPath().projection(proj);
+  const proj     = d3.geoAlbersUsa().scale(1100).translate([480, 300]);
+  const path     = d3.geoPath().projection(proj);
   const counties = topojson.feature(countyGeo, countyGeo.objects.counties);
-
+ 
   svg.selectAll(".county-path")
     .data(counties.features)
     .enter().append("path")
@@ -458,19 +552,18 @@ function drawMap(hv, wv, data, healthNat, weatherNat) {
       const fips = String(d.id).padStart(5,"0");
       const cd   = currentMapData[fips];
       if (!cd) return;
-
+ 
       document.getElementById("t-name").textContent = `${cd.county}, ${cd.state}`;
-
+ 
       // Health
-      document.getElementById("t-health-label").textContent = "Health";
       document.getElementById("t-h-lbl").textContent = hmeta.label;
       document.getElementById("t-h-val").textContent = cd.health_val.toFixed(1) + hmeta.unit;
-      const hDiff = (cd.health_val - healthNat).toFixed(1);
+      const hDiff    = (cd.health_val - healthNat).toFixed(1);
       const hCompare = document.getElementById("t-h-compare");
       hCompare.textContent = (hDiff > 0 ? `+${hDiff}%` : `${hDiff}%`) + ` vs national avg (${healthNat.toFixed(1)}%)`;
       hCompare.className   = "t-compare " + (hDiff > 0 ? "t-above" : "t-below");
-
-      // Weather (optional)
+ 
+      // Weather
       const hasWeather = wv && cd.weather_val != null;
       document.getElementById("t-weather-divider").style.display = hasWeather ? "block" : "none";
       document.getElementById("t-weather-section").style.display = hasWeather ? "block" : "none";
@@ -479,15 +572,38 @@ function drawMap(hv, wv, data, healthNat, weatherNat) {
       if (hasWeather && wmeta) {
         document.getElementById("t-w-lbl").textContent = wmeta.label;
         document.getElementById("t-w-val").textContent = cd.weather_val.toFixed(1) + wmeta.unit;
-        const wDiff = (cd.weather_val - weatherNat).toFixed(1);
+        const wDiff    = (cd.weather_val - weatherNat).toFixed(1);
         const wCompare = document.getElementById("t-w-compare");
         wCompare.textContent = (wDiff > 0 ? `+${wDiff}` : `${wDiff}`) + `${wmeta.unit} vs national avg (${weatherNat.toFixed(1)}${wmeta.unit})`;
         wCompare.className   = "t-compare t-above";
       }
-
+ 
+      // Demographics
+      const hasDemo = demoVars && demoVars.length > 0;
+      document.getElementById("t-demo-divider").style.display = hasDemo ? "block" : "none";
+      document.getElementById("t-demo-section").style.display = hasDemo ? "block" : "none";
+      const demoRows = document.getElementById("t-demo-rows");
+      if (hasDemo) {
+        demoRows.innerHTML = demoVars.map((dv, i) => {
+          const meta  = demoLabels[dv] || { label: dv, prefix: '', suffix: '' };
+          const val   = cd[`demo_${i}`];
+          const disp  = val != null
+            ? (dv === 'median_household_income'
+                ? '$' + Math.round(val).toLocaleString()
+                : val.toFixed(1) + meta.suffix)
+            : 'N/A';
+          return `<div class="t-row">
+            <span class="t-lbl">${meta.label}</span>
+            <span class="t-val">${disp}</span>
+          </div>`;
+        }).join('');
+      } else {
+        demoRows.innerHTML = '';
+      }
+ 
       // Population
       document.getElementById("t-pop").textContent = cd.population > 0 ? cd.population.toLocaleString() : "N/A";
-
+ 
       const wrapR = document.getElementById("map-container").getBoundingClientRect();
       let tx = event.clientX - wrapR.left + 14;
       let ty = event.clientY - wrapR.top  - 10;
@@ -496,7 +612,7 @@ function drawMap(hv, wv, data, healthNat, weatherNat) {
       tip.style.left = tx + "px"; tip.style.top = ty + "px"; tip.style.display = "block";
     })
     .on("mouseleave", () => { document.getElementById("tooltip").style.display = "none"; });
-
+ 
   // Legend
   document.getElementById("leg-title").textContent = hmeta.label + " (map color)";
   document.getElementById("leg-min").textContent   = vMin.toFixed(1) + hmeta.unit;
