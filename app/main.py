@@ -62,16 +62,17 @@ def summary_stats():
 
 @app.route('/api/snapshot')
 def snapshot():
+    n_states   = df['StateAbbr'].nunique()
     n_counties = df['County name'].nunique()
     n_years    = df['year'].nunique()
-    avg_mhlth  = round(df['MHLTH'].mean(), 1)
-    avg_income = int(df['median_household_income'].mean())
+    n_vars     = 41
     return jsonify({
-        'counties':   n_counties,
-        'years':      n_years,
-        'avg_mhlth':  avg_mhlth,
-        'avg_income': avg_income
+        'states':   n_states,
+        'counties': n_counties,
+        'years':    n_years,
+        'n_vars':   n_vars
     })
+ 
 
 
 @app.route('/api/map-data')
@@ -124,26 +125,42 @@ def map_data():
 
 @app.route('/api/timeseries')
 def timeseries():
-    var   = request.args.get('var', 'MHLTH')
-    state = request.args.get('state', 'all')
-
-    if var not in df.columns:
-        return jsonify({"error": "Invalid variable"}), 400
-
-    if state == 'all':
-        grouped = df.groupby('year')[var].mean().reset_index()
-    else:
-        grouped = df[df['StateAbbr'] == state].groupby('year')[var].mean().reset_index()
-
-    result         = [{'year': int(row['year']), 'value': round(row[var], 2)} for _, row in grouped.iterrows()]
-    national       = df.groupby('year')[var].mean().reset_index()
-    national_result = [{'year': int(row['year']), 'value': round(row[var], 2)} for _, row in national.iterrows()]
-
+    health_var  = request.args.get('health', 'MHLTH')
+    weather_var = request.args.get('weather', '')
+    state       = request.args.get('state', 'all')
+ 
+    result = {}
+ 
+    for var, key in [(health_var, 'health'), (weather_var, 'weather')]:
+        if not var or var not in df.columns:
+            continue
+        if state == 'all':
+            grouped = df.groupby('year')[var].mean().reset_index()
+        else:
+            grouped = df[df['StateAbbr'] == state].groupby('year')[var].mean().reset_index()
+ 
+        national = df.groupby('year')[var].mean().reset_index()
+ 
+        result[key] = {
+    'series':   [{'year': int(r['year']), 'value': round(r[var], 2)} for _, r in grouped.iterrows() if not pd.isna(r[var])],
+    'national': [{'year': int(r['year']), 'value': round(r[var], 2)} for _, r in national.iterrows() if not pd.isna(r[var])],
+    'var':      var
+}
+ 
+        # Summary stats
+        col = df[var].dropna()
+        result[key]['stats'] = {
+            'mean':   float(round(col.mean(), 2)),
+            'min':    float(round(col.min(), 2)),
+            'max':    float(round(col.max(), 2)),
+            'range':  float(round(col.max() - col.min(), 2)),
+            'median': float(round(col.median(), 2)),
+            'std':    float(round(col.std(), 2))
+        }
+ 
     return jsonify({
-        'series':   result,
-        'national': national_result,
-        'variable': var,
-        'state':    state
+        'data':  result,
+        'state': state
     })
  
 

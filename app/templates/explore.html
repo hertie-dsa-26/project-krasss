@@ -96,31 +96,32 @@
   <!-- SNAPSHOT -->
   <div class="section-label">Dataset at a glance</div>
   <div class="snapshot-grid">
+    <div class="snap-card" style="background:#f0f4ff;">
+      <div class="snap-icon" style="background:#c7d7f8;">🏛️</div>
+      <div class="snap-label" style="color:#1e3a8a;">States covered</div>
+      <div class="snap-value" style="color:#1e3a8a;" id="snap-states">—</div>
+      <div class="snap-sub" style="color:#4a6ab0;">US states in dataset</div>
+    </div>
     <div class="snap-card" style="background:#f0f7f4;">
       <div class="snap-icon" style="background:#c6e8d8;">🗺️</div>
-      <div class="snap-label" style="color:#1a5c3a;">Counties</div>
+      <div class="snap-label" style="color:#1a5c3a;">Counties covered</div>
       <div class="snap-value" style="color:#1a3a2a;" id="snap-counties">—</div>
       <div class="snap-sub" style="color:#4a8a6a;">unique counties in dataset</div>
     </div>
-    <div class="snap-card" style="background:#f0f4ff;">
-      <div class="snap-icon" style="background:#c7d7f8;">📅</div>
-      <div class="snap-label" style="color:#1e3a8a;">Years covered</div>
-      <div class="snap-value" style="color:#1e3a8a;" id="snap-years">—</div>
-      <div class="snap-sub" style="color:#4a6ab0;">2013 – 2023</div>
-    </div>
     <div class="snap-card" style="background:#fff5f5;">
-      <div class="snap-icon" style="background:#fecaca;">🧠</div>
-      <div class="snap-label" style="color:#991b1b;">Avg mental distress</div>
-      <div class="snap-value" style="color:#7f1d1d;" id="snap-mhlth">—</div>
-      <div class="snap-sub" style="color:#b45151;">national average %</div>
+      <div class="snap-icon" style="background:#fecaca;">📅</div>
+      <div class="snap-label" style="color:#991b1b;">Years covered</div>
+      <div class="snap-value" style="color:#7f1d1d;" id="snap-years">—</div>
+      <div class="snap-sub" style="color:#b45151;">2013 – 2023</div>
     </div>
     <div class="snap-card" style="background:#fffbeb;">
-      <div class="snap-icon" style="background:#fde68a;">💰</div>
-      <div class="snap-label" style="color:#92400e;">Avg household income</div>
-      <div class="snap-value" style="color:#78350f;font-size:22px;" id="snap-income">—</div>
-      <div class="snap-sub" style="color:#b45309;">median across counties</div>
+      <div class="snap-icon" style="background:#fde68a;">📊</div>
+      <div class="snap-label" style="color:#92400e;">Variables tracked</div>
+      <div class="snap-value" style="color:#78350f;" id="snap-vars">—</div>
+      <div class="snap-sub" style="color:#b45309;">across health, weather &amp; demographics</div>
     </div>
   </div>
+ 
 
   <!-- FILTERS -->
   <div class="card">
@@ -202,55 +203,99 @@
   </div>
 
   <!-- TIME SERIES -->
+    
   <hr class="section-divider">
   <div class="section-header">
     <h2>Patterns over time</h2>
-    <span>Annual averages · 2013–2023</span>
+    <span>Driven by your filter selections above</span>
   </div>
+
+  <!-- Time series variable selectors -->
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1rem;align-items:flex-end;">
+  <div class="filter-group" style="min-width:180px;">
+    <label>Health variable</label>
+    <select id="ts-health-var">
+      <option value="MHLTH">Mental distress (MHLTH)</option>
+      <option value="SLEEP">Poor sleep (SLEEP)</option>
+      <option value="CASTHMA">Asthma (CASTHMA)</option>
+      <option value="PHLTH">Physical distress (PHLTH)</option>
+      <option value="BPHIGH">High blood pressure</option>
+      <option value="COPD">COPD</option>
+      <option value="STROKE">Stroke</option>
+    </select>
+  </div>
+  <div class="filter-group" style="min-width:180px;">
+    <label>Weather variable</label>
+    <select id="ts-weather-var">
+      <option value="">— none —</option>
+      <option value="TAVG">Avg temperature (TAVG)</option>
+      <option value="TMAX">Max temperature (TMAX)</option>
+      <option value="TMIN">Min temperature (TMIN)</option>
+      <option value="DX90">Days above 90°F (DX90)</option>
+      <option value="PRCP">Precipitation (PRCP)</option>
+      <option value="EMXT">Extreme max temp (EMXT)</option>
+      <option value="EMNT">Extreme min temp (EMNT)</option>
+    </select>
+  </div>
+</div>
+ 
   <div class="card">
-    <div class="ts-filters">
-      <div class="filter-group">
-        <label>Variable</label>
-        <select id="ts-var">
-          <option value="MHLTH">Mental distress</option>
-          <option value="SLEEP">Poor sleep</option>
-          <option value="CASTHMA">Asthma</option>
-          <option value="PHLTH">Physical distress</option>
-          <option value="BPHIGH">High blood pressure</option>
-          <option value="TAVG">Avg temperature</option>
-          <option value="PRCP">Precipitation</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label>Compare state vs national</label>
+    <!-- State selector -->
+    <div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:1.25rem;flex-wrap:wrap;">
+      <div class="filter-group" style="min-width:180px;">
+        <label>Compare a state vs national average</label>
         <select id="ts-state">
-          <option value="all">National average</option>
+          <option value="all">National average only</option>
           {% for state in ['AK','AL','AR','AZ','CA','CO','CT','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY'] %}
           <option value="{{ state }}">{{ state }}</option>
           {% endfor %}
         </select>
       </div>
-      <div class="filter-group" style="display:flex;align-items:flex-end;">
-        <button class="apply-btn" onclick="loadTimeSeries()">Update</button>
+      <button class="apply-btn" onclick="loadTimeSeries()">Update charts</button>
+    </div>
+ 
+    <!-- Two side-by-side charts -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1.25rem;">
+ 
+      <!-- Health chart -->
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:2px;" id="ts-health-title">Health variable</div>
+        <div style="font-size:11px;color:#999;margin-bottom:8px;">Annual national average · select a state to compare</div>
+        <svg id="ts-health-svg" width="100%" viewBox="0 0 320 180" style="display:block;"></svg>
+        <div id="ts-health-legend" style="display:flex;gap:12px;margin-top:6px;flex-wrap:wrap;"></div>
       </div>
+ 
+      <!-- Weather chart -->
+      <div>
+        <div style="font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:2px;" id="ts-weather-title">Weather variable</div>
+        <div style="font-size:11px;color:#999;margin-bottom:8px;">Annual national average · select a state to compare</div>
+        <svg id="ts-weather-svg" width="100%" viewBox="0 0 320 180" style="display:block;"></svg>
+        <div id="ts-weather-legend" style="display:flex;gap:12px;margin-top:6px;flex-wrap:wrap;"></div>
+      </div>
+ 
     </div>
-
-    <div class="tab-row">
-      <div class="tab active" data-tab="trend">Trend line</div>
-      <div class="tab" data-tab="heatmap">State × year heatmap</div>
-    </div>
-
-    <div id="panel-trend" class="ts-panel active">
-      <div style="font-size:14px;font-weight:700;color:#1a3a2a;margin-bottom:2px;" id="ts-title">Mental distress — national avg</div>
-      <div style="font-size:12px;color:#999;margin-bottom:10px;">Annual average across all counties in dataset</div>
-      <svg id="ts-svg" width="100%" viewBox="0 0 680 200" style="display:block;"></svg>
-      <div id="ts-legend" style="display:flex;gap:14px;margin-top:8px;flex-wrap:wrap;"></div>
-    </div>
-
-    <div id="panel-heatmap" class="ts-panel">
-      <div style="font-size:14px;font-weight:700;color:#1a3a2a;margin-bottom:2px;" id="hm-title">Mental distress by state × year</div>
-      <div style="font-size:12px;color:#999;margin-bottom:10px;">Darker = higher rate</div>
-      <div style="overflow-x:auto;"><svg id="hm-svg" style="display:block;"></svg></div>
+ 
+    <!-- Summary stats table -->
+    <div style="border-top:1px solid #eee;padding-top:1rem;">
+      <div style="font-size:12px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Summary statistics · full dataset (all years, all counties)</div>
+      <div style="overflow-x:auto;">
+        <table id="stats-table" style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="border-bottom:1px solid #eee;">
+              <th style="text-align:left;padding:6px 10px;color:#555;font-weight:600;">Variable</th>
+              <th style="text-align:right;padding:6px 10px;color:#555;font-weight:600;">Mean</th>
+              <th style="text-align:right;padding:6px 10px;color:#555;font-weight:600;">Median</th>
+              <th style="text-align:right;padding:6px 10px;color:#555;font-weight:600;">Min</th>
+              <th style="text-align:right;padding:6px 10px;color:#555;font-weight:600;">Max</th>
+              <th style="text-align:right;padding:6px 10px;color:#555;font-weight:600;">Range</th>
+              <th style="text-align:right;padding:6px 10px;color:#555;font-weight:600;">Std dev</th>
+            </tr>
+          </thead>
+          <tbody id="stats-tbody">
+            <tr><td colspan="7" style="padding:12px 10px;color:#bbb;font-size:12px;">Apply filters above to see summary statistics</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -324,10 +369,10 @@ function animateCount(el, target, isFloat, prefix, suffix) {
   requestAnimationFrame(step);
 }
 fetch('/api/snapshot').then(r => r.json()).then(d => {
-  animateCount(document.getElementById('snap-counties'), d.counties,   false, '',  '');
-  animateCount(document.getElementById('snap-years'),    d.years,      false, '',  '');
-  animateCount(document.getElementById('snap-mhlth'),    d.avg_mhlth,  true,  '',  '%');
-  animateCount(document.getElementById('snap-income'),   d.avg_income, false, '$', '');
+  animateCount(document.getElementById('snap-states'),   d.states,   false, '', '');
+  animateCount(document.getElementById('snap-counties'), d.counties, false, '', '');
+  animateCount(document.getElementById('snap-years'),    d.years,    false, '', '');
+  animateCount(document.getElementById('snap-vars'),     d.n_vars,   false, '', '');
 });
 
 // ── DUAL RANGE SLIDER ──
@@ -462,104 +507,140 @@ function drawMap(hv, wv, data, healthNat, weatherNat) {
 
 // ── TIME SERIES ──
 function loadTimeSeries() {
-  const v     = document.getElementById('ts-var').value;
+  const hv    = document.getElementById('ts-health-var').value;
+const wv    = document.getElementById('ts-weather-var').value;
   const state = document.getElementById('ts-state').value;
-  fetch(`/api/timeseries?var=${v}&state=${state}`)
+ 
+  fetch(`/api/timeseries?health=${hv}&weather=${wv}&state=${state}`)
     .then(r => r.json())
-    .then(data => { drawTrend(v, data.series, data.national, state); });
-  drawHeatmap(v);
-}
-
-function drawTrend(v, series, national, state) {
-  const meta      = varMeta[v] || { label:v, color:["#e5e7eb","#1a3a2a"], unit:"" };
-  const stateName = state === "all" ? "National average" : state;
-  document.getElementById("ts-title").textContent = `${meta.label} — ${stateName}`;
-
-  const svg = d3.select("#ts-svg");
-  svg.selectAll("*").remove();
-  const W=680,H=200,pl=50,pr=20,pt=16,pb=30;
-  const allVals = [...series.map(d=>d.value),...national.map(d=>d.value)];
-  const yMin = d3.min(allVals)*0.97, yMax = d3.max(allVals)*1.03;
-  const xS = d3.scaleLinear().domain([2013,2023]).range([pl,W-pr]);
-  const yS = d3.scaleLinear().domain([yMin,yMax]).range([H-pb,pt]);
-
-  [0,0.25,0.5,0.75,1].forEach(t => {
-    const yv = yMin+(yMax-yMin)*t;
-    svg.append("line").attr("x1",pl).attr("x2",W-pr).attr("y1",yS(yv)).attr("y2",yS(yv)).attr("stroke","#f0f0f0").attr("stroke-width",1);
-    svg.append("text").attr("x",pl-6).attr("y",yS(yv)+4).attr("text-anchor","end").attr("font-size",9).attr("fill","#aaa").text(yv.toFixed(1)+meta.unit);
-  });
-  series.forEach(d => {
-    svg.append("text").attr("x",xS(d.year)).attr("y",H-pb+14).attr("text-anchor","middle").attr("font-size",9).attr("fill","#aaa").text(d.year);
-  });
-  if (state !== "all") {
-    const natLine = d3.line().x(d=>xS(d.year)).y(d=>yS(d.value)).curve(d3.curveCatmullRom);
-    svg.append("path").datum(national).attr("d",natLine).attr("fill","none").attr("stroke","#ccc").attr("stroke-width",1.5).attr("stroke-dasharray","4 3");
-  }
-  const line = d3.line().x(d=>xS(d.year)).y(d=>yS(d.value)).curve(d3.curveCatmullRom);
-  svg.append("path").datum(series).attr("d",line).attr("fill","none").attr("stroke",meta.color[1]).attr("stroke-width",2.5);
-  series.forEach(d => {
-    svg.append("circle").attr("cx",xS(d.year)).attr("cy",yS(d.value)).attr("r",4)
-      .attr("fill","#fff").attr("stroke",meta.color[1]).attr("stroke-width",2)
-      .append("title").text(`${d.year}: ${d.value.toFixed(2)}${meta.unit}`);
-  });
-  document.getElementById("ts-legend").innerHTML =
-    `<div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#555;">
-      <div style="width:18px;height:2px;background:${meta.color[1]};border-radius:1px;"></div>
-      <span>${meta.label} (${stateName})</span></div>` +
-    (state !== "all" ? `<div style="display:flex;align-items:center;gap:6px;font-size:11px;color:#aaa;">
-      <div style="width:18px;border-top:2px dashed #ccc;"></div><span>National average</span></div>` : "");
-}
-
-function drawHeatmap(v) {
-  const meta   = varMeta[v] || { label:v, color:["#e5e7eb","#1a3a2a"], unit:"" };
-  const states = ["WV","MS","KY","AL","TN","AR","OH","IN","MO","OK","LA","SC","GA","NC","TX","FL","NY","IL","PA","CA","CO","WA","MN","UT","ND","HI"];
-  const tsYears = [2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023];
-  document.getElementById("hm-title").textContent = `${meta.label} by state × year`;
-
-  Promise.all(states.map(s => fetch(`/api/timeseries?var=${v}&state=${s}`).then(r=>r.json())))
-    .then(results => {
-      const stateRows = {};
-      states.forEach((s,i) => {
-        stateRows[s] = {};
-        results[i].series.forEach(d => { stateRows[s][d.year] = d.value; });
-      });
-      const allVals = Object.values(stateRows).flatMap(r=>Object.values(r));
-      const cMin = d3.min(allVals), cMax = d3.max(allVals);
-      const cScale = d3.scaleSequential(d3.interpolateRgb(meta.color[0], meta.color[1])).domain([cMin,cMax]);
-      const cellW=46,cellH=22,lpad=34,tpad=20;
-      const svgW = lpad+tsYears.length*cellW, svgH = tpad+states.length*cellH+4;
-      const svg = d3.select("#hm-svg").attr("width",svgW).attr("height",svgH).attr("viewBox",`0 0 ${svgW} ${svgH}`);
-      svg.selectAll("*").remove();
-      tsYears.forEach((yr,i) => {
-        svg.append("text").attr("x",lpad+i*cellW+cellW/2).attr("y",tpad-6)
-          .attr("text-anchor","middle").attr("font-size",9).attr("fill","#999").text(yr);
-      });
-      states.forEach((s,si) => {
-        svg.append("text").attr("x",lpad-4).attr("y",tpad+si*cellH+cellH/2+4)
-          .attr("text-anchor","end").attr("font-size",9).attr("fill","#555").text(s);
-        tsYears.forEach((yr,yi) => {
-          const val = stateRows[s][yr];
-          if (val===undefined) return;
-          svg.append("rect").attr("x",lpad+yi*cellW+1).attr("y",tpad+si*cellH+1)
-            .attr("width",cellW-2).attr("height",cellH-2).attr("rx",2).attr("fill",cScale(val));
-          svg.append("text").attr("x",lpad+yi*cellW+cellW/2).attr("y",tpad+si*cellH+cellH/2+4)
-            .attr("text-anchor","middle").attr("font-size",7.5)
-            .attr("fill",val>(cMin+cMax)/2?"#fff":"#333").text(val.toFixed(1));
-        });
-      });
+    .then(data => {
+      const stateName = state === 'all' ? 'National avg' : state;
+ 
+      if (data.data.health) {
+        drawTrendChart(
+          'ts-health-svg', 'ts-health-title', 'ts-health-legend',
+          data.data.health, stateName, varMeta[hv]
+        );
+      } else {
+        clearChart('ts-health-svg', 'ts-health-title', 'No health variable selected');
+      }
+ 
+      if (data.data.weather) {
+        drawTrendChart(
+          'ts-weather-svg', 'ts-weather-title', 'ts-weather-legend',
+          data.data.weather, stateName, varMeta[wv]
+        );
+      } else {
+        clearChart('ts-weather-svg', 'ts-weather-title', 'No weather variable selected');
+      }
+ 
+      updateStatsTable(data.data, hv, wv);
     });
 }
-
-// Tabs
-document.querySelectorAll(".tab").forEach(tab => {
-  tab.addEventListener("click", function() {
-    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-    document.querySelectorAll(".ts-panel").forEach(p=>p.classList.remove("active"));
-    this.classList.add("active");
-    document.getElementById("panel-"+this.dataset.tab).classList.add("active");
+ 
+function drawTrendChart(svgId, titleId, legendId, seriesData, stateName, meta) {
+  if (!meta) return;
+  document.getElementById(titleId).textContent = meta.label;
+ 
+  const svg = d3.select('#' + svgId);
+  svg.selectAll('*').remove();
+ 
+  const W=320, H=180, pl=44, pr=16, pt=14, pb=28;
+  const series   = seriesData.series;
+  const national = seriesData.national;
+  const isState  = stateName !== 'National avg';
+ 
+  const allVals = [...series.map(d=>d.value), ...national.map(d=>d.value)];
+  const yMin = d3.min(allVals)*0.97, yMax = d3.max(allVals)*1.03;
+  const xS = d3.scaleLinear().domain([2013,2023]).range([pl, W-pr]);
+  const yS = d3.scaleLinear().domain([yMin, yMax]).range([H-pb, pt]);
+ 
+  // Grid lines + y axis labels
+  [0, 0.25, 0.5, 0.75, 1].forEach(t => {
+    const yv = yMin + (yMax-yMin)*t;
+    svg.append('line').attr('x1',pl).attr('x2',W-pr).attr('y1',yS(yv)).attr('y2',yS(yv))
+      .attr('stroke','#f0f0f0').attr('stroke-width',1);
+    svg.append('text').attr('x',pl-4).attr('y',yS(yv)+4).attr('text-anchor','end')
+      .attr('font-size',8).attr('fill','#bbb').text(yv.toFixed(1)+meta.unit);
   });
-});
+ 
+  // X axis labels (every other year to avoid crowding)
+  series.forEach((d,i) => {
+    if (i % 2 === 0) {
+      svg.append('text').attr('x',xS(d.year)).attr('y',H-pb+12).attr('text-anchor','middle')
+        .attr('font-size',8).attr('fill','#bbb').text(d.year);
+    }
+  });
+ 
+  // National dashed line (always shown)
+  const natLine = d3.line().x(d=>xS(d.year)).y(d=>yS(d.value)).curve(d3.curveCatmullRom);
+  svg.append('path').datum(national).attr('d',natLine).attr('fill','none')
+    .attr('stroke', isState ? '#ccc' : meta.color[1])
+    .attr('stroke-width', isState ? 1.5 : 2.5)
+    .attr('stroke-dasharray', isState ? '4 3' : 'none');
+ 
+  // State line (only if a state is selected)
+  if (isState) {
+    const stateLine = d3.line().x(d=>xS(d.year)).y(d=>yS(d.value)).curve(d3.curveCatmullRom);
+    svg.append('path').datum(series).attr('d',stateLine).attr('fill','none')
+      .attr('stroke',meta.color[1]).attr('stroke-width',2.5);
+ 
+    series.forEach(d => {
+      svg.append('circle').attr('cx',xS(d.year)).attr('cy',yS(d.value)).attr('r',3)
+        .attr('fill','#fff').attr('stroke',meta.color[1]).attr('stroke-width',1.5)
+        .append('title').text(`${d.year}: ${d.value.toFixed(2)}${meta.unit}`);
+    });
+  } else {
+    national.forEach(d => {
+      svg.append('circle').attr('cx',xS(d.year)).attr('cy',yS(d.value)).attr('r',3)
+        .attr('fill','#fff').attr('stroke',meta.color[1]).attr('stroke-width',1.5)
+        .append('title').text(`${d.year}: ${d.value.toFixed(2)}${meta.unit}`);
+    });
+  }
+ 
+  // Legend
+  const legEl = document.getElementById(legendId);
+  legEl.innerHTML =
+    `<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#555;">
+      <div style="width:16px;height:2px;background:${meta.color[1]};border-radius:1px;${isState?'':''}"></div>
+      <span>${meta.label}${isState ? ' · '+stateName : ' · National avg'}</span>
+    </div>` +
+    (isState ? `<div style="display:flex;align-items:center;gap:5px;font-size:11px;color:#aaa;">
+      <div style="width:16px;border-top:2px dashed #ccc;"></div><span>National avg</span>
+    </div>` : '');
+}
+ 
+function clearChart(svgId, titleId, message) {
+  document.getElementById(titleId).textContent = message;
+  const svg = d3.select('#' + svgId);
+  svg.selectAll('*').remove();
+  svg.append('text').attr('x',160).attr('y',90).attr('text-anchor','middle')
+    .attr('font-size',12).attr('fill','#ccc').text(message);
+}
+ 
+function updateStatsTable(data, hv, wv) {
+  const tbody = document.getElementById('stats-tbody');
+  const rows  = [];
+ 
+  [['health', hv], ['weather', wv]].forEach(([key, varName]) => {
+    if (!data[key] || !varName) return;
+    const meta  = varMeta[varName] || { label: varName, unit: '' };
+    const stats = data[key].stats;
+    rows.push(`
+      <tr style="border-bottom:1px solid #f5f5f5;">
+        <td style="padding:8px 10px;font-weight:600;color:#1a3a2a;">${meta.label}</td>
+        <td style="padding:8px 10px;text-align:right;">${stats.mean.toFixed(2)}${meta.unit}</td>
+        <td style="padding:8px 10px;text-align:right;">${stats.median.toFixed(2)}${meta.unit}</td>
+        <td style="padding:8px 10px;text-align:right;">${stats.min.toFixed(2)}${meta.unit}</td>
+        <td style="padding:8px 10px;text-align:right;">${stats.max.toFixed(2)}${meta.unit}</td>
+        <td style="padding:8px 10px;text-align:right;">${stats.range.toFixed(2)}${meta.unit}</td>
+        <td style="padding:8px 10px;text-align:right;">${stats.std.toFixed(2)}${meta.unit}</td>
+      </tr>`);
+  });
+ 
+  tbody.innerHTML = rows.length > 0 ? rows.join('') :
+    '<tr><td colspan="7" style="padding:12px 10px;color:#bbb;font-size:12px;">No data available</td></tr>';
+}
 
-loadTimeSeries();
 </script>
 {% endblock %}
