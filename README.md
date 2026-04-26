@@ -1,7 +1,14 @@
 # _[Insert Project (App) Name]_
-Team: **KRASSS**
+**Team:** KRASSS
 
-## Team Members:
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
+![Flask](https://img.shields.io/badge/Flask-web%20app-black?logo=flask)
+![Jupyter](https://img.shields.io/badge/Jupyter-notebooks-F37626?logo=jupyter)
+![uv](https://img.shields.io/badge/uv-dependency%20management-6A5ACD)
+
+> **An interactive Flask application for exploring how weather patterns relate to health outcomes across U.S. metropolitan areas from 2013 to 2022.**
+
+**Team Members:**
 
 * Santiago Cárdenas Arciniegas
 * Sanjeev Dasgupta
@@ -12,26 +19,25 @@ Team: **KRASSS**
 * Rudranshi Vishnoi
 
 
-## Description
+## 🌦️ Description
 
-_[Insert Project (App) Name]_ is an interactive **data science web application** developed as part of the Data Structures and Algorithms (DSA) course at the Hertie School.
+_[Insert Project (App) Name]_ is an interactive Flask-based **data science web application** developed as part of the Data Structures and Algorithms course at the Hertie School.
 
-The project integrates multiple public datasets to explore the relationship between **weather patterns** and **health outcomes** (physical and mental distress, asthma, sleep) across U.S. cities and counties. By combining data from NOAA, the CDC, and the U.S. Census, it constructs a unified dataset that spans years 2013--2022 and supports both exploratory analysis and predictive modeling.
+The project combines public data from NOAA, the CDC, and the U.S. Census to examine how **weather patterns** relate to **health outcomes** across U.S. metropolitan areas between 2013 and 2022. The integrated dataset supports both exploratory analysis and predictive modeling, with a focus on the following outcomes: physical distress, mental distress, asthma, and sleep.
 
-Beyond **data science functionality**, the project emphasizes **software engineering principles**, including modular system design, testing, efficient algorithm implementation, and collaborative development under a Scrum-based workflow. It aims to elucidate the relationship between weather and health while offering a transparent and reproducible implementation of core machine learning techniques **without relying on external ML libraries** for the core model.
-
-
-## Features
-
-* **Interactive exploration** of weather, health, and socioeconomic data.  
-* **Dynamic visualizations** that respond to user input.  
-* **Integrated dataset** spanning multiple public sources (NOAA, CDC, and U.S. Census).  
-* Implementation of **Kernel Ridge Regression from scratch**.  
-* **Flask-based web application** for end-to-end analysis.  
+The project also emphasizes **software engineering principles**, including modular design, testing, efficient algorithm implementation, and collaborative development under a Scrum-based workflow. It includes a manual implementation of **Kernel Ridge Regression** (with a Gaussian kernel) to support transparent and interpretable modeling.
 
 
-## Data
-The project integrates multiple publicly available datasets, aligned at the **Metropolitan Statistical Area (MSA) level** over the period **2013–2022**:
+## ✨ Features
+
+* **Interactive exploration and visualization** of weather, health, and socioeconomic data.  
+* An **integrated dataset** spanning multiple public sources (NOAA, CDC, and U.S. Census).  
+* A custom implementation of **Kernel Ridge Regression with a Gaussian kernel**.  
+* A **Flask-based interface** for end-to-end analysis.  
+
+
+## 📊 Data
+The project integrates multiple publicly available datasets, aligned at the **Metropolitan Statistical Area (MSA) level** over the period **2013--2022**:
 
 | Dataset          | Unit of Analysis       | Years       | Description                              | Source |
 |------------------|----------------------|------------|------------------------------------------|--------|
@@ -42,18 +48,18 @@ The project integrates multiple publicly available datasets, aligned at the **Me
 The final dataset contains **6,646 rows** and **52 columns**.
 
 
-## Methodology
+## 🧪 Methodology
 The project follows an end-to-end analytical pipeline:
 
 1. **Data Collection and Integration**: Data is collected from NOAA, CDC Places, and the U.S. Census and aligned at the MSA level.
 2. **Data Cleaning and Preprocessing**: _[fill in]_
 3. **Exploratory Data Analysis:** Statistical summaries and visualizations are used to identify patterns and relationships within and between variables.
 4. **Feature Engineering:** _[fill in]_
-5. **Model Implementation:** A Kernel Ridge Regression is implemented from scratch, without assistance from external Machine Learning Libraries.
+5. **Model Implementation:** A Kernel Ridge Regression with a Gaussian kernel is implemented from scratch, without assistance from external Machine Learning Libraries.
 6. **Visualization and User Interaction:** Results are presented through an interactive web application that uses Flask.
 
 
-## Development Workflow
+## 🔄 Development Workflow
 Throughout the process, [standard developing practices](https://dev.to/speaklouder/be-a-better-developer-with-these-git-good-practices-13j9) were followed, including:
 
 * Meaningful commit messages.
@@ -63,13 +69,13 @@ Throughout the process, [standard developing practices](https://dev.to/speakloud
 * Regular synchronization with main.
 
 
-## Repository Structure
+## 🗂️ Repository Structure
 
 ```text
 project-krasss/
-├── data/                        # fill in
-├── data_cleaning/               # fill in
-├── exploratory_data_analysis/   # EDA notebooks
+├── data/                        
+├── data_cleaning/               
+├── exploratory_data_analysis/   
 │   ├── eda_univariate.ipynb
 │   └── eda_bivariate.ipynb
 ├── ml_scripts/                  # Model experimentation on health outcomes
@@ -81,13 +87,49 @@ project-krasss/
 │   └── implementation_guidance.ipynb
 ├── app/                         # Flask web application
 ├── docs/                        # Project documentation, user requirements, and app map
+├── .gitignore
 └── README.md
 ```
 
 
-## Installation & Usage
-_[Fill in instructions on how to clone the repository, install dependencies, and run the Flask app.]_
+## 🚀 Getting Started
+1. Clone the repository with:
+
+   ```bash
+   git clone https://github.com/hertie-dsa-26/project-krasss.git
+   cd project-krasss
+   ```
+
+2. Navigate to the `app/` folder:
+
+   ```bash
+   cd app
+   ```
+
+3. Install the dependencies using `uv`:
+
+    ```bash
+    uv sync
+    ```
+
+    If `uv` is not installed, you can install it first:
+
+    ```bash
+    pip install uv
+    ```
+
+4. Run the application:
+
+   ```bash
+   uv run python main.py
+   ```
+
+5. Once the server starts, open the app in your browser at:
+
+   ```text
+   http://127.0.0.1:5000
+   ```
 
 
-## Deadline
+_Deadline:_
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/D69TCBIW)
