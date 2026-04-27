@@ -10,8 +10,10 @@ health_vars = ['BPHIGH', 'CASTHMA', 'COPD',
 drop_non_features = ["County name", "CountyFIPS",
                      "STATION", "STATION_NAME", "StateAbbr"]
 
+# Adding also data types of the input
 
-def prepare_data(df, target):
+
+def prepare_data(df: pd.DataFrame, target: str):
     """
     Prepares features X, target y, and year labels from the full dataframe.
 

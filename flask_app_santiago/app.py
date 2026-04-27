@@ -23,7 +23,7 @@ county_options = (
 )
 COUNTIES = [
     {
-        "label":  f"{row['County name']} — {row['StateAbbr']}",
+        "label":  f"{row['County name']}, {row['StateAbbr']}",
         "county": row["County name"],
         "state":  row["StateAbbr"]
     }
@@ -40,49 +40,57 @@ print(f" Scenarios: {list(SCENARIOS.keys())}")
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template(
-        "index.html",
-        counties=COUNTIES,
-        targets=TARGETS,
-        scenarios=SCENARIOS
-    )
+    return render_template("index.html")
 
 
-@app.route("/predict", methods=["POST"])
+@app.route("/predict", methods=["GET", "POST"])
 def predict():
-    # ── Get form inputs ───────────────────────────────────────────
-    county_state = request.form["county_state"]
-    county, state = county_state.split("|")
-    target = request.form["target"]
-    scenario_key = request.form["scenario"]
+    error = None
+    results = None
+    county = state = target = scenario_key = None
 
-    print(
-        f"  → county={county} | state={state} | target={target} | scenario={scenario_key}")
+    if request.method == "POST":
+        try:
+            # ── Get form inputs ───────────────────────────────────────────
+            county_state = request.form["county_state"]
+            county, state = county_state.split("|")
+            target = request.form["target"]
+            scenario_key = request.form["scenario"]
 
-    # ── Load pre-fitted model and preprocessor ────────────────────
-    krr, preprocessor = load_model(target)
+            print(
+                f"  → county={county} | state={state} | target={target} | scenario={scenario_key}")
 
-    # ── Generate synthetic future rows ────────────────────────────
-    X_future, future_years = generate_scenario(df, county, state, scenario_key)
+            # ── Load pre-fitted model and preprocessor ────────────────────
+            krr, preprocessor = load_model(target)
 
-    # ── Preprocess and predict ────────────────────────────────────
-    X_scaled = preprocessor.transform(X_future.to_numpy())
-    y_pred = krr.predict(X_scaled)
+            # ── Generate synthetic future rows ────────────────────────────
+            X_future, future_years = generate_scenario(
+                df, county, state, scenario_key)
 
-    # ── Build results ─────────────────────────────────────────────
-    results = list(zip(future_years, y_pred.round(4).tolist()))
+            # ── Preprocess and predict ────────────────────────────────────
+            X_scaled = preprocessor.transform(X_future.to_numpy())
+            y_pred = krr.predict(X_scaled)
+
+            # ── Build results ─────────────────────────────────────────────
+            results = list(zip(future_years, y_pred.round(2).tolist()))
+
+        except Exception as e:
+            error = "There was a prediction error. Please try again."
+            print(f"Error during prediction: {e}")
 
     return render_template(
-        "index.html",
+        "predict.html",
         counties=COUNTIES,
         targets=TARGETS,
         scenarios=SCENARIOS,
         results=results,
-        county=county,
-        state=state,
-        target=target,
-        scenario_key=scenario_key,
-        description=SCENARIOS[scenario_key]["description"]
+        error=error,
+        county=county if not error else None,
+        state=state if not error else None,
+        target=target if not error else None,
+        scenario_key=scenario_key if not error else None,
+        description=SCENARIOS[scenario_key]["description"] if (
+            scenario_key and not error) else None
     )
 
 

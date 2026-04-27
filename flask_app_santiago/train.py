@@ -54,7 +54,7 @@ SIGMA2_GRID = [50.0, 75.0, 100.0, 150.0, 200.0]
 
 # ── DEFINED IN THIS FILE ──────────────────────────────────────────────────────
 
-def save_model(target, krr, preprocessor):
+def save_model(target: str, krr: KernelRidgeRegression, preprocessor: Preprocessor) -> None:
     """
     Saves the fitted KRR model and preprocessor as a .pkl file.
     Both are saved together so the Flask app can load everything it needs
@@ -72,7 +72,7 @@ def save_model(target, krr, preprocessor):
     print(f"  Saved model → {path}")
 
 
-def load_model(target):
+def load_model(target: str) -> tuple:
     """
     Loads a fitted KRR model and preprocessor from disk.
     Used by the Flask app to load pre-trained models without retraining.
@@ -85,13 +85,19 @@ def load_model(target):
         preprocessor (Preprocessor): Fitted preprocessor
     """
     path = os.path.join(MODELS_DIR, f"{target}.pkl")
-    assert os.path.exists(path), f"No saved model found for {target} at {path}"
+
+    if not os.path.exists(path):
+        raise FileNotFoundError(
+            f"No saved model found for {target} at {path}. "
+            f"Run train.py first to generate the model files."
+        )
+
     with open(path, "rb") as f:
         bundle = pickle.load(f)
     return bundle["krr"], bundle["preprocessor"]
 
 
-def tune_and_evaluate(df, target, lamb_grid, sigma2_grid):
+def tune_and_evaluate(df: pd.DataFrame, target: str, lamb_grid: list, sigma2_grid: list) -> dict:
     """
     Runs the full training pipeline for a single target variable.
     Calls prepare_data() from splitter.py, CrossValidator from cross_validator.py,
@@ -190,7 +196,7 @@ def tune_and_evaluate(df, target, lamb_grid, sigma2_grid):
     }
 
 
-def print_summary(results):
+def print_summary(results: dict) -> None:
     """
     Prints a formatted summary table of results across all targets.
     """

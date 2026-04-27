@@ -81,8 +81,13 @@ def generate_scenario(df: pd.DataFrame, county_name: str, state_abbr: str,
         (df["year"] == 2023)
     ].copy()
 
-    assert len(baseline) == 1, \
-        f"Expected exactly 1 row for {county_name}, {state_abbr} in 2023, found {len(baseline)}"
+    # Removing assert and using if and raise
+    if len(baseline) == 0:
+        raise ValueError(
+            f"No data found for {county_name}, {state_abbr} in 2023.")
+    if len(baseline) > 1:
+        raise ValueError(
+            f"Found {len(baseline)} rows for {county_name}, {state_abbr} in 2023. Expected exactly 1.")
 
     future_rows = []
     future_years = list(range(2024, 2024 + horizon))
