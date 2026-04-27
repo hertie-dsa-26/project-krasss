@@ -285,8 +285,8 @@
         <label>Compare a state vs national average</label>
         <select id="ts-state">
           <option value="all">National average only</option>
-          {% for state in ['AK','AL','AR','AZ','CA','CO','CT','DE','FL','GA','HI','IA','ID','IL','IN','KS','KY','LA','MA','MD','ME','MI','MN','MO','MS','MT','NC','ND','NE','NH','NJ','NM','NV','NY','OH','OK','OR','PA','RI','SC','SD','TN','TX','UT','VA','VT','WA','WI','WV','WY'] %}
-          <option value="{{ state }}">{{ state }}</option>
+          {% for abbr, name in states %}
+          <option value="{{ abbr }}">{{ name }}</option>
           {% endfor %}
         </select>
       </div>

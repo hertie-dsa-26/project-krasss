@@ -20,7 +20,6 @@ def home():
 def docs():
     return render_template('docs.html')
 
-# Route: Explore
 @app.route('/explore')
 def explore():
     years = sorted(df['year'].unique().tolist())
@@ -28,12 +27,30 @@ def explore():
     climate_types = sorted(df['climate_type_short'].unique().tolist())
     df_columns = df.columns.tolist()
 
+    state_names = {
+        'AK':'Alaska','AL':'Alabama','AR':'Arkansas','AZ':'Arizona','CA':'California',
+        'CO':'Colorado','CT':'Connecticut','DE':'Delaware','FL':'Florida','GA':'Georgia',
+        'HI':'Hawaii','IA':'Iowa','ID':'Idaho','IL':'Illinois','IN':'Indiana',
+        'KS':'Kansas','KY':'Kentucky','LA':'Louisiana','MA':'Massachusetts','MD':'Maryland',
+        'ME':'Maine','MI':'Michigan','MN':'Minnesota','MO':'Missouri','MS':'Mississippi',
+        'MT':'Montana','NC':'North Carolina','ND':'North Dakota','NE':'Nebraska',
+        'NH':'New Hampshire','NJ':'New Jersey','NM':'New Mexico','NV':'Nevada',
+        'NY':'New York','OH':'Ohio','OK':'Oklahoma','OR':'Oregon','PA':'Pennsylvania',
+        'RI':'Rhode Island','SC':'South Carolina','SD':'South Dakota','TN':'Tennessee',
+        'TX':'Texas','UT':'Utah','VA':'Virginia','VT':'Vermont','WA':'Washington',
+        'WI':'Wisconsin','WV':'West Virginia','WY':'Wyoming'
+    }
+    states = [(abbr, state_names.get(abbr, abbr)) 
+              for abbr in sorted(df['StateAbbr'].unique().tolist())
+              if abbr in state_names]
+
     return render_template(
         'explore.html',
         years=years,
         counties=counties,
         climate_types=climate_types,
-        df_columns=df_columns
+        df_columns=df_columns,
+        states=states
     )
 
 # Route: Predict
