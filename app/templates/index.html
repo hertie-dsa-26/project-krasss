@@ -1,6 +1,682 @@
-{% extends "base.html" %}
-{% block title %}Home — Climate & Health Explorer{% endblock %}
-{% block content %}
-<h1>Climate & Health Explorer</h1>
-<p>Welcome.</p>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRASSS — Health & Weather Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --cream: #F5F0E8;
+            --ink: #1A1A2E;
+            --slate: #2D3561;
+            --storm: #4A5899;
+            --sky: #7B9BC8;
+            --mist: #B8CCE4;
+            --fog: #E2EBF5;
+            --accent: #C85A3C;
+            --accent-light: #E8957D;
+            --gold: #D4A843;
+            --serif: 'DM Serif Display', Georgia, serif;
+            --mono: 'DM Mono', monospace;
+            --sans: 'DM Sans', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--sans);
+            background-color: var(--cream);
+            color: var(--ink);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Grid background ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(45, 53, 97, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(45, 53, 97, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 3rem;
+            background: rgba(245, 240, 232, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(45, 53, 97, 0.1);
+        }
+
+        .nav-brand {
+            font-family: var(--mono);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--slate);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--storm);
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .nav-links .coming-soon {
+            color: var(--mist);
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .nav-links .coming-soon::after {
+            display: none;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 3rem 4rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .hero-tag {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.6s ease forwards 0.1s;
+        }
+
+        .hero-title {
+            font-family: var(--serif);
+            font-size: clamp(3rem, 7vw, 5.5rem);
+            line-height: 1.05;
+            color: var(--ink);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards 0.25s;
+        }
+
+        .hero-title em {
+            font-style: italic;
+            color: var(--slate);
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: var(--storm);
+            line-height: 1.7;
+            max-width: 560px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards 0.4s;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.7s ease forwards 0.55s;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            background: var(--ink);
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            border: 1.5px solid var(--ink);
+            transition: background 0.2s, color 0.2s, transform 0.15s;
+        }
+
+        .btn-primary:hover {
+            background: var(--slate);
+            border-color: var(--slate);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 2rem;
+            background: transparent;
+            color: var(--storm);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            border: 1.5px solid rgba(45, 53, 97, 0.25);
+            transition: border-color 0.2s, color 0.2s, transform 0.15s;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        /* ── STAT STRIP ── */
+        .stat-strip {
+            position: relative;
+            z-index: 1;
+            background: var(--ink);
+            color: var(--cream);
+            padding: 2.5rem 3rem;
+        }
+
+        .stat-strip-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 2rem;
+        }
+
+        .stat-item {}
+
+        .stat-value {
+            font-family: var(--serif);
+            font-size: 2.2rem;
+            color: var(--gold);
+            display: block;
+            line-height: 1;
+            margin-bottom: 0.4rem;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--mist);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        /* ── SECTION ── */
+        .section {
+            position: relative;
+            z-index: 1;
+            padding: 5rem 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: var(--serif);
+            font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+            line-height: 1.15;
+            color: var(--ink);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-body {
+            font-size: 1rem;
+            font-weight: 300;
+            color: var(--storm);
+            line-height: 1.8;
+            max-width: 620px;
+        }
+
+        /* ── PAGES GRID ── */
+        .pages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5px;
+            background: rgba(45, 53, 97, 0.12);
+            border: 1.5px solid rgba(45, 53, 97, 0.12);
+            margin-top: 3rem;
+        }
+
+        .page-card {
+            background: var(--cream);
+            padding: 2.5rem;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            transition: background 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .page-card:hover {
+            background: var(--fog);
+        }
+
+        .page-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .page-card.disabled {
+            cursor: not-allowed;
+            opacity: 0.55;
+        }
+
+        .page-card.disabled:hover {
+            background: var(--cream);
+        }
+
+        .page-card.disabled:hover::before {
+            transform: scaleX(0);
+        }
+
+        .page-card-icon {
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        .page-card-title {
+            font-family: var(--serif);
+            font-size: 1.4rem;
+            color: var(--ink);
+        }
+
+        .page-card-desc {
+            font-size: 13px;
+            font-weight: 300;
+            color: var(--storm);
+            line-height: 1.65;
+            flex: 1;
+        }
+
+        .page-card-link {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .page-card.disabled .page-card-link {
+            color: var(--mist);
+        }
+
+        .badge-soon {
+            display: inline-block;
+            font-family: var(--mono);
+            font-size: 9px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            background: var(--fog);
+            color: var(--storm);
+            padding: 3px 8px;
+            border: 1px solid var(--mist);
+            align-self: flex-start;
+        }
+
+        /* ── PIPELINE ── */
+        .pipeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 0;
+            margin-top: 3rem;
+            border: 1.5px solid rgba(45, 53, 97, 0.12);
+        }
+
+        .pipeline-step {
+            padding: 2rem 1.5rem;
+            border-right: 1px solid rgba(45, 53, 97, 0.1);
+            position: relative;
+        }
+
+        .pipeline-step:last-child {
+            border-right: none;
+        }
+
+        .step-num {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .step-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--ink);
+            margin-bottom: 0.4rem;
+        }
+
+        .step-desc {
+            font-size: 12px;
+            font-weight: 300;
+            color: var(--storm);
+            line-height: 1.5;
+        }
+
+        /* ── TEAM ── */
+        .team-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .team-pill {
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--slate);
+            background: var(--fog);
+            border: 1px solid var(--mist);
+            padding: 0.5rem 1rem;
+        }
+
+        /* ── DIVIDER ── */
+        .divider {
+            position: relative;
+            z-index: 1;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 3rem;
+            border-top: 1px solid rgba(45, 53, 97, 0.1);
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            position: relative;
+            z-index: 1;
+            background: var(--ink);
+            color: var(--mist);
+            padding: 2rem 3rem;
+            font-size: 12px;
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        footer span {
+            font-family: var(--mono);
+        }
+
+        /* ── ANIMATIONS ── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav>
+        <div class="nav-brand">KRASSS / Project</div>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/predict">Predict</a></li>
+            <li><a class="coming-soon" href="#">Explore</a></li>
+            <li><a class="coming-soon" href="#">Docs</a></li>
+        </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <p class="hero-tag">Hertie School &mdash; DSA 2026</p>
+        <h1 class="hero-title">Weather, health,<br>and <em>what comes next.</em></h1>
+        <p class="hero-subtitle">
+            An interactive data science application exploring how weather patterns relate to health outcomes across U.S.
+            metropolitan areas from 2013 to 2022 — and projecting what the next decade may hold.
+        </p>
+        <div class="hero-actions">
+            <a href="/predict" class="btn-primary">Run a prediction &rarr;</a>
+            <a href="#" class="btn-secondary">Explore the data</a>
+        </div>
+    </section>
+
+    <!-- STAT STRIP -->
+    <div class="stat-strip">
+        <div class="stat-strip-inner">
+            <div class="stat-item">
+                <span class="stat-value">6,646</span>
+                <span class="stat-label">Rows in dataset</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">52</span>
+                <span class="stat-label">Variables</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">10</span>
+                <span class="stat-label">Years covered</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">7</span>
+                <span class="stat-label">Health outcomes</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">3</span>
+                <span class="stat-label">Data sources</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PAGES -->
+    <section class="section fade-in">
+        <p class="section-label">Navigation</p>
+        <h2 class="section-title">Where would you like to go?</h2>
+        <div class="pages-grid">
+
+            <a href="/predict" class="page-card">
+                <div class="page-card-icon">◈</div>
+                <div class="page-card-title">Predict</div>
+                <p class="page-card-desc">
+                    Select a U.S. county, a health outcome, and a climate scenario to generate a 10-year prediction
+                    using our Kernel Ridge Regression model.
+                </p>
+                <span class="page-card-link">Open predictor &rarr;</span>
+            </a>
+
+            <a href="#" class="page-card disabled">
+                <div class="page-card-icon">◉</div>
+                <div class="page-card-title">Explore</div>
+                <p class="page-card-desc">
+                    Visualise trends across counties, compare health variables over time, and investigate how weather
+                    correlates with outcomes in the integrated dataset.
+                </p>
+                <span class="badge-soon">Coming soon</span>
+                <span class="page-card-link">Not yet available</span>
+            </a>
+
+            <a href="#" class="page-card disabled">
+                <div class="page-card-icon">◎</div>
+                <div class="page-card-title">Documentation</div>
+                <p class="page-card-desc">
+                    Read about the data sources, methodology, model implementation, and the software engineering
+                    decisions behind the project.
+                </p>
+                <span class="badge-soon">Coming soon</span>
+                <span class="page-card-link">Not yet available</span>
+            </a>
+
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ABOUT -->
+    <section class="section fade-in">
+        <p class="section-label">About the project</p>
+        <h2 class="section-title">From raw data<br>to interpretable predictions.</h2>
+        <p class="section-body">
+            This project integrates public data from NOAA, the CDC, and the U.S. Census to examine how weather patterns
+            — temperature, precipitation, and extreme events — relate to health outcomes like asthma, sleep quality, and
+            mental distress across U.S. metropolitan areas. A custom Kernel Ridge Regression model with a Gaussian
+            kernel was implemented from scratch, without relying on external machine learning libraries.
+        </p>
+
+        <div class="pipeline">
+            <div class="pipeline-step">
+                <span class="step-num">01</span>
+                <div class="step-title">Collection</div>
+                <p class="step-desc">NOAA, CDC Places, U.S. Census aligned at MSA level</p>
+            </div>
+            <div class="pipeline-step">
+                <span class="step-num">02</span>
+                <div class="step-title">Cleaning</div>
+                <p class="step-desc">Standardised, merged, and transformed into 52 variables</p>
+            </div>
+            <div class="pipeline-step">
+                <span class="step-num">03</span>
+                <div class="step-title">EDA</div>
+                <p class="step-desc">Univariate and bivariate analysis of key patterns</p>
+            </div>
+            <div class="pipeline-step">
+                <span class="step-num">04</span>
+                <div class="step-title">Modelling</div>
+                <p class="step-desc">Custom KRR with Gaussian kernel, fitted per outcome</p>
+            </div>
+            <div class="pipeline-step">
+                <span class="step-num">05</span>
+                <div class="step-title">Application</div>
+                <p class="step-desc">Interactive Flask app with scenario-based forecasting</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- TEAM -->
+    <section class="section fade-in">
+        <p class="section-label">Team KRASSS</p>
+        <h2 class="section-title">The people behind it.</h2>
+        <div class="team-grid">
+            <span class="team-pill">Santiago Cárdenas Arciniegas</span>
+            <span class="team-pill">Sanjeev Dasgupta</span>
+            <span class="team-pill">Sophie Latham</span>
+            <span class="team-pill">Trayda Murakami</span>
+            <span class="team-pill">Konstantina Panagiotopoulou</span>
+            <span class="team-pill">Alex Richter</span>
+            <span class="team-pill">Rudranshi Vishnoi</span>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span>KRASSS &mdash; Hertie School DSA 2026</span>
+        <span>NOAA &middot; CDC &middot; U.S. Census</span>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    </script>
+
+</body>
+
+</html>
