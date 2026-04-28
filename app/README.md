@@ -46,8 +46,9 @@ This will take a while. It runs a full grid search for each health variable.
 - randon_fourier_features.py 
 - app.py is a minimal Flask app with two routes. GET / renders the form. POST /predict loads the model, generates scenario data, preprocesses and predicts. The full prediction flow is:
 
-
+```
 load_model(target)              → krr, preprocessor  from train.py
 generate_scenario(...)          → X_future, years     from scenarios.py
 preprocessor.transform(X)      → X_scaled            from preprocessing.py
 krr.predict(X_scaled)          → y_pred              from krr.py
+```
