@@ -119,6 +119,8 @@ class KernelRidgeRegression:
         self.coef_ = np.linalg.solve(
             K_train + self.lamb * np.eye(len(X_train)), y_train)
         self.X_train_ = X_train
+         # store K_inv once during training to speed up use during calculation of prediction intervals
+        self.K_inv_ = np.linalg.inv(A) 
 
     def predict(self, X_test: np.ndarray) -> np.ndarray:
         """

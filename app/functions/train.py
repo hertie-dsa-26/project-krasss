@@ -37,6 +37,7 @@ import numpy as np
 import pandas as pd
 import pickle
 import os
+# from random_fourier_features import RFFRidgeRegression
 
 from splitter import Splitter, prepare_data          # data splitting
 from preprocessing import Preprocessor, detect_categorical_columns  # data cleaning
@@ -46,7 +47,7 @@ from cross_validator import CrossValidator                   # CV loop
 
 # ── GLOBAL VARIABLES ─────────────────────────────────────────────────────────
 DATA_PATH = "../../data/merged_final_transformed.csv"
-MODELS_DIR = "models"
+MODELS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
 TARGETS = ['CASTHMA', 'MHLTH', 'PHLTH', 'STROKE', 'SLEEP']
 LAMB_GRID = [1e-2, 1e-1, 1.0, 10.0]
 SIGMA2_GRID = [50.0, 75.0, 100.0, 150.0, 200.0]
@@ -146,7 +147,7 @@ def tune_and_evaluate(df: pd.DataFrame, target: str, lamb_grid: list, sigma2_gri
             krr = KernelRidgeRegression(
                 lamb=lamb, sigma2=sigma2)  # from krr.py
             scores = cv.cross_val_score(krr, splitter, preprocessor)
-
+    ## add in RFF here 
             if len(scores["mse"]) == 0:
                 continue
 

@@ -1,9 +1,10 @@
 # app.py
-
+import sys
+import os 
 from flask import Flask, render_template, request
 import pandas as pd
 import numpy as np
-
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "functions"))
 from functions import train
 from functions import scenarios
 
@@ -40,7 +41,7 @@ print(f" Scenarios: {list(scenarios.SCENARIOS.keys())}")
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("templates/index.html")
+    return render_template("index.html")
 
 
 @app.route("/predict", methods=["GET", "POST"])
@@ -79,7 +80,7 @@ def predict():
             print(f"Error during prediction: {e}")
 
     return render_template(
-        "templates/predict.html",
+        "predict.html",
         counties=COUNTIES,
         targets=TARGETS,
         scenarios=scenarios.SCENARIOS,
