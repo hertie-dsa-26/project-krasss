@@ -1,11 +1,6 @@
 import numpy as np
 
-def rff_features(
-    x: np.ndarray,
-    R: int,
-    sigma: float = 1.0,
-    seed: int = 42,
-) -> np.ndarray:
+def rff_features(x: np.ndarray, R: int, sigma: float = 1.0, seed: int = 42,) -> np.ndarray:
     """Compute Random Fourier Features approximating the Gaussian kernel.
 
     Draws *R* random frequencies from N(0, 1) and phases from

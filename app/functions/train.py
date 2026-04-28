@@ -45,9 +45,9 @@ from assessment import Assessment                       # MSE and R² scoring
 from cross_validator import CrossValidator                   # CV loop
 
 # ── GLOBAL VARIABLES ─────────────────────────────────────────────────────────
-DATA_PATH = "data/merged_final_transformed.csv"
+DATA_PATH = "../../data/merged_final_transformed.csv"
 MODELS_DIR = "models"
-TARGETS = ['BPHIGH', 'CASTHMA', 'COPD', 'MHLTH', 'PHLTH', 'STROKE', 'SLEEP']
+TARGETS = ['CASTHMA', 'MHLTH', 'PHLTH', 'STROKE', 'SLEEP']
 LAMB_GRID = [1e-2, 1e-1, 1.0, 10.0]
 SIGMA2_GRID = [50.0, 75.0, 100.0, 150.0, 200.0]
 

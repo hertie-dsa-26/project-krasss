@@ -4,13 +4,13 @@ from flask import Flask, render_template, request
 import pandas as pd
 import numpy as np
 
-from train import load_model
-from scenarios import generate_scenario, SCENARIOS
+from functions import train
+from functions import scenarios
 
 app = Flask(__name__)
 
 # ── Load data and county list at startup ──────────────────────────────────────
-DATA_PATH = "data/merged_final_transformed.csv"
+DATA_PATH = "../data/merged_final_transformed.csv"
 df = pd.read_csv(DATA_PATH)
 
 # Build unique county + state combinations to avoid duplicate county names
@@ -30,17 +30,17 @@ COUNTIES = [
     for _, row in county_options.iterrows()
 ]
 
-TARGETS = ['BPHIGH', 'CASTHMA', 'COPD', 'MHLTH', 'PHLTH', 'STROKE', 'SLEEP']
+TARGETS = ['CASTHMA', 'MHLTH', 'PHLTH', 'STROKE', 'SLEEP']
 
 print(f" Data loaded: {len(df)} rows")
 print(f" County options: {len(COUNTIES)}")
 print(f" Targets: {TARGETS}")
-print(f" Scenarios: {list(SCENARIOS.keys())}")
+print(f" Scenarios: {list(scenarios.SCENARIOS.keys())}")
 
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
+    return render_template("templates/index.html")
 
 
 @app.route("/predict", methods=["GET", "POST"])
@@ -61,10 +61,10 @@ def predict():
                 f"  → county={county} | state={state} | target={target} | scenario={scenario_key}")
 
             # ── Load pre-fitted model and preprocessor ────────────────────
-            krr, preprocessor = load_model(target)
+            krr, preprocessor = train.load_model(target)
 
             # ── Generate synthetic future rows ────────────────────────────
-            X_future, future_years = generate_scenario(
+            X_future, future_years = scenarios.generate_scenario(
                 df, county, state, scenario_key)
 
             # ── Preprocess and predict ────────────────────────────────────
@@ -79,17 +79,17 @@ def predict():
             print(f"Error during prediction: {e}")
 
     return render_template(
-        "predict.html",
+        "templates/predict.html",
         counties=COUNTIES,
         targets=TARGETS,
-        scenarios=SCENARIOS,
+        scenarios=scenarios.SCENARIOS,
         results=results,
         error=error,
         county=county if not error else None,
         state=state if not error else None,
         target=target if not error else None,
         scenario_key=scenario_key if not error else None,
-        description=SCENARIOS[scenario_key]["description"] if (
+        description=scenarios.SCENARIOS[scenario_key]["description"] if (
             scenario_key and not error) else None
     )
 
