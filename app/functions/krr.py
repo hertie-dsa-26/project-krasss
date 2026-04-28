@@ -116,10 +116,10 @@ class KernelRidgeRegression:
             y_train (np.ndarray): Training target values
         """
         K_train = gaussian_kernel(X_train, X_train, sigma2=self.sigma2)
-        self.coef_ = np.linalg.solve(
-            K_train + self.lamb * np.eye(len(X_train)), y_train)
+        A = K_train + self.lamb * np.eye(len(X_train))
+        self.coef_ = np.linalg.solve(A, y_train)
         self.X_train_ = X_train
-         # store K_inv once during training to speed up use during calculation of prediction intervals
+        # store K_inv once during training to speed up use during calculation of prediction intervals
         self.K_inv_ = np.linalg.inv(A) 
 
     def predict(self, X_test: np.ndarray) -> np.ndarray:
