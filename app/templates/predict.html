@@ -191,12 +191,21 @@
             <table>
                 <tr>
                     <th>Year</th>
-                    <th>Predicted (%)</th>
+                    <th>Predicted Value (%)</th>
+                    <th colspan="2">95% Confidence Interval</th>
                 </tr>
-                {% for year, pred in results %}
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Lower</th>
+                    <th>Upper</th>
+                </tr>
+                {% for year, pred, lower, upper in results %}
                 <tr>
                     <td>{{ year }}</td>
-                    <td>{{ pred }}</td>
+                    <td>{{ "%.2f"|format(pred) }}</td>
+                    <td>{{ "%.2f"|format(lower) }}</td>
+                    <td>{{ "%.2f"|format(upper) }}</td>
                 </tr>
                 {% endfor %}
             </table>

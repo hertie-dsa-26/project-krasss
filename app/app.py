@@ -62,7 +62,7 @@ def predict():
                 f"  → county={county} | state={state} | target={target} | scenario={scenario_key}")
 
             # ── Load pre-fitted model and preprocessor ────────────────────
-            krr, preprocessor = train.load_model(target)
+            model, preprocessor = train.load_model(target)
 
             # ── Generate synthetic future rows ────────────────────────────
             X_future, future_years = scenarios.generate_scenario(
@@ -70,10 +70,15 @@ def predict():
 
             # ── Preprocess and predict ────────────────────────────────────
             X_scaled = preprocessor.transform(X_future.to_numpy())
-            y_pred = krr.predict(X_scaled)
+            y_pred, lower, upper = model.predict_interval(X_scaled)
 
             # ── Build results ─────────────────────────────────────────────
-            results = list(zip(future_years, y_pred.round(2).tolist()))
+            results = list(zip(
+                future_years,
+                y_pred.round(2).tolist(),
+                lower.round(2).tolist(),   # add lower bound
+                upper.round(2).tolist()    # add upper bound
+            ))
 
         except Exception as e:
             error = "There was a prediction error. Please try again."
