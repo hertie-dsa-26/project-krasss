@@ -313,6 +313,25 @@
       </div>
  
     </div>
+
+    <!-- Heatmap tab row and panel -->
+     <div style="display:flex;gap:6px;margin:1rem 0 0.75rem;" id="ts-tab-row">
+      <div class="tab active" data-tab="trend" onclick="switchTSTab('trend')">Trend line</div>
+      <div class="tab" data-tab="heatmap" onclick="switchTSTab('heatmap')">State × year heatmap</div>
+    </div>
+    
+    <div id="panel-heatmap" class="ts-panel" style="display:none;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;overflow-x:auto;">
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:6px;" id="hm-title-health">Health variable by state × year</div>
+          <div style="overflow-x:auto;"><svg id="hm-svg-health" style="display:block;"></svg></div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:6px;" id="hm-title-weather">Weather variable by state × year</div>
+          <div style="overflow-x:auto;"><svg id="hm-svg-weather" style="display:block;"></svg></div>
+        </div>
+      </div>
+    </div>
  
     <!-- Summary stats table -->
     <div style="border-top:1px solid #eee;padding-top:1rem;">
@@ -575,7 +594,7 @@ function drawMap(hv, wv, demoVars, data, healthNat, weatherNat) {
         const wDiff    = (cd.weather_val - weatherNat).toFixed(1);
         const wCompare = document.getElementById("t-w-compare");
         wCompare.textContent = (wDiff > 0 ? `+${wDiff}` : `${wDiff}`) + `${wmeta.unit} vs national avg (${weatherNat.toFixed(1)}${wmeta.unit})`;
-        wCompare.className   = "t-compare t-above";
+        wCompare.className = "t-compare " + (wDiff > 0 ? "t-above" : "t-below");
       }
  
       // Demographics
@@ -756,6 +775,84 @@ function updateStatsTable(data, hv, wv) {
  
   tbody.innerHTML = rows.length > 0 ? rows.join('') :
     '<tr><td colspan="7" style="padding:12px 10px;color:#bbb;font-size:12px;">No data available</td></tr>';
+}
+
+function switchTSTab(tab) {
+  document.querySelectorAll('#ts-tab-row .tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`#ts-tab-row [data-tab="${tab}"]`).classList.add('active');
+  document.getElementById('panel-heatmap').style.display = tab === 'heatmap' ? 'block' : 'none';
+  if (tab === 'heatmap') {
+    const hv = document.getElementById('ts-health-var').value;
+    drawHeatmap(hv);
+  }
+}
+
+const stateFullNames = {
+  WV:'West Virginia', MS:'Mississippi', KY:'Kentucky', AL:'Alabama', TN:'Tennessee',
+  AR:'Arkansas', OH:'Ohio', IN:'Indiana', MO:'Missouri', OK:'Oklahoma', LA:'Louisiana',
+  SC:'South Carolina', GA:'Georgia', NC:'North Carolina', TX:'Texas', FL:'Florida',
+  NY:'New York', IL:'Illinois', PA:'Pennsylvania', CA:'California', CO:'Colorado',
+  WA:'Washington', MN:'Minnesota', UT:'Utah', ND:'North Dakota', HI:'Hawaii'
+};
+
+function switchTSTab(tab) {
+  document.querySelectorAll('#ts-tab-row .tab').forEach(t => t.classList.remove('active'));
+  document.querySelector(`#ts-tab-row [data-tab="${tab}"]`).classList.add('active');
+  document.getElementById('panel-heatmap').style.display = tab === 'heatmap' ? 'block' : 'none';
+  if (tab === 'heatmap') {
+    const hv = document.getElementById('ts-health-var').value;
+    const wv = document.getElementById('ts-weather-var').value;
+    drawHeatmap(hv, wv);
+  }
+}
+
+function drawHeatmap(hv, wv) {
+  const states   = Object.keys(stateFullNames);
+  const tsYears  = [2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023];
+  const vars     = [[hv, 'hm-svg-health', 'hm-title-health'], [wv, 'hm-svg-weather', 'hm-title-weather']];
+
+  vars.forEach(([v, svgId, titleId]) => {
+    if (!v) {
+      document.getElementById(titleId).textContent = 'No variable selected';
+      d3.select('#' + svgId).selectAll('*').remove();
+      return;
+    }
+    const meta = varMeta[v] || { label: v, color: ["#e5e7eb","#1a3a2a"], unit: "" };
+    document.getElementById(titleId).textContent = meta.label + ' by state × year';
+
+    fetch(`/api/timeseries/heatmap?var=${v}&states=${states.join(',')}`)
+      .then(r => r.json())
+      .then(result => {
+        const stateRows = result.data;
+        const allVals   = Object.values(stateRows).flatMap(r => Object.values(r));
+        const cMin = d3.min(allVals), cMax = d3.max(allVals);
+        const cScale = d3.scaleSequential(d3.interpolateRgb(meta.color[0], meta.color[1])).domain([cMin, cMax]);
+
+        const cellW=36, cellH=22, lpad=90, tpad=20;
+        const svgW = lpad + tsYears.length * cellW;
+        const svgH = tpad + states.length * cellH + 4;
+        const svg  = d3.select('#' + svgId).attr("width",svgW).attr("height",svgH).attr("viewBox",`0 0 ${svgW} ${svgH}`);
+        svg.selectAll("*").remove();
+
+        tsYears.forEach((yr,i) => {
+          svg.append("text").attr("x",lpad+i*cellW+cellW/2).attr("y",tpad-6)
+            .attr("text-anchor","middle").attr("font-size",9).attr("fill","#999").text(yr);
+        });
+        states.forEach((s,si) => {
+          svg.append("text").attr("x",lpad-6).attr("y",tpad+si*cellH+cellH/2+4)
+            .attr("text-anchor","end").attr("font-size",9).attr("fill","#555").text(stateFullNames[s]);
+          tsYears.forEach((yr,yi) => {
+            const val = stateRows[s] && stateRows[s][yr];
+            if (!val) return;
+            svg.append("rect").attr("x",lpad+yi*cellW+1).attr("y",tpad+si*cellH+1)
+              .attr("width",cellW-2).attr("height",cellH-2).attr("rx",2).attr("fill",cScale(val));
+            svg.append("text").attr("x",lpad+yi*cellW+cellW/2).attr("y",tpad+si*cellH+cellH/2+4)
+              .attr("text-anchor","middle").attr("font-size",7.5)
+              .attr("fill",val>(cMin+cMax)/2?"#fff":"#333").text(val.toFixed(1));
+          });
+        });
+      });
+  });
 }
 
 </script>

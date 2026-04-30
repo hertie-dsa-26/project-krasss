@@ -190,6 +190,27 @@ def timeseries():
         'data':  result,
         'state': state
     })
+
+@app.route('/api/timeseries/heatmap')
+def timeseries_heatmap():
+    var    = request.args.get('var', 'MHLTH')
+    states = request.args.get('states', '')
+    
+    if var not in df.columns:
+        return jsonify({"error": "Invalid variable"}), 400
+    
+    state_list = states.split(',') if states else sorted(df['StateAbbr'].unique().tolist())
+    
+    result = {}
+    for state in state_list:
+        grouped = df[df['StateAbbr'] == state].groupby('year')[var].mean().reset_index()
+        result[state] = {
+            int(r['year']): round(r[var], 2) 
+            for _, r in grouped.iterrows() 
+            if not pd.isna(r[var])
+        }
+    
+    return jsonify({'data': result, 'variable': var})
  
 
 # app.run() MUST be the last thing in the file
