@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Climate & Health Explorer{% endblock %}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: sans-serif; background: #f5f7f5; color: #222; }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 3rem;
+            background: rgba(245,247,245,0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .nav-brand {
+            font-size: 13px; font-weight: 700; color: #1a3a2a;
+            letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a {
+            font-size: 13px; font-weight: 500; color: #555;
+            text-decoration: none; letter-spacing: 0.04em;
+            transition: color 0.2s; position: relative;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+            height: 1px; background: #1a3a2a;
+            transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
+        }
+        .nav-links a:hover { color: #1a3a2a; }
+        .nav-links a:hover::after { transform: scaleX(1); }
+        .nav-links .coming-soon { color: #999; cursor: default; pointer-events: none; }
+        .nav-links .coming-soon::after { display: none; }
+
+        main { max-width: 1100px; margin: 0 auto; padding: 6rem 3rem 3rem; }
+
+        {% block extra_styles %}{% endblock %}
+    </style>
+</head>
+<body>
+    <nav>
+        <a class="nav-brand" href="/">KRASSS / Project</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/docs">Docs</a></li>
+            <li><a href="/explore">Explore</a></li>
+            <li><a href="/predict">Predict</a></li>
+
+        </ul>
+    </nav>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+</body>
+</html>

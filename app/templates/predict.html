@@ -1,205 +1,214 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% block title %}Predict — Climate & Health Explorer{% endblock %}
 
-<head>
-    <title>Health Outcome Predictor</title>
+{% block content %}
+<style>
+    * { box-sizing: border-box; }
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono&family=DM+Sans:wght@300;400;500&display=swap"
-        rel="stylesheet">
+    .eda-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 1.5rem;
+        font-family: sans-serif;
+        color: #222;
+    }
 
-    <style>
-        :root {
-            --cream: #F5F0E8;
-            --ink: #1A1A2E;
-            --storm: #4A5899;
-            --accent: #C85A3C;
-            --mist: #B8CCE4;
-            --sans: 'DM Sans', sans-serif;
-            --serif: 'DM Serif Display', serif;
-            --mono: 'DM Mono', monospace;
-        }
+    .page-title {
+        font-size: 26px;
+        font-weight: 700;
+        color: #1a3a2a;
+        margin-bottom: 6px;
+    }
 
-        body {
-            font-family: var(--sans);
-            background: var(--cream);
-            color: var(--ink);
-            margin: 0;
-        }
+    .page-sub {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 2rem;
+    }
 
-        .container {
-            max-width: 700px;
-            margin: 5rem auto;
-            padding: 0 2rem;
-        }
+    .card {
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin-bottom: 1.5rem;
+    }
 
-        h1 {
-            font-family: var(--serif);
-            font-size: 2.2rem;
-            margin-bottom: 0.5rem;
-        }
+    .section-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 10px;
+    }
 
-        p.description {
-            font-size: 0.95rem;
-            color: var(--storm);
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
+    .filter-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+        margin-bottom: 1.25rem;
+    }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.2rem;
-            margin-bottom: 2rem;
-        }
+    .filter-group label {
+        display: block;
+        font-size: 12px;
+        color: #555;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
 
-        label {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--storm);
-            margin-bottom: 0.2rem;
-        }
+    .filter-group select {
+        width: 100%;
+        padding: 7px 8px;
+        border: 1px solid #ccc;
+        border-radius: 7px;
+        font-size: 13px;
+        background: #fff;
+        color: #222;
+    }
 
-        select {
-            padding: 0.7rem;
-            border: 1px solid rgba(0, 0, 0, 0.2);
-            background: white;
-            font-size: 14px;
-        }
+    .btn-primary {
+        padding: 8px 20px;
+        background: #1a3a2a;
+        color: #fff;
+        border: none;
+        border-radius: 7px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+    }
 
-        button {
-            margin-top: 1rem;
-            padding: 0.8rem;
-            background: var(--ink);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-        }
+    .btn-primary:hover {
+        background: #2d5a3d;
+    }
 
-        button:hover {
-            background: var(--storm);
-        }
+    .error-box {
+        background: #fee2e2;
+        border: 1px solid #fca5a5;
+        border-radius: 8px;
+        padding: 0.9rem 1rem;
+        font-size: 13px;
+        color: #b91c1c;
+        margin-bottom: 1.5rem;
+    }
 
-        /* ERROR */
-        .error {
-            background-color: #fee;
-            color: #c00;
-            padding: 10px;
-            border: 1px solid #fcc;
-            margin-bottom: 1rem;
-        }
+    .section-header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
 
-        /* RESULTS */
-        .results {
-            margin-top: 2rem;
-        }
+    .section-header h2 {
+        font-size: 17px;
+        font-weight: 700;
+        color: #1a3a2a;
+    }
 
-        .results h2 {
-            font-family: var(--serif);
-            font-size: 1.6rem;
-            margin-bottom: 0.5rem;
-        }
+    .section-header span {
+        font-size: 12px;
+        color: #999;
+    }
 
-        .results p {
-            color: var(--storm);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 13px;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 14px;
-        }
+    thead th {
+        font-size: 11px;
+        font-weight: 700;
+        color: #999;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        text-align: left;
+        padding: 0.5rem 0.6rem;
+        border-bottom: 1px solid #e0e0e0;
+    }
 
-        th {
-            text-align: left;
-            border-bottom: 2px solid var(--ink);
-            padding: 0.5rem;
-        }
+    tbody td {
+        padding: 0.55rem 0.6rem;
+        border-bottom: 1px solid #eee;
+        color: #222;
+        font-size: 13px;
+    }
 
-        td {
-            padding: 0.5rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-    </style>
-</head>
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+</style>
 
-<body>
+<div class="eda-wrap">
 
-    <div class="container">
+    <p class="page-title">Health Outcome Predictor</p>
+    <p class="page-sub">Select a county, health variable, and climate scenario to generate a 10-year prediction. Results are shown as incidence rates derived from CDC data.</p>
 
-        <h1>Health Outcome Predictor</h1>
-
-        <p class="description">
-            Select a county, health variable, and climate scenario to generate a 10-year prediction.
-            Results are shown as incidence rates, representing estimated probabilities derived from CDC data.
-        </p>
-
+    <div class="card">
+        <div class="section-label">Configure prediction</div>
         <form action="/predict" method="POST">
-
-            <div>
-                <label>County</label>
-                <select name="county_state">
-                    {% for c in counties %}
-                    <option value="{{ c.county }}|{{ c.state }}" {% if c.county==county and c.state==state %}selected{%
-                        endif %}>
-                        {{ c.label }}
-                    </option>
-                    {% endfor %}
-                </select>
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label>County</label>
+                    <select name="county_state">
+                        {% for c in counties %}
+                        <option value="{{ c.county }}|{{ c.state }}" {% if c.county==county and c.state==state %}selected{% endif %}>
+                            {{ c.label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Health Variable</label>
+                    <select name="target">
+                        {% for t in targets %}
+                        <option value="{{ t }}" {% if t==target %}selected{% endif %}>{{ t }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Climate Scenario</label>
+                    <select name="scenario">
+                        {% for key, val in scenarios.items() %}
+                        <option value="{{ key }}" {% if key==scenario_key %}selected{% endif %}>
+                            {{ val.description }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-
-            <div>
-                <label>Health Variable</label>
-                <select name="target">
-                    {% for t in targets %}
-                    <option value="{{ t }}" {% if t==target %}selected{% endif %}>
-                        {{ t }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <div>
-                <label>Climate Scenario</label>
-                <select name="scenario">
-                    {% for key, val in scenarios.items() %}
-                    <option value="{{ key }}" {% if key==scenario_key %}selected{% endif %}>
-                        {{ val.description }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-
-            <button type="submit">Run prediction →</button>
-
+            <button class="btn-primary" type="submit">Run prediction →</button>
         </form>
+    </div>
 
-        {% if error %}
-        <div class="error">
-            <strong>Error:</strong> {{ error }}
-        </div>
-        {% endif %}
+    {% if error %}
+    <div class="error-box">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    {% endif %}
 
-        {% if results %}
-        <div class="results">
+    {% if results %}
+    <div class="card">
+        <div class="section-header">
             <h2>{{ target }} — {{ county }}, {{ state }}</h2>
-            <p><strong>Scenario:</strong> {{ description }}</p>
+            <span>Scenario: {{ description }}</span>
+        </div>
 
-            <table>
+        <canvas id="predChart" height="100"></canvas>
+
+        <hr style="border:none;border-top:1px solid #eee;margin:1.5rem 0;">
+
+        <table>
+            <thead>
                 <tr>
                     <th>Year</th>
                     <th>Predicted Value (%)</th>
-                    <th colspan="2">95% Confidence Interval</th>
+                    <th>Lower 95% CI</th>
+                    <th>Upper 95% CI</th>
                 </tr>
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th>Lower</th>
-                    <th>Upper</th>
-                </tr>
+            </thead>
+            <tbody>
                 {% for year, pred, lower, upper in results %}
                 <tr>
                     <td>{{ year }}</td>
@@ -208,12 +217,149 @@
                     <td>{{ "%.2f"|format(upper) }}</td>
                 </tr>
                 {% endfor %}
-            </table>
-        </div>
-        {% endif %}
-
+            </tbody>
+        </table>
     </div>
 
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const historical = {{ historical | tojson }};
+        const predictions = {{ results | tojson }};
 
-</html>
+        const histLabels = historical.map(d => d.year);
+        const histValues = historical.map(d => d.value);
+
+        const predLabels = predictions.map(d => d[0]);
+        const predValues = predictions.map(d => d[1]);
+        const lowerValues = predictions.map(d => d[2]);
+        const upperValues = predictions.map(d => d[3]);
+
+        // Consistent x-axis: every year from first historical to last predicted, no gaps
+        const firstYear = histLabels[0];
+        const lastYear  = predLabels[predLabels.length - 1];
+        const allLabels = [];
+        for (let y = firstYear; y <= lastYear; y++) allLabels.push(y);
+
+        const histMap  = Object.fromEntries(histLabels.map((y, i) => [y, histValues[i]]));
+        const predMap  = Object.fromEntries(predLabels.map((y, i) => [y, predValues[i]]));
+        const lowerMap = Object.fromEntries(predLabels.map((y, i) => [y, lowerValues[i]]));
+        const upperMap = Object.fromEntries(predLabels.map((y, i) => [y, upperValues[i]]));
+
+        // Bridge: needs BOTH endpoints — last historical and first predicted
+        const lastHistYear  = histLabels[histLabels.length - 1];
+        const lastHistVal   = histValues[histValues.length - 1];
+        const firstPredYear = predLabels[0];
+        const firstPredVal  = predValues[0];
+        const bridgeMap = {
+            [lastHistYear]:  lastHistVal,
+            [firstPredYear]: firstPredVal
+        };
+
+        // Y-axis range
+        const allVals = [...histValues, ...predValues, ...lowerValues, ...upperValues];
+        const dataMin = Math.min(...allVals);
+        const dataMax = Math.max(...allVals);
+        const pad  = (dataMax - dataMin) * 0.15;
+        const yMin = Math.max(0, dataMin - pad);
+        const yMax = dataMax + pad;
+
+        new Chart(document.getElementById('predChart'), {
+            type: 'line',
+            data: {
+                labels: allLabels,
+                datasets: [
+                    {
+                        label: 'Historical',
+                        data: allLabels.map(y => histMap[y] ?? null),
+                        borderColor: '#1a3a2a',
+                        backgroundColor: 'transparent',
+                        pointRadius: 4,
+                        tension: 0.3,
+                        spanGaps: true,
+                        order: 1
+                    },
+                    {
+                        // Bridge: solid dark-green → dashed green transition line
+                        label: '_bridge',
+                        data: allLabels.map(y => bridgeMap[y] ?? null),
+                        borderColor: '#2d5a3d',
+                        backgroundColor: 'transparent',
+                        borderDash: [5, 4],
+                        pointRadius: 0,
+                        tension: 0.3,
+                        spanGaps: true,
+                        order: 2
+                    },
+                    {
+                        label: 'Predicted',
+                        data: allLabels.map(y => predMap[y] ?? null),
+                        borderColor: '#4caf82',
+                        backgroundColor: 'transparent',
+                        borderDash: [5, 4],
+                        pointRadius: 4,
+                        tension: 0.3,
+                        spanGaps: false,
+                        order: 3
+                    },
+                    {
+                        label: 'Upper 95% CI',
+                        data: allLabels.map(y => upperMap[y] ?? null),
+                        borderColor: 'rgba(76,175,130,0.25)',
+                        backgroundColor: 'rgba(76,175,130,0.1)',
+                        borderDash: [2, 3],
+                        pointRadius: 0,
+                        fill: '+1',
+                        tension: 0.3,
+                        spanGaps: false,
+                        order: 4
+                    },
+                    {
+                        label: 'Lower 95% CI',
+                        data: allLabels.map(y => lowerMap[y] ?? null),
+                        borderColor: 'rgba(76,175,130,0.25)',
+                        backgroundColor: 'rgba(76,175,130,0.1)',
+                        borderDash: [2, 3],
+                        pointRadius: 0,
+                        fill: false,
+                        tension: 0.3,
+                        spanGaps: false,
+                        order: 5
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            font: { size: 12 },
+                            color: '#555',
+                            filter: item => item.text !== '_bridge'
+                        }
+                    },
+                    tooltip: { 
+                        mode: 'index', 
+                        intersect: false,
+                        filter: item => item.dataset.label !== '_bridge'
+                     }
+                },
+                scales: {
+                    x: {
+                        ticks: { font: { size: 11 }, color: '#999', maxRotation: 0 },
+                        grid: { color: '#f0f0f0' }
+                    },
+                    y: {
+                        min: parseFloat(yMin.toFixed(2)),
+                        max: parseFloat(yMax.toFixed(2)),
+                        ticks: { font: { size: 11 }, color: '#999' },
+                        grid: { color: '#f0f0f0' }
+                    }
+                }
+            }
+        });
+    </script>
+
+    {% endif %}
+
+</div>
+{% endblock %}
