@@ -204,8 +204,8 @@
                 <tr>
                     <th>Year</th>
                     <th>Predicted Value (%)</th>
-                    <th>Lower 95% CI</th>
-                    <th>Upper 95% CI</th>
+                    <th>Lower 90% CI</th>
+                    <th>Upper 90% CI</th>
                 </tr>
             </thead>
             <tbody>
@@ -302,7 +302,7 @@
                         order: 3
                     },
                     {
-                        label: 'Upper 95% CI',
+                        label: 'Upper 90% CI',
                         data: allLabels.map(y => upperMap[y] ?? null),
                         borderColor: 'rgba(76,175,130,0.25)',
                         backgroundColor: 'rgba(76,175,130,0.1)',
@@ -314,7 +314,7 @@
                         order: 4
                     },
                     {
-                        label: 'Lower 95% CI',
+                        label: 'Lower 90% CI',
                         data: allLabels.map(y => lowerMap[y] ?? null),
                         borderColor: 'rgba(76,175,130,0.25)',
                         backgroundColor: 'rgba(76,175,130,0.1)',
@@ -349,7 +349,7 @@
                         grid: { color: '#f0f0f0' }
                     },
                     y: {
-                        min: parseFloat(yMin.toFixed(2)),
+                        min: 0,
                         max: parseFloat(yMax.toFixed(2)),
                         ticks: { font: { size: 11 }, color: '#999' },
                         grid: { color: '#f0f0f0' }

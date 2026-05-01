@@ -97,7 +97,7 @@ class RFFRidgeRegression:
         y_hat = self.predict(X_cal)
         self.cal_residuals_ = np.abs(y_cal - y_hat)  # nonconformity scores
 
-    def predict_interval(self, X_test: np.ndarray, confidence: float = 0.95) -> tuple:
+    def predict_interval(self, X_test: np.ndarray, confidence: float = 0.9) -> tuple:
         """
         Generates conformal prediction intervals for new data.
         Requires calibrate() to have been called first.
