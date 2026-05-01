@@ -10,11 +10,13 @@
 
 #   (2) Runs a grid search using CrossValidator to find
 #       the best hyperparameters                               - cross_validator.py
-#                                                                 preprocessing.py
-#                                                                 krr.py
+#                                                              - preprocessing.py
+#                                                              - random_fourier_features.py
+#                                                              - xgboost_wrapper.py   
 
 #   (3) Fits the final model on the full 2013-2022
-#       training data                                          - krr.py
+#       training data                                          - random_fourier_features.py
+#                                                              - xgboost_wrapper.py 
 #                                                              - preprocessing.py
 
 #   (4) Evaluates on the held-out 2023 test set               - assessment.py
@@ -37,51 +39,58 @@ import numpy as np
 import pandas as pd
 import pickle
 import os
+# from random_fourier_features import RFFRidgeRegression
 
 from splitter import Splitter, prepare_data          # data splitting
 from preprocessing import Preprocessor, detect_categorical_columns  # data cleaning
-from krr import KernelRidgeRegression           # the ML model
 from assessment import Assessment                       # MSE and R² scoring
 from cross_validator import CrossValidator                   # CV loop
+from random_fourier_features import RFFRidgeRegression    # ML model for all targets except SLEEP
+from xgboost_wrapper import XGBoostWrapper              # ML model for SLEEP
 
 # ── GLOBAL VARIABLES ─────────────────────────────────────────────────────────
-DATA_PATH = "data/merged_final_transformed.csv"
-MODELS_DIR = "models"
-TARGETS = ['BPHIGH', 'CASTHMA', 'COPD', 'MHLTH', 'PHLTH', 'STROKE', 'SLEEP']
-LAMB_GRID = [1e-2, 1e-1, 1.0, 10.0]
-SIGMA2_GRID = [50.0, 75.0, 100.0, 150.0, 200.0]
+DATA_PATH = "../../data/merged_final_transformed.csv"
+MODELS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
+TARGETS = ['CASTHMA', 'MHLTH', 'PHLTH', 'STROKE', 'SLEEP']
+XGB_TARGETS = {"SLEEP"}
+RFF_R_GRID     = [200, 500]
+RFF_SIGMA_GRID = [0.1, 0.5, 1.0, 2.0]
+RFF_LAMB_GRID  = [1e-5, 1e-3, 1e-1]
+XGB_N_ESTIMATORS_GRID  = [100, 300]
+XGB_MAX_DEPTH_GRID     = [3, 4, 6]
+XGB_LEARNING_RATE_GRID = [0.01, 0.05, 0.1]
 
 
 # ── DEFINED IN THIS FILE ──────────────────────────────────────────────────────
 
-def save_model(target: str, krr: KernelRidgeRegression, preprocessor: Preprocessor) -> None:
+def save_model(target: str, model, preprocessor: Preprocessor) -> None:
     """
-    Saves the fitted KRR model and preprocessor as a .pkl file.
+    Saves the fitted model and preprocessor as a .pkl file.
     Both are saved together so the Flask app can load everything it needs
     in one call without having to refit anything.
 
     Args:
         target (str):                 Health variable name e.g. 'COPD'
-        krr (KernelRidgeRegression):  Fitted model — from krr.py
+        model:                        Fitted model — either RFF or xgboost
         preprocessor (Preprocessor):  Fitted preprocessor — from preprocessing.py
     """
     os.makedirs(MODELS_DIR, exist_ok=True)
     path = os.path.join(MODELS_DIR, f"{target}.pkl")
     with open(path, "wb") as f:
-        pickle.dump({"krr": krr, "preprocessor": preprocessor}, f)
+        pickle.dump({"model": model, "preprocessor": preprocessor}, f)
     print(f"  Saved model → {path}")
 
 
 def load_model(target: str) -> tuple:
     """
-    Loads a fitted KRR model and preprocessor from disk.
+    Loads a fitted model and preprocessor from disk.
     Used by the Flask app to load pre-trained models without retraining.
 
     Args:
         target (str): Health variable name e.g. 'COPD'
 
     Returns:
-        krr (KernelRidgeRegression): Fitted model
+        model: Fitted model
         preprocessor (Preprocessor): Fitted preprocessor
     """
     path = os.path.join(MODELS_DIR, f"{target}.pkl")
@@ -94,21 +103,19 @@ def load_model(target: str) -> tuple:
 
     with open(path, "rb") as f:
         bundle = pickle.load(f)
-    return bundle["krr"], bundle["preprocessor"]
+    return bundle["model"], bundle["preprocessor"]
 
 
-def tune_and_evaluate(df: pd.DataFrame, target: str, lamb_grid: list, sigma2_grid: list) -> dict:
+def tune_and_evaluate(df: pd.DataFrame, target: str) -> dict:
     """
     Runs the full training pipeline for a single target variable.
     Calls prepare_data() from splitter.py, CrossValidator from cross_validator.py,
-    Preprocessor from preprocessing.py, KernelRidgeRegression from krr.py,
-    and Assessment from assessment.py.
+    Preprocessor from preprocessing.py, RFFRegression from random_fourier_features.py,
+    XGBoostWrapper from xgboost_wrapper.py, and Assessment from assessment.py.
 
     Args:
         df (pd.DataFrame):  Full dataset
         target (str):       Target health variable e.g. 'COPD'
-        lamb_grid (list):   Regularisation values to search
-        sigma2_grid (list): Kernel bandwidth values to search
 
     Returns:
         dict: best_params, CV_MSE, CV_R2, Test_MSE, Test_R2
@@ -136,52 +143,92 @@ def tune_and_evaluate(df: pd.DataFrame, target: str, lamb_grid: list, sigma2_gri
     best_mse = np.inf
     best_r2_cv = None
     best_params = {}
+    best_model_type = None
     # CrossValidator from cross_validator.py
     cv = CrossValidator(start_fold=start_fold)
 
-    for lamb in lamb_grid:
-        for sigma2 in sigma2_grid:
-            preprocessor = Preprocessor(
-                cat_col_indices=cat_col_indices)  # from preprocessing.py
-            krr = KernelRidgeRegression(
-                lamb=lamb, sigma2=sigma2)  # from krr.py
-            scores = cv.cross_val_score(krr, splitter, preprocessor)
+    if target in XGB_TARGETS:
+        # ── XGBoost grid search ────────────────────────────────────
+        for n_est in XGB_N_ESTIMATORS_GRID:
+            for depth in XGB_MAX_DEPTH_GRID:
+                for lr in XGB_LEARNING_RATE_GRID:
+                    preprocessor = Preprocessor(cat_col_indices=cat_col_indices)
+                    model        = XGBoostWrapper(n_estimators=n_est, max_depth=depth, learning_rate=lr)
+                    scores       = cv.cross_val_score(model, splitter, preprocessor)
 
-            if len(scores["mse"]) == 0:
-                continue
+                    if len(scores["mse"]) == 0:
+                        continue
 
-            mean_mse = np.mean(scores["mse"])
-            if mean_mse < best_mse and not np.isnan(mean_mse):
-                best_mse = mean_mse
-                best_r2_cv = np.mean(scores["r2"])
-                best_params = {"lamb": lamb, "sigma2": sigma2}
+                    mean_mse = np.mean(scores["mse"])
+                    if mean_mse < best_mse and not np.isnan(mean_mse):
+                        best_mse        = mean_mse
+                        best_r2_cv      = np.mean(scores["r2"])
+                        best_params     = {"n_estimators": n_est, "max_depth": depth, "learning_rate": lr}
+                        best_model_type = "xgboost"
 
-    print(
-        f"  Best params: {best_params} | CV MSE: {best_mse:.4f} | CV R²: {best_r2_cv:.4f}")
+    else:
+        # ── RFF grid search ────────────────────────────────────────
+        for sigma in RFF_SIGMA_GRID:
+            for lamb in RFF_LAMB_GRID:
+                for R in RFF_R_GRID:
+                    preprocessor = Preprocessor(cat_col_indices=cat_col_indices)
+                    model        = RFFRidgeRegression(sigma=sigma, lamb=lamb, R=R)
+                    scores       = cv.cross_val_score(model, splitter, preprocessor)
 
-    # ── Final fit — krr.py + preprocessing.py ────────────────────
-    # Refit on the full 2013-2022 training set using the best hyperparameters.
-    # This is the model that gets saved and used for Flask predictions.
-    X_train, X_test, y_train, y_test = splitter.get_test_split()  # from splitter.py
+                    if len(scores["mse"]) == 0:
+                        continue
 
-    preprocessor = Preprocessor(
-        cat_col_indices=cat_col_indices)  # from preprocessing.py
+                    mean_mse = np.mean(scores["mse"])
+                    if mean_mse < best_mse and not np.isnan(mean_mse):
+                        best_mse        = mean_mse
+                        best_r2_cv      = np.mean(scores["r2"])
+                        best_params     = {"sigma": sigma, "lamb": lamb, "R": R}
+                        best_model_type = "rff"
+
+    print(f"  Model: {best_model_type} | Best params: {best_params} | CV MSE: {best_mse:.4f} | CV R²: {best_r2_cv:.4f}")
+
+    # ── Final fit ─────────────────────────────────────────────────
+    X_train, X_test, y_train, y_test = splitter.get_test_split()
+
+    preprocessor   = Preprocessor(cat_col_indices=cat_col_indices)
     X_train_scaled = preprocessor.fit_transform(X_train)
-    X_test_scaled = preprocessor.transform(X_test)
+    X_test_scaled  = preprocessor.transform(X_test)
 
-    krr = KernelRidgeRegression(**best_params)  # from krr.py
-    krr.fit(X_train_scaled, y_train)
-    y_pred = krr.predict(X_test_scaled)
+    # ── Calibration split — hold out last full calendar year ──────
+    # splitter.train_years = [2013..2022], already computed in Splitter.__init__
+    cal_year  = splitter.train_years[-1]       # 2022
+    fit_years = splitter.train_years[:-1]      # 2013–2021
 
-    # ── Save — pickle ─────────────────────────────────────────────
-    save_model(target, krr, preprocessor)
+    # Get the year for every row in X_train using the train mask
+    train_mask  = np.isin(splitter.years, splitter.train_years)
+    train_years = splitter.years[train_mask]   # aligned to X_train rows
+
+    fit_mask = train_years <= fit_years[-1]
+    cal_mask = train_years == cal_year
+
+    X_fit, y_fit = X_train_scaled[fit_mask], y_train[fit_mask]
+    X_cal, y_cal = X_train_scaled[cal_mask], y_train[cal_mask]
+
+    print(f"  Fit years: {fit_years[0]}–{fit_years[-1]} ({fit_mask.sum()} rows) | "
+          f"Cal year: {cal_year} ({cal_mask.sum()} rows)")
+
+    # Rebuild best model and fit
+    if best_model_type == "xgboost":
+        model = XGBoostWrapper(**best_params)
+    else:
+        model = RFFRidgeRegression(**best_params)
+
+    model.fit(X_fit, y_fit)
+    model.calibrate(X_cal, y_cal) 
+    y_pred = model.predict(X_test_scaled)
+    
+    # ── Save ──────────────────────────────────────────────────────
+    save_model(target, model, preprocessor)
 
     # ── Final evaluation — assessment.py ─────────────────────────
-    # Assessment is used here only for final scoring — not for CV
-    # from assessment.py
     assessment = Assessment()
     mse = assessment.mean_squared_error(y_test, y_pred)
-    r2 = assessment.r2_score(y_test, y_pred)
+    r2  = assessment.r2_score(y_test, y_pred)
 
     print(f"  Test MSE: {mse:.4f} | Test R²: {r2:.4f}")
     print(f"  y_test=[{y_test.min():.2f}, {y_test.max():.2f}] "
@@ -197,27 +244,24 @@ def tune_and_evaluate(df: pd.DataFrame, target: str, lamb_grid: list, sigma2_gri
 
 
 def print_summary(results: dict) -> None:
-    """
-    Prints a formatted summary table of results across all targets.
-    """
-    print(f"\n{'='*85}")
-    print(f"{'Target':<10} {'lamb':>8} {'sigma2':>8} {'CV MSE':>10} {'CV R²':>10} {'Test MSE':>10} {'Test R²':>10}")
-    print(f"{'-'*85}")
+    print(f"\n{'='*95}")
+    print(f"{'Target':<10} {'Best Params':<40} {'CV MSE':>10} {'CV R²':>10} {'Test MSE':>10} {'Test R²':>10}")
+    print(f"{'-'*95}")
     for target, res in results.items():
+        params_str = " | ".join(f"{k}={v}" for k, v in res["best_params"].items())
         print(f"{target:<10} "
-              f"{res['best_params']['lamb']:>8} "
-              f"{res['best_params']['sigma2']:>8} "
+              f"{params_str:<40} "
               f"{res['CV_MSE']:>10} "
               f"{res['CV_R2']:>10} "
               f"{res['Test_MSE']:>10} "
               f"{res['Test_R2']:>10}")
-    print(f"{'-'*85}")
-    print(f"{'Mean':<10} {'':>8} {'':>8} "
+    print(f"{'-'*95}")
+    print(f"{'Mean':<10} {'':40} "
           f"{np.mean([v['CV_MSE'] for v in results.values()]):>10.4f} "
           f"{np.mean([v['CV_R2'] for v in results.values()]):>10.4f} "
           f"{np.mean([v['Test_MSE'] for v in results.values()]):>10.4f} "
           f"{np.mean([v['Test_R2'] for v in results.values()]):>10.4f}")
-    print(f"{'='*85}")
+    print(f"{'='*95}")
 
 
 def main():
@@ -234,7 +278,7 @@ def main():
         print(f"\n{'='*60}")
         print(f"TARGET: {target}")
         print(f"{'='*60}")
-        results[target] = tune_and_evaluate(df, target, LAMB_GRID, SIGMA2_GRID)
+        results[target] = tune_and_evaluate(df, target)
 
     # ── Print summary ─────────────────────────────────────────────
     print_summary(results)

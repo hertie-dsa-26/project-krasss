@@ -1,6 +1,219 @@
-{% extends "base.html" %}
-{% block title %}Predict — Climate & Health Explorer{% endblock %}
-{% block content %}
-<h1>Predict</h1>
-<p>Coming soon.</p>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Health Outcome Predictor</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono&family=DM+Sans:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --cream: #F5F0E8;
+            --ink: #1A1A2E;
+            --storm: #4A5899;
+            --accent: #C85A3C;
+            --mist: #B8CCE4;
+            --sans: 'DM Sans', sans-serif;
+            --serif: 'DM Serif Display', serif;
+            --mono: 'DM Mono', monospace;
+        }
+
+        body {
+            font-family: var(--sans);
+            background: var(--cream);
+            color: var(--ink);
+            margin: 0;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        h1 {
+            font-family: var(--serif);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p.description {
+            font-size: 0.95rem;
+            color: var(--storm);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--storm);
+            margin-bottom: 0.2rem;
+        }
+
+        select {
+            padding: 0.7rem;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            background: white;
+            font-size: 14px;
+        }
+
+        button {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background: var(--ink);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: var(--storm);
+        }
+
+        /* ERROR */
+        .error {
+            background-color: #fee;
+            color: #c00;
+            padding: 10px;
+            border: 1px solid #fcc;
+            margin-bottom: 1rem;
+        }
+
+        /* RESULTS */
+        .results {
+            margin-top: 2rem;
+        }
+
+        .results h2 {
+            font-family: var(--serif);
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .results p {
+            color: var(--storm);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            border-bottom: 2px solid var(--ink);
+            padding: 0.5rem;
+        }
+
+        td {
+            padding: 0.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Health Outcome Predictor</h1>
+
+        <p class="description">
+            Select a county, health variable, and climate scenario to generate a 10-year prediction.
+            Results are shown as incidence rates, representing estimated probabilities derived from CDC data.
+        </p>
+
+        <form action="/predict" method="POST">
+
+            <div>
+                <label>County</label>
+                <select name="county_state">
+                    {% for c in counties %}
+                    <option value="{{ c.county }}|{{ c.state }}" {% if c.county==county and c.state==state %}selected{%
+                        endif %}>
+                        {{ c.label }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label>Health Variable</label>
+                <select name="target">
+                    {% for t in targets %}
+                    <option value="{{ t }}" {% if t==target %}selected{% endif %}>
+                        {{ t }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label>Climate Scenario</label>
+                <select name="scenario">
+                    {% for key, val in scenarios.items() %}
+                    <option value="{{ key }}" {% if key==scenario_key %}selected{% endif %}>
+                        {{ val.description }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit">Run prediction →</button>
+
+        </form>
+
+        {% if error %}
+        <div class="error">
+            <strong>Error:</strong> {{ error }}
+        </div>
+        {% endif %}
+
+        {% if results %}
+        <div class="results">
+            <h2>{{ target }} — {{ county }}, {{ state }}</h2>
+            <p><strong>Scenario:</strong> {{ description }}</p>
+
+            <table>
+                <tr>
+                    <th>Year</th>
+                    <th>Predicted Value (%)</th>
+                    <th colspan="2">95% Confidence Interval</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Lower</th>
+                    <th>Upper</th>
+                </tr>
+                {% for year, pred, lower, upper in results %}
+                <tr>
+                    <td>{{ year }}</td>
+                    <td>{{ "%.2f"|format(pred) }}</td>
+                    <td>{{ "%.2f"|format(lower) }}</td>
+                    <td>{{ "%.2f"|format(upper) }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>

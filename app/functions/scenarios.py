@@ -48,7 +48,7 @@ SCENARIOS = {
 
 
 def generate_scenario(df: pd.DataFrame, county_name: str, state_abbr: str,
-                      scenario_key: str, horizon: int = 10):
+                      scenario_key: str, horizon: int = 10, baseline_yr: int = 2023):
     """
     Builds synthetic future rows for a county under a given climate scenario.
 
@@ -78,7 +78,7 @@ def generate_scenario(df: pd.DataFrame, county_name: str, state_abbr: str,
     baseline = df[
         (df["County name"] == county_name) &
         (df["StateAbbr"] == state_abbr) &
-        (df["year"] == 2023)
+        (df["year"] == baseline_yr)
     ].copy()
 
     # Removing assert and using if and raise
@@ -90,7 +90,8 @@ def generate_scenario(df: pd.DataFrame, county_name: str, state_abbr: str,
             f"Found {len(baseline)} rows for {county_name}, {state_abbr} in 2023. Expected exactly 1.")
 
     future_rows = []
-    future_years = list(range(2024, 2024 + horizon))
+    next_yr = baseline_yr + 1
+    future_years = list(range(next_yr, next_yr + horizon))
 
     for i, year in enumerate(future_years):
         row = baseline.copy()
