@@ -4,10 +4,12 @@ version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
     "geopy>=2.4.1",
+    "h5netcdf>=1.8.1",
     "ipykernel>=6.0.0",
     "jupyter>=1.1.1",
     "jupyterlab>=4.5.6",
     "matplotlib>=3.10.8",
+    "netcdf4>=1.7.4",
     "numpy>=2.4.4",
     "pandas>=3.0.2",
     "pyarrow>=23.0.1",
@@ -16,5 +18,7 @@ dependencies = [
     "scipy>=1.17.1",
     "seaborn>=0.13.2",
     "statsmodels>=0.14.6",
+    "tqdm>=4.67.3",
+    "xarray>=2026.4.0",
     "xgboost>=3.2.0",
 ]

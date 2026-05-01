@@ -45,7 +45,7 @@
 
     .filter-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns: repeat(3, 1fr);
         gap: 12px;
         margin-bottom: 1.25rem;
     }
@@ -59,6 +59,28 @@
     }
 
     .filter-group select {
+        width: 100%;
+        padding: 7px 8px;
+        border: 1px solid #ccc;
+        border-radius: 7px;
+        font-size: 13px;
+        background: #fff;
+        color: #222;
+    }
+
+    .filter-group-wide {
+        grid-column: 1 / -1;
+    }
+
+    .filter-group-wide label {
+        display: block;
+        font-size: 12px;
+        color: #555;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+
+    .filter-group-wide select {
         width: 100%;
         padding: 7px 8px;
         border: 1px solid #ccc;
@@ -150,11 +172,29 @@
         <form action="/predict" method="POST">
             <div class="filter-grid">
                 <div class="filter-group">
-                    <label>County</label>
-                    <select name="county_state">
+                    <label>State</label>
+                    <select name="state_filter" id="stateFilter">
+                        <option value="">— Select a state —</option>
+                        {% set seen_states = [] %}
                         {% for c in counties %}
-                        <option value="{{ c.county }}|{{ c.state }}" {% if c.county==county and c.state==state %}selected{% endif %}>
-                            {{ c.label }}
+                            {% if c.state not in seen_states %}
+                                {% set _ = seen_states.append(c.state) %}
+                                <option value="{{ c.state }}" {% if c.state == state %}selected{% endif %}>
+                                    {{ c.state }}
+                                </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>County</label>
+                    <select name="county_state" id="countySelect">
+                        <option value="">— Select a state first —</option>
+                        {% for c in counties %}
+                        <option value="{{ c.county }}|{{ c.state }}"
+                            data-state="{{ c.state }}"
+                            {% if c.county==county and c.state==state %}selected{% endif %}>
+                            {{ c.county }}
                         </option>
                         {% endfor %}
                     </select>
@@ -167,7 +207,7 @@
                         {% endfor %}
                     </select>
                 </div>
-                <div class="filter-group">
+                <div class="filter-group-wide">
                     <label>Climate Scenario</label>
                     <select name="scenario">
                         {% for key, val in scenarios.items() %}
@@ -187,6 +227,41 @@
         <strong>Error:</strong> {{ error }}
     </div>
     {% endif %}
+
+    <script>
+        // ── State → County filter ─────────────────────────────────────────
+        const stateFilter  = document.getElementById('stateFilter');
+        const countySelect = document.getElementById('countySelect');
+        const allOptions   = Array.from(countySelect.querySelectorAll('option'));
+
+        function filterCounties(selectedState) {
+            countySelect.innerHTML = '';
+
+            if (!selectedState) {
+                countySelect.appendChild(new Option('— Select a state first —', ''));
+                return;
+            }
+
+            const placeholder = new Option('— Select a county —', '');
+            countySelect.appendChild(placeholder);
+
+            allOptions
+                .filter(o => o.dataset.state === selectedState)
+                .forEach(o => countySelect.appendChild(o.cloneNode(true)));
+
+            // Re-select previously chosen county if it matches the state
+            const previousValue = "{{ county }}|{{ state }}";
+            if (previousValue.endsWith('|' + selectedState)) {
+                countySelect.value = previousValue;
+            }
+        }
+
+        stateFilter.addEventListener('change', () => filterCounties(stateFilter.value));
+
+        // Run on page load to restore state after form submission
+        if (stateFilter.value) filterCounties(stateFilter.value);
+    </script>
+
 
     {% if results %}
     <div class="card">
