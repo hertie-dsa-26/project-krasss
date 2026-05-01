@@ -6,7 +6,7 @@
 ![Jupyter](https://img.shields.io/badge/Jupyter-notebooks-F37626?logo=jupyter)
 ![uv](https://img.shields.io/badge/uv-dependency%20management-6A5ACD)
 
-> **An interactive Flask application for exploring how weather patterns relate to health outcomes across U.S. metropolitan areas from 2013 to 2022.**
+> **An interactive Flask application for exploring how weather patterns relate to health outcomes across U.S. metropolitan areas from 2013 to 2023.**
 
 **Team Members:**
 
@@ -23,27 +23,27 @@
 
 _[Insert Project (App) Name]_ is an interactive Flask-based **data science web application** developed as part of the Data Structures and Algorithms course at the Hertie School.
 
-The project combines public data from NOAA, the CDC, and the U.S. Census to examine how **weather patterns** relate to **health outcomes** across U.S. metropolitan areas between 2013 and 2022. The integrated dataset supports both exploratory analysis and predictive modeling, with a focus on the following outcomes: physical distress, mental distress, asthma, and sleep.
+The project combines public data from NOAA, the CDC, and the U.S. Census to examine how **weather patterns** relate to **health outcomes** across U.S. metropolitan areas between 2013 and 2023. The integrated dataset supports both exploratory analysis and predictive modeling, with a focus on the following outcomes: physical distress, mental distress, asthma, and sleep.
 
-The project also emphasizes **software engineering principles**, including modular design, testing, efficient algorithm implementation, and collaborative development under a Scrum-based workflow. It includes a manual implementation of **Kernel Ridge Regression** (with a Gaussian kernel) to support transparent and interpretable modeling.
+The project includes a manual implementation of **Kernel Ridge Regression** (with a Gaussian kernel) to support transparent and interpretable modeling. It also emphasizes **software engineering principles**, including modular design, testing, efficient algorithm implementation, and collaborative development under a Scrum-based workflow.
 
 
 ## ✨ Features
 
 * **Interactive exploration and visualization** of weather, health, and socioeconomic data.  
 * An **integrated dataset** spanning multiple public sources (NOAA, CDC, and U.S. Census).  
-* A custom implementation of **Kernel Ridge Regression with a Gaussian kernel**.  
+* A custom implementation of **Kernel Ridge Regression** with a Gaussian kernel.  
 * A **Flask-based interface** for end-to-end analysis.  
 
 
 ## 📊 Data
-The project integrates multiple publicly available datasets, aligned at the **Metropolitan Statistical Area (MSA) level** over the period **2013--2022**:
+The project integrates multiple publicly available datasets, aligned at the **Metropolitan Statistical Area (MSA) level** over the period **2013--2023**:
 
 | Dataset          | Unit of Analysis       | Years       | Description                              | Source |
 |------------------|----------------------|------------|------------------------------------------|--------|
-| NOAA GSOY        | Station → MSA-year   | 2013--2022  | Weather data (e.g., temperature, precipitation) | [NOAA](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-year) |
-| CDC Places       | Place / MSA          | 2013--2022  | Health outcomes (e.g., asthma, sleep)     | [CDC](https://data.cdc.gov/browse?category=500+Cities+%26+Places) |
-| US Census ACS    | MSA (CBSA)           | 2013--2022  | Socioeconomic and demographic variables   | [U.S. Census](https://data.census.gov/table) |
+| NOAA GSOY        | Station → MSA-year   | 2013--2023  | Weather data (e.g., temperature, precipitation) | [NOAA](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-year) |
+| CDC Places       | Place / MSA          | 2013--2023  | Health outcomes (e.g., asthma, sleep)     | [CDC](https://data.cdc.gov/browse?category=500+Cities+%26+Places) |
+| US Census ACS    | MSA (CBSA)           | 2013--2023  | Socioeconomic and demographic variables   | [U.S. Census](https://data.census.gov/table) |
 
 The final dataset contains **6,646 rows** and **52 columns**.
 
