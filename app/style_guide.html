@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Style Guide — Climate & Health Explorer</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: sans-serif; background: #f5f7f5; color: #222; padding: 2rem; }
+
+    /* ── GUIDE LAYOUT ── */
+    .guide-wrap { max-width: 960px; margin: 0 auto; }
+    .guide-title { font-size: 28px; font-weight: 700; color: #1a3a2a; margin-bottom: 6px; }
+    .guide-sub { font-size: 14px; color: #666; margin-bottom: 2.5rem; }
+    .section { margin-bottom: 3rem; }
+    .section-title { font-size: 13px; font-weight: 700; color: #999; text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 1rem; padding-bottom: 8px; border-bottom: 1px solid #e0e0e0; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 1rem; align-items: flex-start; }
+    .label { font-size: 11px; color: #999; margin-top: 6px; }
+    .code { font-family: monospace; font-size: 11px; background: #f0f0f0; padding: 2px 6px;
+      border-radius: 4px; color: #555; margin-top: 4px; display: inline-block; }
+
+    /* ── COLORS ── */
+    .swatch { width: 80px; }
+    .swatch-box { height: 56px; border-radius: 8px; margin-bottom: 4px; }
+
+    /* ── TYPOGRAPHY ── */
+    .type-sample { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 1.5rem 2rem; width: 100%; }
+
+    /* ── COMPONENTS (replicate from app) ── */
+    .card { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1.25rem; }
+    .snap-card { border-radius: 12px; padding: 1.1rem 1.25rem; min-width: 160px; }
+    .snap-icon { width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center;
+      justify-content: center; font-size: 20px; margin-bottom: 6px; }
+    .snap-label { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+    .snap-value { font-size: 28px; font-weight: 700; line-height: 1.1; }
+    .snap-sub { font-size: 11px; margin-top: 3px; }
+    .btn-primary { padding: 8px 20px; background: #1a3a2a; color: #fff; border: none;
+      border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 600; }
+    .btn-primary:hover { background: #2d5a3d; }
+    .section-label-demo { font-size: 11px; font-weight: 700; color: #999; text-transform: uppercase;
+      letter-spacing: 0.08em; margin-bottom: 8px; }
+    .filter-group label { display: block; font-size: 12px; color: #555; margin-bottom: 5px; font-weight: 500; }
+    .filter-group select { width: 100%; padding: 7px 8px; border: 1px solid #ccc;
+      border-radius: 7px; font-size: 13px; background: #fff; }
+    .insight-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1rem 1.25rem; min-width: 200px; max-width: 280px; }
+    .insight-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center;
+      justify-content: center; font-size: 20px; margin-bottom: 8px; }
+    .insight-title { font-size: 13px; font-weight: 700; color: #1a3a2a; margin-bottom: 4px; }
+    .insight-body { font-size: 12px; color: #666; line-height: 1.6; }
+    .insight-stat { font-size: 13px; font-weight: 700; margin-top: 8px; }
+    .tab { font-size: 12px; padding: 5px 14px; border-radius: 6px; border: 1px solid #ddd;
+      cursor: pointer; background: #fff; color: #666; font-weight: 500; display: inline-block; }
+    .tab.active { background: #1a3a2a; color: #fff; border-color: #1a3a2a; }
+    .checkbox-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px;
+      color: #555; cursor: pointer; background: #f7f9f7; border: 1px solid #e0e0e0;
+      border-radius: 6px; padding: 5px 10px; }
+    .checkbox-pill.active { background: #1a3a2a; color: #fff; border-color: #1a3a2a; }
+    .divider { border: none; border-top: 1px solid #eee; margin: 1rem 0; }
+    .section-header-demo { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
+    .section-header-demo h2 { font-size: 17px; font-weight: 700; color: #1a3a2a; }
+    .section-header-demo span { font-size: 12px; color: #999; }
+  </style>
+</head>
+<body>
+<div class="guide-wrap">
+
+  <p class="guide-title">Climate & Health Explorer — Style Guide</p>
+  <p class="guide-sub">Reference for building consistent pages across the app. Use these colors, typography rules, and components exactly.</p>
+
+  <!-- ── COLORS ── -->
+  <div class="section">
+    <div class="section-title">Color palette</div>
+
+    <p style="font-size:12px;color:#666;margin-bottom:12px;"><strong>Primary green</strong> — used for headings, buttons, active states, and key UI elements</p>
+    <div class="row">
+      <div class="swatch">
+        <div class="swatch-box" style="background:#1a3a2a;"></div>
+        <div class="label">Primary</div>
+        <div class="code">#1a3a2a</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:#2d5a3d;"></div>
+        <div class="label">Hover</div>
+        <div class="code">#2d5a3d</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:#f0f7f4;"></div>
+        <div class="label">Light tint</div>
+        <div class="code">#f0f7f4</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:#c6e8d8;border:1px solid #e0e0e0;"></div>
+        <div class="label">Icon bg</div>
+        <div class="code">#c6e8d8</div>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:#666;margin-bottom:12px;margin-top:1rem;"><strong>Neutrals</strong> — backgrounds, borders, text</p>
+    <div class="row">
+      <div class="swatch">
+        <div class="swatch-box" style="background:#fff;border:1px solid #e0e0e0;"></div>
+        <div class="label">White / card bg</div>
+        <div class="code">#ffffff</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:#f5f7f5;border:1px solid #e0e0e0;"></div>
+        <div class="label">Page bg</div>
+        <div class="code">#f5f7f5</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:#e0e0e0;"></div>
+        <div class="label">Border</div>
+        <div class="code">#e0e0e0</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:#eee;"></div>
+        <div class="label">Divider</div>
+        <div class="code">#eeeeee</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:#222;"></div>
+        <div class="label">Body text</div>
+        <div class="code">#222222</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:#555;"></div>
+        <div class="label">Secondary text</div>
+        <div class="code">#555555</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:#999;"></div>
+        <div class="label">Tertiary / label</div>
+        <div class="code">#999999</div>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:#666;margin-bottom:12px;margin-top:1rem;"><strong>Semantic colors</strong> — status and comparison indicators</p>
+    <div class="row">
+      <div class="swatch">
+        <div class="swatch-box" style="background:#b91c1c;"></div>
+        <div class="label">Above avg / warning</div>
+        <div class="code">#b91c1c</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:#15803d;"></div>
+        <div class="label">Below avg / good</div>
+        <div class="code">#15803d</div>
+      </div>
+    </div>
+
+    <p style="font-size:12px;color:#666;margin-bottom:12px;margin-top:1rem;"><strong>Variable theme colors</strong> — each variable category has its own color pair (light → dark for map gradients)</p>
+    <div class="row">
+      <div class="swatch">
+        <div class="swatch-box" style="background:linear-gradient(to right,#dbeafe,#1d4ed8);"></div>
+        <div class="label">Mental distress</div>
+        <div class="code">#dbeafe → #1d4ed8</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:linear-gradient(to right,#d1fae5,#065f46);"></div>
+        <div class="label">Poor sleep</div>
+        <div class="code">#d1fae5 → #065f46</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:linear-gradient(to right,#fef3c7,#92400e);"></div>
+        <div class="label">Asthma / weather</div>
+        <div class="code">#fef3c7 → #92400e</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:linear-gradient(to right,#fee2e2,#991b1b);"></div>
+        <div class="label">Physical distress</div>
+        <div class="code">#fee2e2 → #991b1b</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-box" style="background:linear-gradient(to right,#ede9fe,#4c1d95);"></div>
+        <div class="label">Blood pressure</div>
+        <div class="code">#ede9fe → #4c1d95</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TYPOGRAPHY ── -->
+  <div class="section">
+    <div class="section-title">Typography</div>
+    <div class="type-sample">
+      <p style="font-size:26px;font-weight:700;color:#1a3a2a;margin-bottom:8px;">Page title — 26px / 700 / #1a3a2a</p>
+      <p style="font-size:17px;font-weight:700;color:#1a3a2a;margin-bottom:8px;">Section heading — 17px / 700 / #1a3a2a</p>
+      <p style="font-size:14px;font-weight:400;color:#666;margin-bottom:8px;">Page subtitle — 14px / 400 / #666</p>
+      <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:8px;">Card title — 13px / 600 / #1a3a2a</p>
+      <p style="font-size:13px;font-weight:400;color:#222;margin-bottom:8px;">Body text — 13px / 400 / #222</p>
+      <p style="font-size:12px;font-weight:400;color:#555;margin-bottom:8px;">Secondary body — 12px / 400 / #555 · line-height 1.6</p>
+      <p style="font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">SECTION LABEL — 11px / 700 / uppercase / #999</p>
+      <p style="font-size:11px;font-weight:400;color:#999;margin-bottom:8px;">Caption / meta — 11px / 400 / #999</p>
+      <p style="font-size:28px;font-weight:700;color:#1a3a2a;">731 <span style="font-size:11px;font-weight:400;color:#999;">snapshot value — 28px / 700</span></p>
+    </div>
+    <div class="label" style="margin-top:8px;">Font family: <span class="code">font-family: sans-serif</span> — system default sans-serif throughout</div>
+  </div>
+
+  <!-- ── SPACING ── -->
+  <div class="section">
+    <div class="section-title">Spacing & layout</div>
+    <div class="card" style="font-size:13px;color:#555;line-height:2;">
+      <p><strong>Page max-width:</strong> 1100px, centered, padding 1.5rem</p>
+      <p><strong>Card padding:</strong> 1.25rem (20px)</p>
+      <p><strong>Card border-radius:</strong> 12px</p>
+      <p><strong>Card border:</strong> 1px solid #e0e0e0</p>
+      <p><strong>Card gap (grid):</strong> 12px between cards</p>
+      <p><strong>Section divider margin:</strong> 1.5rem top and bottom</p>
+      <p><strong>Section label margin-bottom:</strong> 8–10px</p>
+      <p><strong>Filter bar grid:</strong> repeat(auto-fit, minmax(180px, 1fr))</p>
+    </div>
+  </div>
+
+  <!-- ── COMPONENTS ── -->
+  <div class="section">
+    <div class="section-title">Components</div>
+
+    <!-- Snapshot cards -->
+    <p style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px;">Snapshot cards</p>
+    <div class="row" style="margin-bottom:1.5rem;">
+      <div class="snap-card" style="background:#f0f7f4;">
+        <div class="snap-icon" style="background:#c6e8d8;">🗺️</div>
+        <div class="snap-label" style="color:#1a5c3a;">Counties</div>
+        <div class="snap-value" style="color:#1a3a2a;">731</div>
+        <div class="snap-sub" style="color:#4a8a6a;">unique counties in dataset</div>
+      </div>
+      <div class="snap-card" style="background:#f0f4ff;">
+        <div class="snap-icon" style="background:#c7d7f8;">📅</div>
+        <div class="snap-label" style="color:#1e3a8a;">Years covered</div>
+        <div class="snap-value" style="color:#1e3a8a;">11</div>
+        <div class="snap-sub" style="color:#4a6ab0;">2013 – 2023</div>
+      </div>
+      <div class="snap-card" style="background:#fff5f5;">
+        <div class="snap-icon" style="background:#fecaca;">📅</div>
+        <div class="snap-label" style="color:#991b1b;">Example red card</div>
+        <div class="snap-value" style="color:#7f1d1d;">41</div>
+        <div class="snap-sub" style="color:#b45151;">subtitle text here</div>
+      </div>
+      <div class="snap-card" style="background:#fffbeb;">
+        <div class="snap-icon" style="background:#fde68a;">📊</div>
+        <div class="snap-label" style="color:#92400e;">Example amber card</div>
+        <div class="snap-value" style="color:#78350f;">99</div>
+        <div class="snap-sub" style="color:#b45309;">subtitle text here</div>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <p style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px;">Buttons</p>
+    <div class="row" style="margin-bottom:1.5rem;align-items:center;">
+      <button class="btn-primary">Apply filters</button>
+      <button class="btn-primary">Update charts</button>
+      <div class="label">Primary button: bg #1a3a2a · hover #2d5a3d · border-radius 7px · font-size 13px / 600</div>
+    </div>
+
+    <!-- Tabs -->
+    <p style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px;">Tabs</p>
+    <div class="row" style="margin-bottom:1.5rem;">
+      <div class="tab active">Trend line</div>
+      <div class="tab">State × year heatmap</div>
+      <div class="label">Active: bg #1a3a2a · Inactive: bg #fff border #ddd</div>
+    </div>
+
+    <!-- Checkbox pills -->
+    <p style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px;">Checkbox pills (demographic filter)</p>
+    <div class="row" style="margin-bottom:1.5rem;">
+      <div class="checkbox-pill active">✓ Median income</div>
+      <div class="checkbox-pill">% less than HS</div>
+      <div class="checkbox-pill">% college educated</div>
+      <div class="checkbox-pill">% Black</div>
+      <div class="label">Selected: bg #1a3a2a text #fff · Unselected: bg #f7f9f7 border #e0e0e0</div>
+    </div>
+
+    <!-- Section header -->
+    <p style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px;">Section header</p>
+    <div class="card" style="margin-bottom:1.5rem;">
+      <div class="section-header-demo">
+        <h2>Patterns over time</h2>
+        <span>Annual averages · 2013–2023</span>
+      </div>
+      <div class="label">h2: 17px / 700 / #1a3a2a · span: 12px / #999</div>
+    </div>
+
+    <!-- Filter group -->
+    <p style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px;">Filter dropdowns</p>
+    <div class="card" style="margin-bottom:1.5rem;">
+      <div class="section-label-demo">Filters</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;max-width:600px;">
+        <div class="filter-group">
+          <label>Health variable</label>
+          <select><option>Mental distress (MHLTH)</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Weather variable</label>
+          <select><option>Avg temperature (TAVG)</option></select>
+        </div>
+        <div class="filter-group">
+          <label>Year range</label>
+          <select><option>2013 – 2023</option></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Insight card -->
+    <p style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px;">Insight cards</p>
+    <div class="row" style="margin-bottom:1.5rem;">
+      <div class="insight-card">
+        <div class="insight-icon" style="background:#fef3c7;">💰</div>
+        <div class="insight-title">Income is the strongest predictor</div>
+        <div class="insight-body">Counties in the lowest income quartile report 15.9% mental distress vs 14.6% in the highest quartile.</div>
+        <div class="insight-stat" style="color:#92400e;">r = −0.57 with COPD</div>
+      </div>
+      <div class="insight-card">
+        <div class="insight-icon" style="background:#dbeafe;">🎓</div>
+        <div class="insight-title">Education tracks closely with income</div>
+        <div class="insight-body">Counties with higher college-educated shares show lower rates of physical distress, COPD, and blood pressure.</div>
+        <div class="insight-stat" style="color:#1d4ed8;">r = −0.52 with physical distress</div>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <p style="font-size:12px;font-weight:600;color:#555;margin-bottom:8px;">Section divider</p>
+    <div class="card">
+      <p style="font-size:12px;color:#555;margin-bottom:12px;">Content above divider</p>
+      <hr class="divider">
+      <p style="font-size:12px;color:#555;margin-top:12px;">Content below divider</p>
+      <div class="label">border-top: 1px solid #eee · margin: 1.5rem 0</div>
+    </div>
+  </div>
+
+  <!-- ── FLASK TEMPLATE RULES ── -->
+  <div class="section">
+    <div class="section-title">Flask template rules</div>
+    <div class="card" style="font-size:13px;color:#555;line-height:2.2;">
+      <p><strong>Every page:</strong> <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">{% extends "base.html" %}</code> at the top</p>
+      <p><strong>Page title:</strong> <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">{% block title %}Page Name — Climate & Health Explorer{% endblock %}</code></p>
+      <p><strong>Content:</strong> wrapped in <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">{% block content %} ... {% endblock %}</code></p>
+      <p><strong>Wrapper div:</strong> <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">&lt;div class="eda-wrap"&gt;</code> with max-width 1100px centered</p>
+      <p><strong>D3.js:</strong> load from <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js</code></p>
+      <p><strong>API calls:</strong> always use <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">fetch('/api/endpoint')</code> — never hardcode data in the HTML</p>
+      <p><strong>New routes:</strong> add to <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">app/main.py</code> above the <code style="background:#f0f0f0;padding:2px 6px;border-radius:4px;">if __name__ == '__main__':</code> line</p>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
