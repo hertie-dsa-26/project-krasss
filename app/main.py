@@ -1,6 +1,11 @@
 from flask import Flask, render_template, jsonify, request
 import pandas as pd
 import os
+import sys
+import numpy as np
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "functions"))
+from functions import train
+from functions import scenarios
 
 app = Flask(__name__)
 
@@ -54,10 +59,95 @@ def explore():
     )
 
 # Route: Predict
-@app.route('/predict')
+@app.route("/predict", methods=["GET", "POST"])
 def predict():
-    counties = sorted(df['County name'].unique().tolist())
-    return render_template('predict.html', counties=counties)
+    county_options = (
+        df[["County name", "StateAbbr"]]
+        .drop_duplicates()
+        .dropna()
+        .sort_values(["StateAbbr", "County name"])
+    )
+    COUNTIES = [
+        {
+            "label":  f"{row['County name']}, {row['StateAbbr']}",
+            "county": row["County name"],
+            "state":  row["StateAbbr"]
+        }
+        for _, row in county_options.iterrows()
+    ]
+
+    TARGETS = ['CASTHMA', 'MHLTH', 'PHLTH', 'STROKE', 'SLEEP']
+
+    print(f" Data loaded: {len(df)} rows")
+    print(f" County options: {len(COUNTIES)}")
+    print(f" Targets: {TARGETS}")
+    print(f" Scenarios: {list(scenarios.SCENARIOS.keys())}")
+
+    error = None
+    results = None
+    historical = []
+    county = state = target = scenario_key = None
+
+    if request.method == "POST":
+        try:
+            # ── Get form inputs ───────────────────────────────────────────
+            county_state = request.form["county_state"]
+            county, state = county_state.split("|")
+            target = request.form["target"]
+            scenario_key = request.form["scenario"]
+
+            print(
+                f"  → county={county} | state={state} | target={target} | scenario={scenario_key}")
+
+            # ── Load pre-fitted model and preprocessor ────────────────────
+            model, preprocessor = train.load_model(target)
+
+            # ── Generate synthetic future rows ────────────────────────────
+            X_future, future_years = scenarios.generate_scenario(
+                df, county, state, scenario_key)
+
+            # ── Preprocess and predict ────────────────────────────────────
+            X_scaled = preprocessor.transform(X_future.to_numpy())
+            y_pred, lower, upper = model.predict_interval(X_scaled)
+
+            # ── Build results ─────────────────────────────────────────────
+            results = list(zip(
+                future_years,
+                y_pred.round(2).tolist(),
+                lower.round(2).tolist(),   # add lower bound
+                upper.round(2).tolist()    # add upper bound
+            ))
+
+            # ── Historical data for this county/state/target ──────────────
+            hist = (
+                df[(df["County name"] == county) & (df["StateAbbr"] == state)]
+                .groupby("year")[target]
+                .mean()
+                .dropna()
+                .sort_index()
+            )
+            historical = [{"year": int(y), "value": round(float(v), 2)} for y, v in hist.items()]
+
+        except Exception as e:
+            error = "There was a prediction error. Please try again."
+            historical = []
+            print(f"Error during prediction: {e}")
+
+    return render_template(
+        "predict.html",
+        counties=COUNTIES,
+        targets=TARGETS,
+        scenarios=scenarios.SCENARIOS,
+        results=results,
+        error=error,
+        historical=historical if not error else [],
+        county=county if not error else None,
+        state=state if not error else None,
+        target=target if not error else None,
+        scenario_key=scenario_key if not error else None,
+        description=scenarios.SCENARIOS[scenario_key]["description"] if (
+            scenario_key and not error) else None
+    )
 
 @app.route('/api/summary', methods=['POST'])
 def summary_stats():

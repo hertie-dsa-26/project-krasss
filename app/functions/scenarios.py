@@ -29,22 +29,67 @@ import pandas as pd
 
 # ── AVAILABLE SCENARIOS ───────────────────────────────────────────────────────
 
-# Each scenario defines which climate variable changes and by how much per year.
-# All other features are held constant at their 2023 values for the selected county.
-# Add new scenarios here — the Flask app will pick them up automatically.
+# Each scenario applies a multiplier to the historically observed trend per variable.
+# A multiplier > 1 accelerates the trend, < 1 dampens it.
+# Variables with no meaningful trend (e.g. PRCP) use a small noise factor instead.
+
 SCENARIOS = {
-    "tavg_increase_0.1": {
-        "description": "TAVG increases by 0.1°C per year",
-        "variable":     "TAVG",
-        "delta_per_year": 0.1
+    "low_warming": {
+        "description": "Low warming — trends continue at a reduced rate (SSP1-2.6 analogue)",
+        "trend_multiplier": 0.5,
     },
-    "tavg_increase_0.5": {
-        "description": "TAVG increases by 0.5°C per year",
-        "variable":     "TAVG",
-        "delta_per_year": 0.5
+    "middle_road": {
+        "description": "Middle-of-the-road — trends continue at historical rate (SSP2-4.5 analogue)",
+        "trend_multiplier": 1.0,
+    },
+    "high_warming": {
+        "description": "High warming — trends accelerate moderately (SSP3-7.0 analogue)",
+        "trend_multiplier": 1.75,
+    },
+    "very_high_warming": {
+        "description": "Very high warming — trends accelerate strongly (SSP5-8.5 analogue)",
+        "trend_multiplier": 2.5,
     }
-    # add more scenarios here
 }
+
+# Variables to apply trend projection to.
+# Others are held constant at their 2023 baseline value.
+TREND_VARS = ["TAVG", "TMAX", "TMIN", "CLDD", "HTDD", "DT100", "DX90", "EMXT", "EMNT"]
+PRECIP_VARS = ["PRCP"]  # handled separately — no strong directional trend assumed
+# Variables expected to INCREASE under warming — slope must be positive
+WARMING_POSITIVE = ["TAVG", "TMAX", "TMIN", "CLDD", "DT100", "DX90", "EMXT"]
+# Variables expected to DECREASE under warming — slope must be negative
+WARMING_NEGATIVE = ["HTDD", "EMNT"]
+
+
+def _compute_trend(df: pd.DataFrame, county_name: str, state_abbr: str, variable: str) -> float:
+    """
+    Fits a linear trend (slope per year) for a given variable in a given county
+    using all available historical data.
+
+    Returns:
+        float: slope (change per year). Returns 0.0 if insufficient data.
+    """
+    county_df = df[
+        (df["County name"] == county_name) &
+        (df["StateAbbr"] == state_abbr) &
+        df[variable].notna()
+    ][["year", variable]].drop_duplicates().sort_values("year")
+
+    if len(county_df) < 3:
+        return 0.0
+
+    x = county_df["year"].values
+    y = county_df[variable].values
+    slope = np.polyfit(x, y, 1)[0]
+    
+    # Enforce physically consistent direction for warming scenarios
+    if variable in WARMING_POSITIVE:
+        slope = abs(slope)       # must be positive (increasing)
+    elif variable in WARMING_NEGATIVE:
+        slope = -abs(slope)      # must be negative (decreasing)
+
+    return float(slope)
 
 
 def generate_scenario(df: pd.DataFrame, county_name: str, state_abbr: str,
@@ -52,65 +97,61 @@ def generate_scenario(df: pd.DataFrame, county_name: str, state_abbr: str,
     """
     Builds synthetic future rows for a county under a given climate scenario.
 
-    Takes the 2023 row for the selected county as a baseline and creates
-    one row per future year, applying the scenario delta cumulatively.
-    All features other than the scenario variable are held constant at
-    their 2023 values.
+    For each trend variable, fits a linear trend on all available historical data
+    for that county, then projects forward by applying the scenario multiplier
+    to that trend cumulatively each year.
 
     Args:
-        df (pd.DataFrame):  Full dataset — needed to find the 2023 baseline row
-        county_name (str):  Selected county — must match exactly as it appears in the dataset
-        state_abbr (str):   State abbreviation e.g. 'MI' — needed because county
-                            names are not unique across states
-        scenario_key (str): Key from the SCENARIOS dict e.g. 'tavg_increase_0.1'
-        horizon (int):      Number of future years to generate — default 10
+        df (pd.DataFrame):  Full dataset
+        county_name (str):  Selected county
+        state_abbr (str):   State abbreviation e.g. 'MI'
+        scenario_key (str): One of 'low_warming', 'middle_road', 'high_warming', 'very_high_warming'
+        horizon (int):      Number of future years — default 10
+        baseline_yr (int):  Year to use as baseline — default 2023
 
     Returns:
-        X_future (pd.DataFrame): Feature matrix with horizon rows ready for
-                                 preprocessor.transform() — NOT yet scaled
-        future_years (list):     Corresponding years e.g. [2024, 2025, ..., 2033]
+        X_future (pd.DataFrame): Feature matrix ready for preprocessor.transform()
+        future_years (list):     e.g. [2024, 2025, ..., 2033]
     """
     scenario = SCENARIOS[scenario_key]
+    multiplier = scenario["trend_multiplier"]
 
-    # Filter by both county name and state to get a unique row.
-    # County names alone are not unique — e.g. CLINTON COUNTY exists in
-    # multiple states. StateAbbr ensures we get exactly one baseline row.
     baseline = df[
         (df["County name"] == county_name) &
         (df["StateAbbr"] == state_abbr) &
         (df["year"] == baseline_yr)
     ].copy()
 
-    # Removing assert and using if and raise
     if len(baseline) == 0:
-        raise ValueError(
-            f"No data found for {county_name}, {state_abbr} in 2023.")
+        raise ValueError(f"No data found for {county_name}, {state_abbr} in {baseline_yr}.")
     if len(baseline) > 1:
-        raise ValueError(
-            f"Found {len(baseline)} rows for {county_name}, {state_abbr} in 2023. Expected exactly 1.")
+        raise ValueError(f"Found {len(baseline)} rows for {county_name}, {state_abbr} in {baseline_yr}. Expected exactly 1.")
+
+    # Pre-compute trends for all trend variables
+    trends = {}
+    for var in TREND_VARS:
+        if var in df.columns:
+            trends[var] = _compute_trend(df, county_name, state_abbr, var) * multiplier
 
     future_rows = []
-    next_yr = baseline_yr + 1
-    future_years = list(range(next_yr, next_yr + horizon))
+    future_years = list(range(baseline_yr + 1, baseline_yr + 1 + horizon))
 
     for i, year in enumerate(future_years):
         row = baseline.copy()
         row["year"] = year
 
-        # Apply the scenario delta cumulatively
-        # Year 1 gets +0.1, year 2 gets +0.2, year 3 gets +0.3 etc.
-        row[scenario["variable"]] += scenario["delta_per_year"] * (i + 1)
+        # Apply projected trend cumulatively from baseline year
+        for var, slope in trends.items():
+            row[var] = baseline[var].values[0] + slope * (i + 1)
 
         future_rows.append(row)
 
     X_future = pd.concat(future_rows, ignore_index=True)
 
-    # Drop identifier columns and health variables — must match prepare_data() in splitter.py
-    # What remains are the 28 feature columns that the model was trained on
     drop_cols = ['year', 'StateAbbr', 'County name', 'CountyFIPS',
                  'STATION', 'STATION_NAME',
                  'BPHIGH', 'CASTHMA', 'COPD', 'MHLTH', 'PHLTH', 'SLEEP', 'STROKE']
 
-    X_future = X_future.drop(columns=drop_cols)
+    X_future = X_future.drop(columns=[c for c in drop_cols if c in X_future.columns])
 
     return X_future, future_years

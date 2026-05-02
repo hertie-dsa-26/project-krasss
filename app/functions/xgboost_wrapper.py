@@ -47,7 +47,7 @@ class XGBoostWrapper:
         y_hat               = self.predict(X_cal)
         self.cal_residuals_ = np.abs(y_cal - y_hat)
 
-    def predict_interval(self, X_test: np.ndarray, confidence: float = 0.95) -> tuple:
+    def predict_interval(self, X_test: np.ndarray, confidence: float = 0.9) -> tuple:
         """
         Returns (y_pred, lower, upper) using XGBoost quantile regression.
         Optionally corrected with conformal calibration if calibrate() was called.

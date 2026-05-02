@@ -53,11 +53,11 @@ DATA_PATH = "../../data/merged_final_transformed.csv"
 MODELS_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
 TARGETS = ['CASTHMA', 'MHLTH', 'PHLTH', 'STROKE', 'SLEEP']
 XGB_TARGETS = {"SLEEP"}
-RFF_R_GRID     = [200, 500]
+RFF_R_GRID     = [200, 500, 1000]
 RFF_SIGMA_GRID = [0.1, 0.5, 1.0, 2.0]
 RFF_LAMB_GRID  = [1e-5, 1e-3, 1e-1]
 XGB_N_ESTIMATORS_GRID  = [100, 300]
-XGB_MAX_DEPTH_GRID     = [3, 4, 6]
+XGB_MAX_DEPTH_GRID     = [4, 6, 8]
 XGB_LEARNING_RATE_GRID = [0.01, 0.05, 0.1]
 
 
