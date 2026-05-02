@@ -56,6 +56,10 @@ SCENARIOS = {
 # Others are held constant at their 2023 baseline value.
 TREND_VARS = ["TAVG", "TMAX", "TMIN", "CLDD", "HTDD", "DT100", "DX90", "EMXT", "EMNT"]
 PRECIP_VARS = ["PRCP"]  # handled separately — no strong directional trend assumed
+# Variables expected to INCREASE under warming — slope must be positive
+WARMING_POSITIVE = ["TAVG", "TMAX", "TMIN", "CLDD", "DT100", "DX90", "EMXT"]
+# Variables expected to DECREASE under warming — slope must be negative
+WARMING_NEGATIVE = ["HTDD", "EMNT"]
 
 
 def _compute_trend(df: pd.DataFrame, county_name: str, state_abbr: str, variable: str) -> float:
@@ -78,6 +82,13 @@ def _compute_trend(df: pd.DataFrame, county_name: str, state_abbr: str, variable
     x = county_df["year"].values
     y = county_df[variable].values
     slope = np.polyfit(x, y, 1)[0]
+    
+    # Enforce physically consistent direction for warming scenarios
+    if variable in WARMING_POSITIVE:
+        slope = abs(slope)       # must be positive (increasing)
+    elif variable in WARMING_NEGATIVE:
+        slope = -abs(slope)      # must be negative (decreasing)
+
     return float(slope)
 
 
