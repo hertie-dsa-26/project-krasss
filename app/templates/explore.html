@@ -13,16 +13,8 @@
   .section-header h2 { font-size: 17px; font-weight: 700; color: #1a3a2a; }
   .section-header span { font-size: 12px; color: #999; }
 
-  /* SNAPSHOT */
-  .snapshot-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.5rem; }
-  .snap-card { border-radius: 12px; padding: 1.1rem 1.25rem; opacity: 0; animation: fadeUp 0.5s ease forwards; }
-  .snap-card:nth-child(1){animation-delay:0.1s;} .snap-card:nth-child(2){animation-delay:0.25s;}
-  .snap-card:nth-child(3){animation-delay:0.4s;} .snap-card:nth-child(4){animation-delay:0.55s;}
-  @keyframes fadeUp { from{opacity:0;transform:translateY(8px);} to{opacity:1;transform:translateY(0);} }
-  .snap-icon { font-size: 22px; width: 42px; height: 42px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 6px; }
-  .snap-label { font-size: 12px; font-weight: 600; }
-  .snap-value { font-size: 28px; font-weight: 700; line-height: 1.1; }
-  .snap-sub { font-size: 11px; margin-top: 3px; }
+
+
 
   /* FILTERS */
   .filter-bar { display: grid; grid-template-columns: 1fr 1fr 2fr auto; gap: 12px; align-items: end; }
@@ -93,35 +85,8 @@
   <p class="page-title">Exploratory data analysis</p>
   <p class="page-sub">Explore health outcomes and weather patterns across U.S. counties · 2013–2023</p>
 
-  <!-- SNAPSHOT -->
-  <div class="section-label">Dataset at a glance</div>
-  <div class="snapshot-grid">
-    <div class="snap-card" style="background:#f0f4ff;">
-      <div class="snap-icon" style="background:#c7d7f8;">🏛️</div>
-      <div class="snap-label" style="color:#1e3a8a;">States covered</div>
-      <div class="snap-value" style="color:#1e3a8a;" id="snap-states">—</div>
-      <div class="snap-sub" style="color:#4a6ab0;">US states in dataset</div>
-    </div>
-    <div class="snap-card" style="background:#f0f7f4;">
-      <div class="snap-icon" style="background:#c6e8d8;">🗺️</div>
-      <div class="snap-label" style="color:#1a5c3a;">Counties covered</div>
-      <div class="snap-value" style="color:#1a3a2a;" id="snap-counties">—</div>
-      <div class="snap-sub" style="color:#4a8a6a;">unique counties in dataset</div>
-    </div>
-    <div class="snap-card" style="background:#fff5f5;">
-      <div class="snap-icon" style="background:#fecaca;">📅</div>
-      <div class="snap-label" style="color:#991b1b;">Years covered</div>
-      <div class="snap-value" style="color:#7f1d1d;" id="snap-years">—</div>
-      <div class="snap-sub" style="color:#b45151;">2013 – 2023</div>
-    </div>
-    <div class="snap-card" style="background:#fffbeb;">
-      <div class="snap-icon" style="background:#fde68a;">📊</div>
-      <div class="snap-label" style="color:#92400e;">Variables tracked</div>
-      <div class="snap-value" style="color:#78350f;" id="snap-vars">—</div>
-      <div class="snap-sub" style="color:#b45309;">across health, weather &amp; demographics</div>
-    </div>
-  </div>
- 
+
+
 
   <!-- FILTERS -->
   <div class="card">
@@ -140,8 +105,8 @@
           <option value="SLEEP">Poor sleep (SLEEP)</option>
           <option value="CASTHMA">Asthma (CASTHMA)</option>
           <option value="PHLTH">Physical distress (PHLTH)</option>
-          <option value="BPHIGH">High blood pressure</option>
-          <option value="COPD">COPD</option>
+          <option value="BPHIGH" style="display:none;"></option>
+          <option value="COPD" style="display:none;"></option>
           <option value="STROKE">Stroke</option>
         </select>
       </div>
@@ -265,8 +230,8 @@
       <option value="SLEEP">Poor sleep (SLEEP)</option>
       <option value="CASTHMA">Asthma (CASTHMA)</option>
       <option value="PHLTH">Physical distress (PHLTH)</option>
-      <option value="BPHIGH">High blood pressure</option>
-      <option value="COPD">COPD</option>
+      <option value="BPHIGH" style="display:none;"></option>
+      <option value="COPD" style="display:none;"></option>
       <option value="STROKE">Stroke</option>
     </select>
   </div>
@@ -373,13 +338,13 @@
  
     <div class="insight-card">
       <div class="insight-icon" style="background:#fef3c7;">💰</div>
-      <div class="insight-title">Income is the strongest predictor of health</div>
+      <div class="insight-title">Income is the most strongly correlated with health</div>
       <div class="insight-body">
         Median household income shows the strongest correlations with health outcomes across the dataset.
         Counties in the lowest income quartile report 15.9% mental distress on average vs 14.6% in the highest —
-        and the gap is even larger for COPD (r = −0.57) and stroke (r = −0.51).
+        and the gap is even larger for stroke (r = −0.51) and physical distress (r = −0.47).
       </div>
-      <div class="insight-stat" style="color:#92400e;">r = −0.57 with COPD · strongest signal in dataset</div>
+      <div class="insight-stat" style="color:#92400e;">r = −0.51 with stroke · strongest signal in dataset</div>
     </div>
  
     <div class="insight-card">
@@ -387,7 +352,7 @@
       <div class="insight-title">Education tracks closely with income effects</div>
       <div class="insight-body">
         Counties with higher shares of college-educated residents show significantly lower rates of physical
-        distress (r = −0.52), COPD (r = −0.50), and high blood pressure (r = −0.35). Education and income
+        distress (r = −0.52) and stroke (r = −0.45). Education and income
         effects are strongly intertwined across all health outcomes.
       </div>
       <div class="insight-stat" style="color:#1d4ed8;">r = −0.52 with physical distress</div>
@@ -398,7 +363,7 @@
       <div class="insight-title">Heat linked to higher blood pressure and sleep problems</div>
       <div class="insight-body">
         Warmer counties show consistently higher rates of high blood pressure — TAVG correlates at r = 0.29
-        and precipitation at r = 0.33 with BPHIGH. Counties in the hottest quartile (DX90) also report
+        and precipitation at r = 0.33 with blood pressure. Counties in the hottest quartile (DX90) also report
         15.8% mental distress vs 14.8% in the coolest quartile — a 1pp gap across all counties.
       </div>
       <div class="insight-stat" style="color:#9d174d;">+1pp mental distress in hottest vs coolest counties</div>
@@ -437,27 +402,6 @@ const varMeta = {
   EMNT:   { label:"Extreme min temp",   color:["#eff6ff","#1e40af"], unit:"°F" },
 };
 
-// ── SNAPSHOT COUNT-UP ──
-function animateCount(el, target, isFloat, prefix, suffix) {
-  const duration = 1200;
-  const start = performance.now();
-  function step(now) {
-    const t   = Math.min((now - start) / duration, 1);
-    const ease = 1 - Math.pow(1 - t, 3);
-    const val  = isFloat
-      ? (ease * target).toFixed(1)
-      : Math.round(ease * target).toLocaleString();
-    el.textContent = prefix + val + suffix;
-    if (t < 1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
-}
-fetch('/api/snapshot').then(r => r.json()).then(d => {
-  animateCount(document.getElementById('snap-states'),   d.states,   false, '', '');
-  animateCount(document.getElementById('snap-counties'), d.counties, false, '', '');
-  animateCount(document.getElementById('snap-years'),    d.years,    false, '', '');
-  animateCount(document.getElementById('snap-vars'),     d.n_vars,   false, '', '');
-});
 
 // ── DUAL RANGE SLIDER ──
 const yrStart = document.getElementById('yr-start');
