@@ -90,7 +90,6 @@ def predict():
 
     if request.method == "POST":
         try:
-            # ── Get form inputs ───────────────────────────────────────────
             county_state = request.form["county_state"]
             county, state = county_state.split("|")
             target = request.form["target"]
@@ -99,18 +98,14 @@ def predict():
             print(
                 f"  → county={county} | state={state} | target={target} | scenario={scenario_key}")
 
-            # ── Load pre-fitted model and preprocessor ────────────────────
             model, preprocessor = train.load_model(target)
 
-            # ── Generate synthetic future rows ────────────────────────────
             X_future, future_years = scenarios.generate_scenario(
                 df, county, state, scenario_key)
 
-            # ── Preprocess and predict ────────────────────────────────────
             X_scaled = preprocessor.transform(X_future.to_numpy())
             y_pred, lower, upper = model.predict_interval(X_scaled)
 
-            # ── Build results ─────────────────────────────────────────────
             results = list(zip(
                 future_years,
                 y_pred.round(2).tolist(),
@@ -118,7 +113,6 @@ def predict():
                 upper.round(2).tolist()    # add upper bound
             ))
 
-            # ── Historical data for this county/state/target ──────────────
             hist = (
                 df[(df["County name"] == county) & (df["StateAbbr"] == state)]
                 .groupby("year")[target]

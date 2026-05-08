@@ -91,7 +91,7 @@
 
 <div class="eda-wrap">
   <p class="page-title">Exploratory data analysis</p>
-  <p class="page-sub">Explore health outcomes and weather patterns across US counties · 2013–2023</p>
+  <p class="page-sub">Explore health outcomes and weather patterns across U.S. counties · 2013–2023</p>
 
   <!-- SNAPSHOT -->
   <div class="section-label">Dataset at a glance</div>
@@ -125,10 +125,16 @@
 
   <!-- FILTERS -->
   <div class="card">
-    <div class="section-label">Filters</div>
+    <!-- Step labels -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 2fr auto;gap:12px;margin-bottom:10px;">
+      <div><span style="font-size:10px;font-weight:700;color:#4a8a6a;letter-spacing:0.08em;text-transform:uppercase;">Step 01 · Health</span></div>
+      <div><span style="font-size:10px;font-weight:700;color:#4a8a6a;letter-spacing:0.08em;text-transform:uppercase;">Step 02 · Weather</span></div>
+      <div><span style="font-size:10px;font-weight:700;color:#4a8a6a;letter-spacing:0.08em;text-transform:uppercase;">Step 03 · Year range</span></div>
+      <div></div>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr 2fr auto;gap:12px;align-items:end;margin-bottom:12px;">
       <div class="filter-group">
-        <label>Health variable</label>
+        <label>Select a health variable</label>
         <select id="var-health">
           <option value="MHLTH">Mental distress (MHLTH)</option>
           <option value="SLEEP">Poor sleep (SLEEP)</option>
@@ -140,10 +146,10 @@
         </select>
       </div>
       <div class="filter-group">
-        <label>Weather variable (tooltip)</label>
+        <label>Select a weather variable</label>
         <select id="var-weather">
           <option value="">— none —</option>
-          <option value="TAVG">Avg temperature (TAVG)</option>
+          <option value="TAVG" selected>Avg temperature (TAVG)</option>
           <option value="TMAX">Max temperature (TMAX)</option>
           <option value="TMIN">Min temperature (TMIN)</option>
           <option value="DX90">Days above 90°F (DX90)</option>
@@ -165,24 +171,25 @@
         <button class="apply-btn" onclick="loadMap()">Apply filters</button>
       </div>
     </div>
- 
-    <!-- Demographic multi-select row -->
+
+    <!-- Step 04: Demographics -->
     <div style="border-top:1px solid #f0f0f0;padding-top:12px;">
-      <div style="font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">
-        Demographic context (shown in tooltip · select up to 3)
+      <div style="margin-bottom:8px;">
+        <span style="font-size:10px;font-weight:700;color:#4a8a6a;letter-spacing:0.08em;text-transform:uppercase;">Step 04 · Demographics</span>
+        <span style="font-size:11px;color:#999;margin-left:8px;">shown on county hover · select up to 3</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;" id="demo-checkboxes">
         <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
           <input type="checkbox" value="median_household_income" onchange="handleDemoCheck(this)"> Median income
         </label>
         <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
-          <input type="checkbox" value="pct_less_than_hs" onchange="handleDemoCheck(this)"> % less than HS
+          <input type="checkbox" value="pct_less_than_hs" onchange="handleDemoCheck(this)"> % Less than HS
         </label>
         <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
-          <input type="checkbox" value="pct_bachelors_plus" onchange="handleDemoCheck(this)"> % college educated
+          <input type="checkbox" value="pct_bachelors_plus" onchange="handleDemoCheck(this)"> % College educated
         </label>
         <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
-          <input type="checkbox" value="pct_white" onchange="handleDemoCheck(this)"> % white
+          <input type="checkbox" value="pct_white" onchange="handleDemoCheck(this)"> % White
         </label>
         <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
           <input type="checkbox" value="pct_black" onchange="handleDemoCheck(this)"> % Black
@@ -194,17 +201,17 @@
           <input type="checkbox" value="pct_asian" onchange="handleDemoCheck(this)"> % Asian
         </label>
         <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
-          <input type="checkbox" value="pct_female" onchange="handleDemoCheck(this)"> % female
+          <input type="checkbox" value="pct_female" onchange="handleDemoCheck(this)"> % Female
         </label>
         <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
-          <input type="checkbox" value="pct_male" onchange="handleDemoCheck(this)"> % male
+          <input type="checkbox" value="pct_male" onchange="handleDemoCheck(this)"> % Male
         </label>
       </div>
     </div>
   </div>
 
   <!-- MAP -->
-  <div class="section-label">Interactive map — map color shows health variable · tooltip shows both</div>
+  <div class="section-label">Interactive map — hover over a county to explore</div>
   <div class="card" style="padding:0.75rem;">
     <div id="map-container">
       <div id="map-loading">Loading county map...</div>
@@ -504,14 +511,14 @@ function handleDemoCheck(cb) {
  
 const demoLabels = {
   median_household_income: { label: 'Median income',      prefix: '$', suffix: '' },
-  pct_less_than_hs:        { label: '% less than HS',     prefix: '',  suffix: '%' },
-  pct_bachelors_plus:      { label: '% college educated', prefix: '',  suffix: '%' },
-  pct_white:               { label: '% white',            prefix: '',  suffix: '%' },
+  pct_less_than_hs:        { label: '% Less than HS',     prefix: '',  suffix: '%' },
+  pct_bachelors_plus:      { label: '% College educated', prefix: '',  suffix: '%' },
+  pct_white:               { label: '% White',            prefix: '',  suffix: '%' },
   pct_black:               { label: '% Black',            prefix: '',  suffix: '%' },
   pct_hispanic:            { label: '% Hispanic',         prefix: '',  suffix: '%' },
   pct_asian:               { label: '% Asian',            prefix: '',  suffix: '%' },
-  pct_female:              { label: '% female',           prefix: '',  suffix: '%' },
-  pct_male:                { label: '% male',             prefix: '',  suffix: '%' },
+  pct_female:              { label: '% Female',           prefix: '',  suffix: '%' },
+  pct_male:                { label: '% Male',             prefix: '',  suffix: '%' },
 };
  
 function getSelectedDemos() {
