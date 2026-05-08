@@ -1,597 +1,311 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRASSS — Health & Weather Explorer</title>
+    <title>Halcyon — Climate & Health Explorer</title>
     <style>
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        :root {
-            --primary: #1a3a2a;
-            --primary-hover: #2d5a3d;
-            --primary-tint: #f0f7f4;
-            --primary-icon: #c6e8d8;
-            --page-bg: #f5f7f5;
-            --card-bg: #ffffff;
-            --border: #e0e0e0;
-            --divider: #eeeeee;
-            --text: #222222;
-            --text-2: #555555;
-            --text-3: #999999;
-            --good: #15803d;
-            --warn: #b91c1c;
-            --gold: #92400e;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: sans-serif;
-            background: var(--page-bg);
-            color: var(--text);
+            background: #f5f7f5;
+            color: #222;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* ── Grid background ── */
         body::before {
             content: '';
-            position: fixed;
-            inset: 0;
+            position: fixed; inset: 0;
             background-image:
-                linear-gradient(rgba(26, 58, 42, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(26, 58, 42, 0.04) 1px, transparent 1px);
+                linear-gradient(rgba(26,58,42,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26,58,42,0.04) 1px, transparent 1px);
             background-size: 40px 40px;
-            pointer-events: none;
-            z-index: 0;
+            pointer-events: none; z-index: 0;
         }
 
-        /* ── HERO ── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 3rem;
+            background: rgba(245,247,245,0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .nav-brand { font-size: 13px; font-weight: 700; color: #1a3a2a; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; }
+        .nav-links { display: flex; gap: 2rem; list-style: none; }
+        .nav-links a { font-size: 13px; font-weight: 500; color: #555; text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 1px; background: #1a3a2a; transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease; }
+        .nav-links a:hover { color: #1a3a2a; }
+        .nav-links a:hover::after { transform: scaleX(1); }
+
+        main { padding: 0; max-width: 100%; position: relative; z-index: 1; }
+
         .hero {
-            position: relative;
-            z-index: 1;
-            min-height: unset;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 3rem 3rem 3rem;
-            max-width: 1100px;
-            margin: 0 auto;
+            padding: 8rem 3rem 2.5rem;
+            max-width: 1100px; margin: 0 auto;
         }
 
-        .hero-tag {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-3);
-            margin-bottom: 1.5rem;
-            opacity: 0;
-            animation: fadeUp 0.6s ease forwards 0.1s;
-        }
+        .hero-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #999; margin-bottom: 1.25rem; opacity: 0; animation: fadeUp 0.6s ease forwards 0.1s; }
+        .hero-title { font-size: clamp(3rem, 6vw, 5rem); font-weight: 700; line-height: 1.05; color: #1a3a2a; margin-bottom: 0.5rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s; }
+        .hero-definition { font-size: 12px; font-weight: 500; color: #4a8a6a; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.25rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.3s; }
+        .hero-definition em { font-style: italic; font-weight: 400; }
+        .hero-meaning { font-size: 16px; font-weight: 600; color: #1a3a2a; line-height: 1.6; max-width: 520px; margin-bottom: 0.6rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.4s; }
+        .hero-subtitle { font-size: 13px; color: #888; line-height: 1.7; max-width: 520px; margin-bottom: 2.5rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.5s; }
 
-        .hero-title {
-            font-size: clamp(2.2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            line-height: 1.1;
-            color: var(--primary);
-            margin-bottom: 1.25rem;
-            opacity: 0;
-            animation: fadeUp 0.7s ease forwards 0.25s;
-        }
+        .snapshot-section { padding: 0 3rem 2rem; max-width: 1100px; margin: 0 auto; opacity: 0; animation: fadeUp 0.7s ease forwards 0.65s; }
+        .snapshot-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+        .snap-card { border-radius: 12px; padding: 1.1rem 1.25rem; }
+        .snap-icon { font-size: 20px; width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+        .snap-label { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+        .snap-value { font-size: 26px; font-weight: 700; line-height: 1.1; }
+        .snap-sub { font-size: 11px; margin-top: 3px; }
 
-        .hero-subtitle {
-            font-size: 14px;
-            font-weight: 400;
-            color: var(--text-2);
-            line-height: 1.7;
-            max-width: 560px;
-            margin-bottom: 2.5rem;
-            opacity: 0;
-            animation: fadeUp 0.7s ease forwards 0.4s;
-        }
+        .section-divider { border: none; border-top: 1px solid #e0e0e0; max-width: 1100px; margin: 0 auto 2rem; padding: 0 3rem; }
 
-        .hero-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            opacity: 0;
-            animation: fadeUp 0.7s ease forwards 0.55s;
-        }
+        .cards-section { padding: 0 3rem 4rem; max-width: 1100px; margin: 0 auto; }
+        .cards-label { font-size: 11px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+        .cards-title { font-size: 20px; font-weight: 700; color: #1a3a2a; margin-bottom: 1.25rem; }
 
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 8px 20px;
-            background: var(--primary);
-            color: #fff;
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            border: none;
-            border-radius: 7px;
-            cursor: pointer;
-            transition: background 0.2s, transform 0.15s;
+        .pages-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+        .btn-cta-primary { transition: background 0.2s; }
+        .btn-cta-primary:hover { background: #2d5a3d !important; }
+        .btn-cta-secondary { transition: background 0.2s; }
+        .btn-cta-secondary:hover { background: #f0f7f4 !important; }
+        @media (max-width: 768px) {
+            .hero > div { grid-template-columns: 1fr !important; }
+            .snapshot-grid { grid-template-columns: repeat(2, 1fr) !important; }
+            .pages-grid { grid-template-columns: 1fr !important; }
         }
+        .page-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.75rem; transition: background 0.2s, box-shadow 0.2s, transform 0.2s; position: relative; overflow: hidden; }
+        .page-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #1a3a2a; transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+        .page-card:hover { background: #f0f7f4; box-shadow: 0 4px 16px rgba(26,58,42,0.1); transform: translateY(-2px); }
+        .page-card:hover::before { transform: scaleX(1); }
+        .page-card-icon { width: 44px; height: 44px; border-radius: 10px; background: #c6e8d8; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .page-card-title { font-size: 17px; font-weight: 700; color: #1a3a2a; }
+        .page-card-desc { font-size: 12px; color: #555; line-height: 1.6; flex: 1; }
+        .page-card-link { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1a3a2a; }
 
-        .btn-primary:hover {
-            background: var(--primary-hover);
-            transform: translateY(-1px);
-        }
-
-        .btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 8px 20px;
-            background: var(--card-bg);
-            color: var(--text-3);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            border: 1px solid var(--border);
-            border-radius: 7px;
-            cursor: not-allowed;
-            opacity: 0.55;
-        }
-
-        /* ── STAT STRIP ── */
-        .stat-strip {
-            position: relative;
-            z-index: 1;
-            background: var(--primary);
-            color: #fff;
-            padding: 2.5rem 3rem;
-        }
-
-        .stat-strip-inner {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 2rem;
-        }
-
-        .stat-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: #fff;
-            display: block;
-            line-height: 1;
-            margin-bottom: 0.4rem;
-        }
-
-        .stat-label {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--primary-icon);
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        /* ── SECTION ── */
-        .section {
-            position: relative;
-            z-index: 1;
-            padding: 4rem 3rem;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        .section-label {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--text-3);
-            margin-bottom: 8px;
-        }
-
-        .section-title {
-            font-size: clamp(1.4rem, 2.5vw, 1.7rem);
-            font-weight: 700;
-            line-height: 1.2;
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        .section-body {
-            font-size: 13px;
-            font-weight: 400;
-            color: var(--text-2);
-            line-height: 1.8;
-            max-width: 620px;
-        }
-
-        /* ── PAGES GRID ── */
-        .pages-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 12px;
-            margin-top: 1.5rem;
-        }
-
-        .page-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-            transition: background 0.2s, box-shadow 0.2s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .page-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-
-        .page-card:hover {
-            background: var(--primary-tint);
-            box-shadow: 0 2px 12px rgba(26, 58, 42, 0.08);
-        }
-
-        .page-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .page-card.disabled {
-            cursor: not-allowed;
-            opacity: 0.55;
-        }
-
-        .page-card.disabled:hover {
-            background: var(--card-bg);
-            box-shadow: none;
-        }
-
-        .page-card.disabled:hover::before {
-            transform: scaleX(0);
-        }
-
-        .page-card-icon {
-            width: 38px;
-            height: 38px;
-            border-radius: 9px;
-            background: var(--primary-icon);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-        }
-
-        .page-card-title {
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .page-card-desc {
-            font-size: 12px;
-            font-weight: 400;
-            color: var(--text-2);
-            line-height: 1.6;
-            flex: 1;
-        }
-
-        .page-card-link {
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--primary);
-        }
-
-        .page-card.disabled .page-card-link {
-            color: var(--text-3);
-        }
-
-        .badge-soon {
-            display: inline-block;
-            font-size: 9px;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            background: var(--primary-tint);
-            color: var(--primary);
-            padding: 3px 8px;
-            border: 1px solid var(--primary-icon);
-            border-radius: 4px;
-            align-self: flex-start;
-        }
-
-        /* ── PIPELINE ── */
-        .pipeline {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-top: 1.5rem;
-        }
-
-        .pipeline-step {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 1.25rem;
-        }
-
-        .step-num {
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--primary);
-            letter-spacing: 0.1em;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .step-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.3rem;
-        }
-
-        .step-desc {
-            font-size: 12px;
-            font-weight: 400;
-            color: var(--text-2);
-            line-height: 1.5;
-        }
-
-        /* ── TEAM ── */
-        .team-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-        }
-
-        .team-pill {
-            font-size: 13px;
-            font-weight: 400;
-            color: var(--primary);
-            background: var(--primary-tint);
-            border: 1px solid var(--primary-icon);
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-        }
-
-        /* ── DIVIDER ── */
-        .divider {
-            position: relative;
-            z-index: 1;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 3rem;
-            border-top: 1px solid var(--divider);
-        }
-
-        /* ── FOOTER ── */
-        footer {
-            position: relative;
-            z-index: 1;
-            background: var(--primary);
-            color: var(--primary-icon);
-            padding: 1.5rem 3rem;
-            font-size: 12px;
-            font-weight: 400;
-            letter-spacing: 0.04em;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        /* ── ANIMATIONS ── */
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(18px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .fade-in {
-            opacity: 0;
-            transform: translateY(16px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Override main padding for full-height hero */
-        main {
-            padding: 0;
-            max-width: 100%;
-        }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
     </style>
 </head>
-
 <body>
+    <nav>
+        <a class="nav-brand" href="/">Halcyon</a>
+        <ul class="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/docs">Documentation</a></li>
+            <li><a href="/explore">Explore</a></li>
+            <li><a href="/predict">Predict</a></li>
+        </ul>
+    </nav>
 
-    <!-- HERO -->
-    <section class="hero">
-        <p class="hero-tag">Hertie School &mdash; DSA 2026</p>
-        <h1 class="hero-title">Weather, health,<br>and what comes next.</h1>
-        <p class="hero-subtitle">
-            An interactive data science application exploring how weather patterns relate to health outcomes across U.S.
-            counties from 2013 to 2023 — and projecting what the next decade may hold.
-        </p>
-     <!--   <div class="hero-actions">
-            <a href="/explore" class="btn-primary">Explore the data &rarr;</a>
-            <a href="/predict" class="btn-primary">Run a prediction &rarr;</a>
-            
-        </div> -->
-    </section>
+    <main>
+        <section class="hero">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;">
+                <div>
+                    <p class="hero-tag">Hertie School &mdash; DSA 2026</p>
+                    <h1 class="hero-title">Halcyon</h1>
+                    <p class="hero-definition">hal·cy·on &nbsp;/ˈhalsēən/ &nbsp;·&nbsp; <em>adjective</em></p>
+                    <p class="hero-meaning">A warm sunny day in the midst of freezing winters.</p>
+                    <p class="hero-subtitle">
+                        An interactive data science application exploring how weather patterns relate to health
+                        outcomes across U.S. counties from 2013 to 2023 and projecting what the next decade may hold.
+                    </p>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.7s ease forwards 0.6s;">
+                        <a href="/explore" class="btn-cta-primary" style="padding:9px 20px;background:#1a3a2a;color:#fff;text-decoration:none;font-size:13px;font-weight:600;border-radius:7px;">Explore the data &rarr;</a>
+                        <a href="/predict" class="btn-cta-secondary" style="padding:9px 20px;background:#fff;color:#1a3a2a;text-decoration:none;font-size:13px;font-weight:600;border-radius:7px;border:1px solid #c6e8d8;">Run a prediction</a>
+                    </div>
+                </div>
+                <div style="opacity:0;animation:fadeUp 0.8s ease forwards 0.4s;">
+                    <svg viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border-radius:16px;overflow:hidden;">
+  <defs>
+    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b8d4f0"/>
+      <stop offset="100%" stop-color="#ddeeff"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff7c0" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#fff7c0" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="snowGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eef4fb"/>
+      <stop offset="100%" stop-color="#d4e8f8"/>
+    </linearGradient>
+    <linearGradient id="hillGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ddeeff"/>
+      <stop offset="100%" stop-color="#c8dcf0"/>
+    </linearGradient>
+  </defs>
 
-    <!-- STAT STRIP -->
-    <!-- <div class="stat-strip">
-        <div class="stat-strip-inner">
-            <div class="stat-item">
-                <span class="stat-value">6,646</span>
-                <span class="stat-label">Rows in dataset</span>
+  <!-- Sky -->
+  <rect width="360" height="280" fill="url(#skyGrad)"/>
+
+  <!-- Sun glow -->
+  <circle cx="280" cy="72" r="70" fill="url(#sunGlow)"/>
+
+  <!-- Sun -->
+  <circle cx="280" cy="72" r="28" fill="#fde68a"/>
+  <!-- Sun rays -->
+  <g stroke="#fde68a" stroke-width="2.5" stroke-linecap="round" opacity="0.8">
+    <line x1="280" y1="34" x2="280" y2="26"/>
+    <line x1="280" y1="110" x2="280" y2="118"/>
+    <line x1="242" y1="72" x2="234" y2="72"/>
+    <line x1="318" y1="72" x2="326" y2="72"/>
+    <line x1="253" y1="45" x2="247" y2="39"/>
+    <line x1="307" y1="99" x2="313" y2="105"/>
+    <line x1="307" y1="45" x2="313" y2="39"/>
+    <line x1="253" y1="99" x2="247" y2="105"/>
+  </g>
+
+  <!-- Distant snowy hills -->
+  <ellipse cx="80" cy="185" rx="130" ry="40" fill="#ccdfe8" opacity="0.6"/>
+  <ellipse cx="300" cy="190" rx="100" ry="35" fill="#c8d8e8" opacity="0.5"/>
+
+  <!-- Bare tree left -->
+  <line x1="55" y1="220" x2="55" y2="150" stroke="#8fa8b8" stroke-width="4" stroke-linecap="round"/>
+  <line x1="55" y1="165" x2="32" y2="148" stroke="#8fa8b8" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="55" y1="158" x2="75" y2="140" stroke="#8fa8b8" stroke-width="2" stroke-linecap="round"/>
+  <line x1="55" y1="172" x2="28" y2="162" stroke="#8fa8b8" stroke-width="2" stroke-linecap="round"/>
+  <line x1="55" y1="180" x2="78" y2="168" stroke="#8fa8b8" stroke-width="2" stroke-linecap="round"/>
+  <line x1="32" y1="148" x2="22" y2="138" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="32" y1="148" x2="36" y2="136" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="75" y1="140" x2="84" y2="130" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="75" y1="140" x2="68" y2="128" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Bare tree right -->
+  <line x1="155" y1="222" x2="155" y2="162" stroke="#8fa8b8" stroke-width="3.5" stroke-linecap="round"/>
+  <line x1="155" y1="175" x2="135" y2="160" stroke="#8fa8b8" stroke-width="2" stroke-linecap="round"/>
+  <line x1="155" y1="168" x2="172" y2="153" stroke="#8fa8b8" stroke-width="2" stroke-linecap="round"/>
+  <line x1="135" y1="160" x2="125" y2="150" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="172" y1="153" x2="180" y2="143" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="172" y1="153" x2="166" y2="143" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Snow ground -->
+  <path d="M0,210 Q60,198 120,205 Q180,212 240,204 Q300,196 360,208 L360,280 L0,280 Z" fill="url(#snowGrad)"/>
+
+  <!-- Snow bumps / drifts -->
+  <ellipse cx="90" cy="212" rx="55" ry="12" fill="#eef4fb" opacity="0.7"/>
+  <ellipse cx="250" cy="208" rx="45" ry="10" fill="#eef4fb" opacity="0.6"/>
+  <ellipse cx="180" cy="216" rx="35" ry="9" fill="#f5f9fd" opacity="0.5"/>
+
+  <!-- Snow sparkles on ground -->
+  <g fill="#fff" opacity="0.8">
+    <circle cx="40" cy="220" r="1.2"/>
+    <circle cx="88" cy="215" r="1"/>
+    <circle cx="135" cy="222" r="1.2"/>
+    <circle cx="200" cy="218" r="1"/>
+    <circle cx="265" cy="213" r="1.2"/>
+    <circle cx="320" cy="218" r="1"/>
+  </g>
+
+  <!-- Floating snow particles in air -->
+  <g fill="#c8dff0" opacity="0.6">
+    <circle cx="110" cy="155" r="1.5"/>
+    <circle cx="190" cy="130" r="1.2"/>
+    <circle cx="230" cy="160" r="1.5"/>
+    <circle cx="310" cy="145" r="1.2"/>
+    <circle cx="340" cy="170" r="1"/>
+    <circle cx="20" cy="170" r="1.2"/>
+  </g>
+
+  <!-- Warm sun reflection on snow -->
+  <ellipse cx="285" cy="225" rx="40" ry="8" fill="#fde68a" opacity="0.12"/>
+
+  <!-- Label -->
+  <rect x="108" y="250" width="144" height="20" rx="4" fill="rgba(255,255,255,0.5)"/>
+  <text x="180" y="264" text-anchor="middle" font-size="9" fill="#4a6a8a" font-family="sans-serif" letter-spacing="2" font-weight="600">A HALCYON DAY</text>
+</svg>
+                </div>
             </div>
-            <div class="stat-item">
-                <span class="stat-value">52</span>
-                <span class="stat-label">Variables</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value">10</span>
-                <span class="stat-label">Years covered</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value">7</span>
-                <span class="stat-label">Health outcomes</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-value">3</span>
-                <span class="stat-label">Data sources</span>
+        </section>
+
+        <div class="snapshot-section">
+            <div class="snapshot-grid">
+                <div class="snap-card" style="background:#f0f4ff;">
+                    <div class="snap-icon" style="background:#c7d7f8;">🏛️</div>
+                    <div class="snap-label" style="color:#1e3a8a;">States covered</div>
+                    <div class="snap-value" style="color:#1e3a8a;" id="snap-states">—</div>
+                    <div class="snap-sub" style="color:#4a6ab0;">US states in dataset</div>
+                </div>
+                <div class="snap-card" style="background:#f0f7f4;">
+                    <div class="snap-icon" style="background:#c6e8d8;">🗺️</div>
+                    <div class="snap-label" style="color:#1a5c3a;">Counties covered</div>
+                    <div class="snap-value" style="color:#1a3a2a;" id="snap-counties">—</div>
+                    <div class="snap-sub" style="color:#4a8a6a;">unique counties in dataset</div>
+                </div>
+                <div class="snap-card" style="background:#fff5f5;">
+                    <div class="snap-icon" style="background:#fecaca;">📅</div>
+                    <div class="snap-label" style="color:#991b1b;">Years covered</div>
+                    <div class="snap-value" style="color:#7f1d1d;" id="snap-years">—</div>
+                    <div class="snap-sub" style="color:#b45151;">2013 – 2023</div>
+                </div>
+                <div class="snap-card" style="background:#fffbeb;">
+                    <div class="snap-icon" style="background:#fde68a;">📊</div>
+                    <div class="snap-label" style="color:#92400e;">Variables tracked</div>
+                    <div class="snap-value" style="color:#78350f;" id="snap-vars">—</div>
+                    <div class="snap-sub" style="color:#b45309;">across health, weather &amp; demographics</div>
+                </div>
             </div>
         </div>
-    </div> -->
 
-    <!-- PAGES -->
-    <section class="section fade-in">
-    <!--    <p class="section-label">Navigation</p> -->
-        <h2 class="section-title">Where would you like to go?</h2>
-        <div class="pages-grid">
+        <hr class="section-divider">
 
-            <a href="/explore" class="page-card">
-                <div class="page-card-icon">◉</div>
-                <div class="page-card-title">Explore</div>
-                <p class="page-card-desc">
-                    Visualise trends across counties, compare health variables over time, and investigate how weather
-                    correlates with outcomes in the integrated dataset.
-                </p>
-                <span class="page-card-link">Explore data &rarr;</span>
-            </a>
-            
-            <a href="/predict" class="page-card">
-                <div class="page-card-icon">◈</div>
-                <div class="page-card-title">Predict</div>
-                <p class="page-card-desc">
-                    Select a U.S. county, a health outcome, and a climate scenario to generate a 10-year prediction
-                    using our Random Fourier Features or XGBoost model.
-                </p>
-                <span class="page-card-link">Open predictor &rarr;</span>
-            </a>
-
-            
-            <a href="/docs" class="page-card">
-                <div class="page-card-icon">◎</div>
-                <div class="page-card-title">Documentation</div>
-                <p class="page-card-desc">
-                    Read about the data sources, methodology, model implementation, and the software engineering
-                    decisions behind the project.
-                </p>
-                <span class="page-card-link">About the data &rarr;</span>
-            </a>
-
-        </div>
-    </section>
-
-    <!-- <div class="divider"></div> -->
-
-    <!-- ABOUT -->
-    <!-- <section class="section fade-in">
-        <p class="section-label">About the project</p>
-        <h2 class="section-title">From raw data to interpretable predictions.</h2>
-        <p class="section-body">
-            This project integrates public data from NOAA, the CDC, and the U.S. Census to examine how weather patterns
-            — temperature, precipitation, and extreme events — relate to health outcomes like asthma, sleep quality, and
-            mental distress across U.S. metropolitan areas. A custom Random Fourier Features approximation for a Gaussian
-            kernel model was implemented from scratch along with the use of XGBoost from Scikit Learn.
-        </p>
-
-        <div class="pipeline">
-            <div class="pipeline-step">
-                <span class="step-num">01</span>
-                <div class="step-title">Collection</div>
-                <p class="step-desc">NOAA, CDC Places, U.S. Census aligned at MSA level</p>
-            </div>
-            <div class="pipeline-step">
-                <span class="step-num">02</span>
-                <div class="step-title">Cleaning</div>
-                <p class="step-desc">Standardised, merged, and transformed into 52 variables</p>
-            </div>
-            <div class="pipeline-step">
-                <span class="step-num">03</span>
-                <div class="step-title">EDA</div>
-                <p class="step-desc">Univariate and bivariate analysis of key patterns</p>
-            </div>
-            <div class="pipeline-step">
-                <span class="step-num">04</span>
-                <div class="step-title">Modelling</div>
-                <p class="step-desc">Custom RFF model and XGBoost, fitted for different outcomes</p>
-            </div>
-            <div class="pipeline-step">
-                <span class="step-num">05</span>
-                <div class="step-title">Application</div>
-                <p class="step-desc">Interactive Flask app with scenario-based forecasting</p>
+        <div class="cards-section fade-in">
+            <p class="cards-label">Where to next</p>
+            <h2 class="cards-title">What would you like to do?</h2>
+            <div class="pages-grid">
+                <a href="/explore" class="page-card">
+                    <div class="page-card-icon">🗺️</div>
+                    <div class="page-card-title">Explore</div>
+                    <p class="page-card-desc">Visualise trends across counties, compare health variables over time, and investigate how weather correlates with outcomes in the integrated dataset.</p>
+                    <span class="page-card-link">Explore data &rarr;</span>
+                </a>
+                <a href="/predict" class="page-card">
+                    <div class="page-card-icon">🔮</div>
+                    <div class="page-card-title">Predict</div>
+                    <p class="page-card-desc">Select a U.S. county, a health outcome, and a climate scenario to generate a 10-year prediction using our machine learning models.</p>
+                    <span class="page-card-link">Open predictor &rarr;</span>
+                </a>
+                <a href="/docs" class="page-card">
+                    <div class="page-card-icon">📖</div>
+                    <div class="page-card-title">Documentation</div>
+                    <p class="page-card-desc">Read about the data sources, methodology, model implementation, and the software engineering decisions behind the project.</p>
+                    <span class="page-card-link">About the data &rarr;</span>
+                </a>
             </div>
         </div>
-    </section>
-
-    <div class="divider"></div> -->
-
-    <!-- TEAM -->
-    <!-- <section class="section fade-in">
-        <p class="section-label">Team KRASSS</p>
-        <h2 class="section-title">The people behind it.</h2>
-        <div class="team-grid">
-            <span class="team-pill">Santiago Cárdenas Arciniegas</span>
-            <span class="team-pill">Sanjeev Dasgupta</span>
-            <span class="team-pill">Sophie Latham</span>
-            <span class="team-pill">Trayda Murakami</span>
-            <span class="team-pill">Konstantina Panagiotopoulou</span>
-            <span class="team-pill">Alex Richter</span>
-            <span class="team-pill">Rudranshi Vishnoi</span>
-        </div>
-    </section> -->
-
-    <!-- FOOTER -->
-    <!-- <footer>
-        <span>KRASSS &mdash; Hertie School DSA 2026</span>
-        <span>NOAA &middot; CDC &middot; U.S. Census</span>
-    </footer> -->
+    </main>
 
     <script>
+        function animateCount(el, target, isFloat, prefix, suffix) {
+            const duration = 1200;
+            const start = performance.now();
+            function step(now) {
+                const t = Math.min((now - start) / duration, 1);
+                const ease = 1 - Math.pow(1 - t, 3);
+                const val = isFloat ? (ease * target).toFixed(1) : Math.round(ease * target).toLocaleString();
+                el.textContent = prefix + val + suffix;
+                if (t < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+        }
+        fetch('/api/snapshot').then(r => r.json()).then(d => {
+            animateCount(document.getElementById('snap-states'),   d.states,   false, '', '');
+            animateCount(document.getElementById('snap-counties'), d.counties, false, '', '');
+            animateCount(document.getElementById('snap-years'),    d.years,    false, '', '');
+            animateCount(document.getElementById('snap-vars'),     d.n_vars,   false, '', '');
+        }).catch(() => {
+            ['snap-states','snap-counties','snap-years','snap-vars']
+                .forEach(id => { document.getElementById(id).textContent = 'N/A'; });
+        });
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
         }, { threshold: 0.1 });
         document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     </script>
-
 </body>
-
 </html>

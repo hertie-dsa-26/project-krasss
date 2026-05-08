@@ -592,6 +592,9 @@ function drawMap(hv, wv, demoVars, data, healthNat, weatherNat) {
 }
 
 // ── TIME SERIES ──
+document.getElementById('ts-health-var').value = 'MHLTH';
+document.getElementById('ts-weather-var').value = 'TAVG';
+loadTimeSeries();
 function loadTimeSeries() {
   const hv    = document.getElementById('ts-health-var').value;
 const wv    = document.getElementById('ts-weather-var').value;
