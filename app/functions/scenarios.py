@@ -54,12 +54,12 @@ SCENARIOS = {
 
 # Variables to apply trend projection to.
 # Others are held constant at their 2023 baseline value.
-TREND_VARS = ["TAVG", "TMAX", "TMIN", "CLDD", "HTDD", "DT100", "DX90", "EMXT", "EMNT"]
+TREND_VARS = ["TAVG", "TMAX", "TMIN", "CLDD", "HTDD", "DT100", "DX90", "EMXT", "EMNT", "DT32", "DX32", "DX70"]
 PRECIP_VARS = ["PRCP"]  # handled separately — no strong directional trend assumed
 # Variables expected to INCREASE under warming — slope must be positive
-WARMING_POSITIVE = ["TAVG", "TMAX", "TMIN", "CLDD", "DT100", "DX90", "EMXT"]
+WARMING_POSITIVE = ["TAVG", "TMAX", "TMIN", "CLDD", "DT100", "DX90", "EMXT", "DX32", "DX70"]
 # Variables expected to DECREASE under warming — slope must be negative
-WARMING_NEGATIVE = ["HTDD", "EMNT"]
+WARMING_NEGATIVE = ["HTDD", "DT32", "EMNT"]
 
 
 def _compute_trend(df: pd.DataFrame, county_name: str, state_abbr: str, variable: str) -> float:
@@ -148,7 +148,7 @@ def generate_scenario(df: pd.DataFrame, county_name: str, state_abbr: str,
 
     X_future = pd.concat(future_rows, ignore_index=True)
 
-    drop_cols = ['year', 'StateAbbr', 'County name', 'CountyFIPS',
+    drop_cols = ['StateAbbr', 'County name', 'CountyFIPS',
                  'STATION', 'STATION_NAME',
                  'BPHIGH', 'CASTHMA', 'COPD', 'MHLTH', 'PHLTH', 'SLEEP', 'STROKE']
 
