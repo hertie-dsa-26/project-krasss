@@ -20,7 +20,7 @@ class Assessment:
         (1) Calculate the mean of true values
         (2) Calculate the total sum of squares (TSS)
         (3) Calculate the residual sum of squares (RSS)
-        (4) 1 - (RSS / TSS)
+        (4) Return 1 - (RSS / TSS), with a guard for constant true values
 
         Args:
             y_test (np.ndarray): True values
@@ -32,6 +32,10 @@ class Assessment:
         mean_y = np.mean(y_test)
         TSS = np.sum((y_test - mean_y) ** 2)
         RSS = np.sum((y_test - y_pred) ** 2)
+
+        if np.isclose(TSS, 0):
+            return 1.0 if np.isclose(RSS, 0) else 0.0
+
         return 1 - (RSS / TSS)
 
     def mean_squared_error(self, y_test: np.ndarray, y_pred: np.ndarray) -> float:

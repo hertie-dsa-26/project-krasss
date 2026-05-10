@@ -34,7 +34,7 @@ def prepare_data(df: pd.DataFrame, target: str):
     # In the case of SLEEP this would shrink the dataset only to rows with actual sleep data.
     df = df.dropna(subset=[target])
 
-    X = df.drop(columns=[target, "year"])
+    X = df.drop(columns=[target])
     y = df[target].values
     years = df["year"].values  # We need these values to create the folds
     return X, y, years
