@@ -2,4 +2,5 @@
 README_files/
 *_files/
 __pycache__/
+.pytest_cache/
 *.py[cod]
