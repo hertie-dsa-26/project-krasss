@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Docs — Climate & Health Explorer{% endblock %}
+{% block title %}Docs — HALCYON {% endblock %}
 {% block content %}
 
 <style>
@@ -48,7 +48,7 @@
 <div class="eda-wrap">
   <h1 class="page-title">Documentation</h1>
   <p class="subtitle">
-    Climate &amp; Health Explorer is a Flask-based web application for exploring relationships between
+    HALCYON is a Flask-based web application for exploring relationships between
     weather patterns and health outcomes across U.S. counties (2013–2023), using data from NOAA, CDC, and the U.S. Census.
   </p>
 
@@ -59,7 +59,7 @@
 
   <!-- GENERAL TAB -->
   <div id="tab-general" class="tab-panel active">
-
+ 
     <div class="section">
       <div class="section-header"><h2>Pages</h2></div>
       <div class="route-grid">
@@ -85,183 +85,303 @@
         </div>
       </div>
     </div>
-
+ 
     <div class="section">
-      <div class="section-header"><h2>API Reference</h2></div>
-      <div class="api-block">
-        <div class="endpoint-header">
-          <span class="badge-post">POST</span>
-          <span class="endpoint-path">/api/summary</span>
-        </div>
-        <p>Returns descriptive statistics for any numeric column in the dataset via <code>describe()</code>.</p>
-        <h4>Request body</h4>
-        <table>
-          <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
-          <tr><td><code>column</code></td><td>string</td><td>Yes</td><td>Name of a valid dataset column</td></tr>
-        </table>
-        <h4>Example</h4>
-        <div class="two-col">
-          <div>
-            <div class="col-label">Request</div>
-            <pre>POST /api/summary
-Content-Type: application/json
-
-{
-  "column": "TAVG"
-}</pre>
-          </div>
-          <div>
-            <div class="col-label">Response 200</div>
-            <pre>{
-  "column": "TAVG",
-  "stats": {
-    "count": 6646,
-    "mean": 58.3,
-    "std": 12.1,
-    "min": 20.4,
-    "25%": 48.1,
-    "50%": 59.7,
-    "75%": 68.9,
-    "max": 95.2
-  }
-}</pre>
-          </div>
-        </div>
-        <h4>Error response</h4>
-        <span class="error-badge">400</span>&nbsp;
-        <code>{ "error": "Invalid column name" }</code>
+      <div class="section-header"><h2>Data sources</h2></div>
+      <div class="card">
+        <ul style="list-style:none;padding:0;margin:0;">
+          <li style="margin-bottom:14px;">
+            <strong style="color:#1a3a2a;">NOAA — National Oceanic and Atmospheric Administration</strong><br>
+            <span style="font-size:13px;color:#555;"> This data comes from the National Ocean and Atmospheric Administration (NOAA) Global Summary of the Year, and supplies the Halycon app with temperature and weather data from across the United States. This data set provides 16 variables for this app, and the geographic basis for a 17th. </span><br>
+            <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
+          </li>
+          <li style="margin-bottom:14px;">
+            <strong style="color:#1a3a2a;">CDC Places</strong><br>
+            <span style="font-size:13px;color:#555;"> The CDC Places dataset supplies the Halcyon app with health data at the county level, including the app's predicted outcome variables: stroke incidence, mental health quality, physical health, asthma incidence, and sleep. </span><br>
+            <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
+          </li>
+          <li>
+            <strong style="color:#1a3a2a;">U.S. Census Bureau</strong><br>
+            <span style="font-size:13px;color:#555;"> The U.S. Census Bureau dataset supplies the Halycon app with demographic information at the county level, covering twelve variables used to eliminate non-climate variations between health outcomes. </span><br>
+            <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
+          </li>
+        </ul>
       </div>
     </div>
-
+ 
     <div class="section">
-      <div class="section-header"><h2>Dataset</h2><span>6,646 rows · 52 columns</span></div>
+      <div class="section-header"><h2>Dataset</h2><span>6,646 rows · 41 columns</span></div>
       <div class="card">
-        <p style="margin-bottom:14px;">The app loads <code>merged_final_transformed.csv</code> at startup. Key fields used across the app:</p>
+        <p style="margin-bottom:16px;">The app loads <code>merged_final_transformed.csv</code> at startup. The dataset merges three sources: NOAA climate station data, CDC Places health estimates, and U.S. Census socioeconomic indicators — linked at the county level by year.</p>
+ 
+        <p class="section-label" style="margin-top:4px;">Identifiers</p>
         <table>
           <tr><th>Column</th><th>Description</th></tr>
-          <tr><td><code>year</code></td><td>Year of observation (2013–2022)</td></tr>
-          <tr><td><code>County name</code></td><td>U.S. county name</td></tr>
-          <tr><td><code>climate_type_short</code></td><td>Abbreviated climate classification</td></tr>
-          <tr><td><code>TAVG</code></td><td>Average annual temperature (NOAA)</td></tr>
-          <tr><td><code>casthma_crudeprev</code></td><td>Asthma prevalence — CDC Places</td></tr>
-          <tr><td><code>mhlth_crudeprev</code></td><td>Mental distress prevalence — CDC Places</td></tr>
-          <tr><td><code>phlth_crudeprev</code></td><td>Physical distress prevalence — CDC Places</td></tr>
-          <tr><td><code>sleep_crudeprev</code></td><td>Insufficient sleep prevalence — CDC Places</td></tr>
+          <tr><td><code>year</code></td><td>Year of observation (2013–2023)</td></tr>
+          <tr><td><code>County name</code></td><td>U.S. county name — not unique across states, use with <code>StateAbbr</code></td></tr>
+          <tr><td><code>StateAbbr</code></td><td>Two-letter state abbreviation</td></tr>
+          <tr><td><code>CountyFIPS</code></td><td>5-digit FIPS code uniquely identifying each county</td></tr>
+          <tr><td><code>STATION</code></td><td>NOAA station identifier</td></tr>
+          <tr><td><code>STATION_NAME</code></td><td>NOAA station name</td></tr>
+          <tr><td><code>LATITUDE</code></td><td>Station latitude (decimal degrees)</td></tr>
+          <tr><td><code>LONGITUDE</code></td><td>Station longitude (decimal degrees)</td></tr>
+          <tr><td><code>ELEVATION</code></td><td>Station elevation (meters)</td></tr>
+          <tr><td><code>climate_type_short</code></td><td>Abbreviated Köppen climate classification — derived from station location, used as a categorical feature</td></tr>
         </table>
-        <p>All other columns are accessible via the Explore page and the <code>/api/summary</code> endpoint.</p>
+ 
+        <p class="section-label" style="margin-top:16px;">NOAA — Climate variables</p>
+        <table>
+          <tr><th>Column</th><th>Description</th></tr>
+          <tr><td><code>TAVG</code></td><td>Average annual temperature (°F)</td></tr>
+          <tr><td><code>TMAX</code></td><td>Average annual maximum temperature (°F)</td></tr>
+          <tr><td><code>TMIN</code></td><td>Average annual minimum temperature (°F)</td></tr>
+          <tr><td><code>EMXT</code></td><td>Extreme maximum temperature — highest recorded in the year (°F)</td></tr>
+          <tr><td><code>EMNT</code></td><td>Extreme minimum temperature — lowest recorded in the year (°F)</td></tr>
+          <tr><td><code>CLDD</code></td><td>Cooling degree days — cumulative heat above 65°F baseline</td></tr>
+          <tr><td><code>HTDD</code></td><td>Heating degree days — cumulative cold below 65°F baseline</td></tr>
+          <tr><td><code>DT100</code></td><td>Number of days with maximum temperature ≥ 100°F</td></tr>
+          <tr><td><code>DX90</code></td><td>Number of days with maximum temperature ≥ 90°F</td></tr>
+          <tr><td><code>DX70</code></td><td>Number of days with maximum temperature ≥ 70°F</td></tr>
+          <tr><td><code>DX32</code></td><td>Number of days with maximum temperature ≤ 32°F (freeze days)</td></tr>
+          <tr><td><code>DT32</code></td><td>Number of days with minimum temperature ≤ 32°F (frost days)</td></tr>
+          <tr><td><code>PRCP</code></td><td>Total annual precipitation (inches)</td></tr>
+        </table>
+ 
+        <p class="section-label" style="margin-top:16px;">CDC Places — Health outcomes <span style="font-weight:400;text-transform:none;letter-spacing:0;">(crude prevalence %, age-adjusted)</span></p>
+        <table>
+          <tr><th>Column</th><th>Description</th></tr>
+          <tr><td><code>CASTHMA</code></td><td>Current asthma prevalence</td></tr>
+          <tr><td><code>STROKE</code></td><td>Stroke prevalence</td></tr>
+          <tr><td><code>MHLTH</code></td><td>Frequent mental distress prevalence (14+ poor mental health days/month)</td></tr>
+          <tr><td><code>PHLTH</code></td><td>Frequent physical distress prevalence (14+ poor physical health days/month)</td></tr>
+          <tr><td><code>SLEEP</code></td><td>Insufficient sleep prevalence (&lt;7 hours/night) — sleep data collected every two years. </td></tr>
+        </table>
+ 
+        <p class="section-label" style="margin-top:16px;">U.S. Census — Socioeconomic indicators</p>
+        <table>
+          <tr><th>Column</th><th>Description</th></tr>
+          <tr><td><code>total_population</code></td><td>Total county population</td></tr>
+          <tr><td><code>pct_female</code></td><td>Percentage of population identifying as female</td></tr>
+          <tr><td><code>pct_male</code></td><td>Percentage of population identifying as male</td></tr>
+          <tr><td><code>median_age</code></td><td>Median age of county population</td></tr>
+          <tr><td><code>median_household_income</code></td><td>Median household income (USD)</td></tr>
+          <tr><td><code>pct_bachelors_plus</code></td><td>Percentage with a bachelor's degree or higher</td></tr>
+          <tr><td><code>pct_graduate_degree</code></td><td>Percentage with a graduate or professional degree</td></tr>
+          <tr><td><code>pct_less_than_hs</code></td><td>Percentage without a high school diploma</td></tr>
+          <tr><td><code>pct_white</code></td><td>Percentage identifying as white (non-Hispanic)</td></tr>
+          <tr><td><code>pct_black</code></td><td>Percentage identifying as Black or African American</td></tr>
+          <tr><td><code>pct_asian</code></td><td>Percentage identifying as Asian</td></tr>
+          <tr><td><code>pct_hispanic</code></td><td>Percentage identifying as Hispanic or Latino</td></tr>
+        </table>
       </div>
     </div>
-
+ 
     <div class="section">
       <div class="section-header"><h2>Known issues &amp; limitations</h2></div>
       <div class="card">
         <p class="placeholder">[To be completed — e.g. known data gaps, edge cases, etc.]</p>
       </div>
     </div>
-
+ 
   </div>
-
+ 
   <!-- TECHNICAL TAB -->
   <div id="tab-technical" class="tab-panel">
-
+ 
     <div class="section">
       <div class="section-header"><h2>Architecture overview</h2></div>
       <div class="card">
-        <p style="margin-bottom:14px;">The ML implementation is split into four classes, each responsible for a distinct part of the pipeline. No external ML libraries (e.g. scikit-learn) are used — all components are implemented from scratch using NumPy and Pandas.</p>
+        <p style="margin-bottom:14px;">The ML pipeline is split across eight files. No external ML libraries (e.g. scikit-learn) are used for the core model — all components are implemented from scratch using NumPy and Pandas. XGBoost is used for the SLEEP target only.</p>
         <table>
-          <tr><th>Class</th><th>Responsibility</th></tr>
-          <tr><td><code>Model</code></td><td>K-fold splitting, train/test split, cross-validation</td></tr>
-          <tr><td><code>Preprocessing</code></td><td>Imputation, encoding, scaling (inherits from <code>Model</code>)</td></tr>
-          <tr><td><code>GaussianKernel</code></td><td>RBF kernel computation and kernel matrix construction</td></tr>
-          <tr><td><code>KernelRidgeRegression</code></td><td>Model fitting and prediction using dual coefficients</td></tr>
-          <tr><td><code>Assessment</code></td><td>R² score, MSE, cross-validation scoring (inherits from <code>Model</code>)</td></tr>
+          <tr><th>File</th><th>Class / function</th><th>Responsibility</th></tr>
+          <tr><td><code>splitter.py</code></td><td><code>Splitter</code>, <code>prepare_data()</code></td><td>Drops non-features, creates time-series CV folds and the final train/test split</td></tr>
+          <tr><td><code>preprocessing.py</code></td><td><code>Preprocessor</code></td><td>Coordinates encoding, imputation, and scaling via composition — owns instances of <code>OneHotEncoder</code>, <code>SimpleImputer</code>, <code>StandardScaler</code></td></tr>
+          <tr><td><code>random_fourier_features.py</code></td><td><code>RFFRidgeRegression</code></td><td>Primary model (all targets except SLEEP) — approximates Kernel Ridge Regression using Random Fourier Features; supports conformal prediction intervals</td></tr>
+          <tr><td><code>xgboost_wrapper.py</code></td><td><code>XGBoostWrapper</code></td><td>Model for SLEEP only — wraps XGBRegressor to match the RFF interface; uses quantile regression for prediction intervals, optionally corrected with conformal calibration</td></tr>
+          <tr><td><code>cross_validator.py</code></td><td><code>CrossValidator</code></td><td>Runs CV across time-series folds; creates a fresh <code>Preprocessor</code> per fold to prevent data leakage</td></tr>
+          <tr><td><code>assessment.py</code></td><td><code>Assessment</code></td><td>R² score and MSE — used for hyperparameter tuning (MSE) and reporting (R²)</td></tr>
+          <tr><td><code>train.py</code></td><td><code>tune_and_evaluate()</code>, <code>save_model()</code>, <code>load_model()</code></td><td>Entry point — runs grid search, fits final model, calibrates, saves <code>.pkl</code> bundles loaded by the Flask app</td></tr>
+          <tr><td><code>scenarios.py</code></td><td><code>generate_scenario()</code></td><td>Builds synthetic future feature rows for a county under a climate scenario; used by the Flask app to generate 10-year predictions</td></tr>
         </table>
       </div>
     </div>
-
+ 
+    <div class="section">
+      <div class="section-header"><h2>Training pipeline</h2></div>
+      <div class="card">
+        <p style="margin-bottom:14px;">A separate model is trained for each health target by <code>tune_and_evaluate()</code> in <code>train.py</code>. The steps are the same for every target:</p>
+        <table>
+          <tr><th>Step</th><th>What happens</th><th>Module</th></tr>
+          <tr><td>1. Data prep</td><td><code>prepare_data()</code> drops all other health outcomes and non-feature identifiers, then splits into X, y, and year labels</td><td><code>splitter.py</code></td></tr>
+          <tr><td>2. Fold creation</td><td><code>Splitter.time_series_splits()</code> builds expanding-window CV folds (2014→2015, 2014–2015→2016, … 2014–2021→2022); 2023 is held out as the test set throughout</td><td><code>splitter.py</code></td></tr>
+          <tr><td>3. Grid search</td><td><code>CrossValidator</code> scores each hyperparameter combination using the last 3 stable folds; early folds are skipped because the training set is too small before 2018</td><td><code>cross_validator.py</code></td></tr>
+          <tr><td>4. Final fit</td><td>Best model is fit on 2013–2021, calibrated on 2022, then evaluated on the held-out 2023 test set</td><td><code>train.py</code></td></tr>
+          <tr><td>5. Save</td><td>Model + fitted preprocessor are pickled together as <code>models/{TARGET}.pkl</code> for the Flask app to load</td><td><code>train.py</code></td></tr>
+        </table>
+      </div>
+    </div>
+ 
     <div class="section">
       <div class="section-header"><h2>Preprocessing</h2></div>
       <div class="card">
-        <p style="margin-bottom:14px;">The <code>Preprocessing</code> class implements the following transformations from scratch:</p>
+        <p style="margin-bottom:14px;"><code>Preprocessor</code> coordinates three components via composition (not inheritance), applied in order: encode → impute → scale. A fresh instance is created inside each CV fold to prevent statistics from leaking between folds.</p>
         <table>
-          <tr><th>Method</th><th>Description</th></tr>
-          <tr><td><code>SimpleImputer</code></td><td>Replaces missing values with the column mean</td></tr>
-          <tr><td><code>OneHotEncoder</code></td><td>Encodes categorical features as binary indicator columns</td></tr>
-          <tr><td><code>StandardScaler</code></td><td>Standardizes features: <code>z = (x − μ) / σ</code></td></tr>
-          <tr><td><code>ColumnTransformer</code></td><td>Applies transformers to column subsets and concatenates results</td></tr>
+          <tr><th>Component</th><th>What it does</th></tr>
+          <tr><td><code>OneHotEncoder</code></td><td>Converts <code>climate_type_short</code> (the only categorical column) into binary indicator columns. Drops the first category per column to avoid multicollinearity. Fit on training data only — unseen categories in val/test are handled using training categories.</td></tr>
+          <tr><td><code>SimpleImputer</code></td><td>Replaces NaNs with column means learned from training data. Most columns have &lt;10% missing. </td></tr>
+          <tr><td><code>StandardScaler</code></td><td>Standardizes each feature to mean=0, std=1 using <code>z = (x − μ) / σ</code>. Required because the RFF kernel is sensitive to feature scale. Constant columns (std=0) are left unchanged.</td></tr>
         </table>
+        <p style="margin-top:12px;">The <code>fit_transform()</code> method is used on training data; <code>transform()</code> applies the saved statistics to validation and test data. This separation is the primary guard against data leakage.</p>
       </div>
     </div>
-
+ 
     <div class="section">
-      <div class="section-header"><h2>Gaussian (RBF) kernel</h2></div>
+      <div class="section-header"><h2>Random Fourier Features (RFF) model</h2></div>
       <div class="card">
-        <p>The <code>GaussianKernel</code> class computes similarity between data points using the RBF kernel:</p>
-        <div class="math-block">K(x₁, x₂) = exp( −γ · ‖x₁ − x₂‖² )</div>
-        <p>Where <code>γ</code> (gamma) controls the rate of decay — a smaller gamma means similarity falls off slowly with distance, a larger gamma means it falls off quickly. The full kernel matrix <em>K</em> is computed pairwise over all training samples and passed to the KRR model.</p>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-header"><h2>Kernel Ridge Regression</h2></div>
-      <div class="card">
+        <p style="margin-bottom:12px;">Kernel Ridge Regression (KRR) solves <code>α = (K + λI)⁻¹ y</code> exactly, but this requires building and inverting an n×n kernel matrix — O(n³) in time and O(n²) in memory. For large datasets this becomes infeasible. Random Fourier Features approximate the kernel implicitly, reducing the problem to ordinary ridge regression on a low-dimensional feature map Z.</p>
+ 
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Feature map</p>
+        <p>R random frequencies W are drawn from N(0, 1) and phases B from U(0, 2π), then:</p>
+        <div class="math-block">Z = √(2/R) · cos( σ · X Wᵀ + B )</div>
+        <p style="margin-bottom:12px;">This gives an (n, R) matrix Z such that ZZᵀ ≈ K for the Gaussian kernel with bandwidth σ.</p>
+ 
         <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Fitting</p>
-        <p>Training solves for the dual coefficients <em>α</em> by inverting the regularized kernel matrix:</p>
-        <div class="math-block">α = (K(X, X) + λI)⁻¹ y</div>
-        <p>Where <code>λ</code> is the regularization parameter (L2 / ridge penalty), added along the diagonal of the kernel matrix before inversion.</p>
-        <hr class="divider">
+        <p>Coefficients are solved directly using ridge regression on Z:</p>
+        <div class="math-block">coef = (Zᵀ Z + λ I)⁻¹ Zᵀ y</div>
+ 
         <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Prediction</p>
-        <p>For new inputs, predictions are computed as:</p>
-        <div class="math-block">f(x) = K(x, X_train)ᵀ · α</div>
+        <div class="math-block">ŷ = Z_test · coef</div>
+ 
         <hr class="divider">
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Cross-validation</p>
-        <p>The <code>Model</code> class implements k-fold cross-validation from scratch. It also supports a Leave-One-Out CV (LOO-CV) closed-form shortcut, which avoids retraining the model <em>n</em> times:</p>
-        <div class="math-block">e_LOO = ( (yᵢ − (Kα)ᵢ) / (1 − Hᵢᵢ) )²</div>
-        <p>Where <em>H = K(K + λI)⁻¹</em> is the hat matrix and <em>H</em>ᵢᵢ is its i-th diagonal element.</p>
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Conformal prediction intervals</p>
+        <p>After fitting, <code>calibrate()</code> stores nonconformity scores (absolute residuals) on the 2022 held-out calibration set. At inference, <code>predict_interval()</code> computes the finite-sample corrected quantile from Angelopoulos &amp; Bates (2022):</p>
+        <div class="math-block">q_level = ceil((1 − α)(n_cal + 1)) / n_cal</div>
+        <p>The prediction interval is then <code>[ŷ − q, ŷ + q]</code>. This gives a coverage guarantee: at least (1 − α) of test points will fall within the interval.</p>
+ 
         <hr class="divider">
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Parameters</p>
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Hyperparameters</p>
         <table>
-          <tr><th>Parameter</th><th>Description</th></tr>
-          <tr><td><code>alpha / λ</code></td><td>Regularization strength — higher values reduce overfitting</td></tr>
-          <tr><td><code>γ</code> (gamma)</td><td>RBF kernel width — controls how quickly similarity decays with distance</td></tr>
-          <tr><td><code>k</code></td><td>Number of folds for cross-validation</td></tr>
+          <tr><th>Parameter</th><th>Description</th><th>Grid searched values</th></tr>
+          <tr><td><code>sigma</code></td><td>Kernel bandwidth — controls how quickly similarity decays with distance</td><td>0.1, 0.5, 1.0, 2.0</td></tr>
+          <tr><td><code>lamb</code> (λ)</td><td>Regularization strength — higher values reduce overfitting</td><td>1e-5, 1e-3, 1e-1</td></tr>
+          <tr><td><code>R</code></td><td>Number of random Fourier features — higher R gives a better kernel approximation at the cost of compute</td><td>200, 500, 1000</td></tr>
         </table>
       </div>
     </div>
-
+ 
+    <div class="section">
+      <div class="section-header"><h2>XGBoost model (SLEEP only)</h2></div>
+      <div class="card">
+        <p style="margin-bottom:14px;">The SLEEP target uses <code>XGBoostWrapper</code> instead of RFF. SLEEP data is collected every two years, making the training set smaller and noisier — gradient boosting is more robust to this than the kernel approximation.</p>
+        <p><code>XGBoostWrapper</code> trains three models in parallel: a median model (<code>reg:squarederror</code>) for point predictions, and lower/upper quantile models (<code>reg:quantileerror</code> at α=0.025 and 0.975) for the 90% prediction interval. The quantile bounds are optionally widened by conformal calibration using the same residual-based correction as RFF.</p>
+        <table style="margin-top:12px;">
+          <tr><th>Parameter</th><th>Description</th><th>Grid searched values</th></tr>
+          <tr><td><code>n_estimators</code></td><td>Number of boosting rounds</td><td>100, 300</td></tr>
+          <tr><td><code>max_depth</code></td><td>Maximum tree depth — controls model complexity</td><td>4, 6, 8</td></tr>
+          <tr><td><code>learning_rate</code></td><td>Shrinkage factor applied to each tree's contribution</td><td>0.01, 0.05, 0.1</td></tr>
+        </table>
+      </div>
+    </div>
+ 
     <div class="section">
       <div class="section-header"><h2>Assessment</h2></div>
       <div class="card">
-        <p style="margin-bottom:14px;">The <code>Assessment</code> class implements two evaluation metrics:</p>
+        <p style="margin-bottom:14px;">The <code>Assessment</code> class in <code>assessment.py</code> implements two metrics used at different stages of the pipeline:</p>
         <table>
-          <tr><th>Metric</th><th>Formula</th><th>Interpretation</th></tr>
-          <tr><td>R²</td><td><code>1 − (RSS / TSS)</code></td><td>Proportion of variance explained; 1.0 is perfect</td></tr>
-          <tr><td>MSE</td><td><code>mean((y_test − y_pred)²)</code></td><td>Average squared prediction error; lower is better</td></tr>
+          <tr><th>Metric</th><th>Formula</th><th>Used for</th></tr>
+          <tr><td>MSE</td><td><code>mean((y_test − y_pred)²)</code></td><td>Hyperparameter selection during grid search — minimized to pick the best configuration</td></tr>
+          <tr><td>R²</td><td><code>1 − (RSS / TSS)</code></td><td>Final reporting and interpretation — 1.0 is perfect, 0 = predicting the mean, &lt;0 = worse than the mean</td></tr>
         </table>
       </div>
     </div>
-
-    <div class="section">
-      <div class="section-header"><h2>Model diagnostics</h2></div>
-      <div class="card">
-        <p class="placeholder">[To be completed — e.g. residual plots, cross-validation scores per outcome, hyperparameter tuning results, overfitting/underfitting observations, etc.]</p>
-      </div>
-    </div>
-
+ 
     <div class="section">
       <div class="section-header"><h2>Target outcomes</h2></div>
       <div class="card">
-        <p style="margin-bottom:14px;">A separate KRR model is trained for each of the four health outcomes:</p>
+        <p style="margin-bottom:14px;">A separate model is trained for each of the five health outcomes. All are crude prevalence percentages from CDC Places.</p>
         <table>
-          <tr><th>Outcome</th><th>Column</th><th>Source</th></tr>
-          <tr><td>Physical distress</td><td><code>phlth_crudeprev</code></td><td>CDC Places</td></tr>
-          <tr><td>Mental distress</td><td><code>mhlth_crudeprev</code></td><td>CDC Places</td></tr>
-          <tr><td>Asthma</td><td><code>casthma_crudeprev</code></td><td>CDC Places</td></tr>
-          <tr><td>Insufficient sleep</td><td><code>sleep_crudeprev</code></td><td>CDC Places</td></tr>
+          <tr><th>Outcome</th><th>Column</th><th>Model</th></tr>
+          <tr><td>Asthma</td><td><code>CASTHMA</code></td><td>RFF</td></tr>
+          <tr><td>Mental distress</td><td><code>MHLTH</code></td><td>RFF</td></tr>
+          <tr><td>Physical distress</td><td><code>PHLTH</code></td><td>RFF</td></tr>
+          <tr><td>Stroke</td><td><code>STROKE</code></td><td>RFF</td></tr>
+          <tr><td>Insufficient sleep</td><td><code>SLEEP</code></td><td>XGBoost </td></tr>
         </table>
       </div>
     </div>
-
+ 
+    <div class="section">
+      <div class="section-header"><h2>Model diagnostics</h2></div>
+      <div class="card">
+        <p style="margin-bottom:14px;">All diagnostic charts are generated by <code>diagnostics.ipynb</code>. The notebook loads saved <code>.pkl</code> models via <code>load_model()</code> from <code>train.py</code> and reproduces the exact 2023 test split used during training. Charts are saved as <code>.png</code> files in the notebook directory.</p>
+        <p style="margin-bottom: 6px;">To add charts to this documentation page, save the <code>.png</code> outputs from the notebook and embed them here with an <code>&lt;img&gt;</code> tag, or render them as base64 inline. The five chart sets produced are:</p>
+        <table>
+          <tr><th>Chart</th><th>Notebook cell</th><th>Saved as</th><th>What to look for</th></tr>
+          <tr><td>R² and MSE bar charts</td><td>Cell 3 — <em>R2 and MSE Bar Charts</em></td><td><code>diagnostics_model_comparison.png</code></td><td>Overall model quality per target; RFF bars are dark green, XGBoost is light green</td></tr>
+          <tr><td>RFF vs sklearn KRR comparison</td><td>Cell 4–5 — <em>Comparison between our model and built-in tools</em></td><td><code>diagnostics_comparison.png</code></td><td>R², MSE, and runtime side-by-side — confirms custom RFF matches sklearn KRR while being faster at prediction</td></tr>
+          <tr><td>Residuals vs predicted</td><td>Cell 6 — <em>Residuals</em></td><td><code>diagnostics_residuals.png</code></td><td>One panel per target; points should scatter randomly around the zero line — systematic patterns indicate bias</td></tr>
+          <tr><td>Predicted vs actual</td><td>Cell 7 — <em>Predicted vs Actual</em></td><td><code>diagnostics_predicted_vs_actual.png</code></td><td>Points should cluster along the diagonal red line — deviation indicates underfitting or range compression</td></tr>
+          <tr><td>90% prediction intervals</td><td>Cell 8 — <em>Prediction Intervals</em></td><td><code>diagnostics_prediction_intervals.png</code></td><td>Shaded bands show conformal 90% intervals sorted by actual value; the red scatter (actual) should fall within the band for ~90% of points</td></tr>
+        </table>
+        <p style="margin-top:14px;font-size:12px;color:#999;">[ Embed chart images here once generated — e.g. <code>&lt;img src="/static/diagnostics_model_comparison.png"&gt;</code> ]</p>
+      </div>
+    </div>
+ 
+      <div class="section">
+      <div class="section-header"><h2>Testing</h2></div>
+      <div class="card">
+        <p style="margin-bottom:14px;">The test suite covers all core pipeline modules with unit tests and one integration test. Tests are organized into per-file subfolders and run with pytest. Each test module imports directly from the <code>app/functions</code> directory so no installation step is required.</p>
+ 
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Assessment — <code>test_r2_score.py</code>, <code>test_mean_squared_error.py</code></p>
+        <p style="margin-bottom:14px;">Verifies the two metric implementations against known hand-computed values. R² returns 1.0 for perfect predictions; MSE returns the correct average squared error. These are intentionally minimal — the formulas are simple and the tests serve as regression guards.</p>
+ 
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Preprocessing — <code>test_simple_imputer.py</code>, <code>test_standard_scaler.py</code>, <code>test_one_hot_encoder.py</code>, <code>test_detect_categorical_columns.py</code>, <code>test_preprocessor.py</code></p>
+        <p style="margin-bottom:8px;">Each preprocessing component is tested independently and then together through <code>Preprocessor</code>. Key cases covered:</p>
+        <div class="math-block" style="font-family:inherit;line-height:2;">
+          <strong><code>SimpleImputer</code></strong> — replaces NaNs with column means; handles the all-NaN column edge case by falling back to 0 (a NumPy warning is expected here and noted in the test)<br>
+          <strong><code>StandardScaler</code></strong> — output has mean=0 and std=1; constant columns (std=0) are left unchanged to avoid division by zero; <code>transform()</code> uses training statistics, not test statistics<br>
+          <strong><code>OneHotEncoder</code></strong> — drops the first category to avoid multicollinearity; handles multiple categories correctly; unseen categories at inference time become all-zeros rather than raising an error<br>
+          <strong><code>detect_categorical_columns()</code></strong> — returns correct indices for object and category dtype columns; returns an empty list when no categorical columns are present<br>
+          <strong><code>Preprocessor</code></strong> — end-to-end: imputes and scales numeric data to mean=0, std=1; handles mixed numeric/categorical input; <code>transform()</code> applies the pipeline fitted on training data without refitting
+        </div>
+ 
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Splitter — <code>test_splitter.py</code>, <code>test_prepare_data.py</code></p>
+        <p style="margin-bottom:8px;">Covers data preparation and fold generation:</p>
+        <div class="math-block" style="font-family:inherit;line-height:2;">
+          <strong><code>prepare_data()</code></strong> — keeps the target column in y and drops it from X; drops all other health outcomes and all identifier columns; correctly drops rows where the target is NaN (critical for SLEEP)<br>
+          <strong><code>Splitter</code></strong> — correctly assigns the last year as the held-out test year and all earlier years as training; <code>time_series_splits()</code> produces expanding windows with the correct train/val arrays at each fold; <code>get_test_split()</code> returns the full training set and the held-out test year
+        </div>
+ 
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">CrossValidator — <code>test_cross_validator.py</code></p>
+        <p style="margin-bottom:14px;">Uses a minimal <code>MeanModel</code> stub (predicts the training mean) to test the CV loop in isolation without depending on the RFF model. Verifies that <code>cross_val_score()</code> returns both <code>mse</code> and <code>r2</code> keys, produces one score per scored fold, and that all scores are finite.</p>
+ 
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">RFF model — <code>test_random_fourier_features.py</code></p>
+        <p style="margin-bottom:8px;">Six tests covering the full RFF interface:</p>
+        <div class="math-block" style="font-family:inherit;line-height:2;">
+          <strong><code>rff_features()</code></strong> — output shape is (n_samples, R); results are exactly reproducible given the same seed<br>
+          <strong><code>fit()</code></strong> — coefficients exist after fitting and have shape (R,)<br>
+          <strong><code>predict()</code></strong> — returns one prediction per test row<br>
+          <strong><code>predict_interval()</code></strong> — raises <code>RuntimeError</code> if called before <code>calibrate()</code>; after calibration, lower ≤ predicted ≤ upper for all test points
+        </div>
+ 
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Scenarios — <code>test__compute_trend.py</code>, <code>test_generate_scenario.py</code></p>
+        <p style="margin-bottom:8px;">Tests for the future projection logic used by the Flask app:</p>
+        <div class="math-block" style="font-family:inherit;line-height:2;">
+          <strong><code>_compute_trend()</code></strong> — returns 0.0 when fewer than 3 data points are available; enforces physically consistent slope direction (positive for warming variables like TAVG, negative for cooling variables like HTDD) regardless of the observed trend direction in the data<br>
+          <strong><code>generate_scenario()</code></strong> — returns the correct future year range; drops all identifier and health outcome columns from the feature matrix; projects warming variables forward by the correct cumulative amount; raises <code>ValueError</code> with a descriptive message when the baseline county/year combination is missing
+        </div>
+ 
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Flask integration — <code>test_prediction_page.py</code></p>
+        <p>Uses Flask's test client to test the <code>/predict</code> route end-to-end against the running app. Verifies that the page returns HTTP 200 and contains the prediction form with the required fields (<code>county_state</code>, <code>target</code>, <code>scenario</code>); that all five target outcomes and all four climate scenarios are present in the rendered HTML; and that a real POST request for Alameda County returns a results page with predicted value and confidence interval columns and no error message. This is the only test that requires the saved <code>.pkl</code> model files to be present.</p>
+      </div>
+    </div>
+ 
   </div>
 </div>
 
