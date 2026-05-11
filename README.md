@@ -1,4 +1,4 @@
-# _[Insert Project (App) Name]_
+# _Halcyon_
 **Team:** KRASSS
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
@@ -21,7 +21,7 @@
 
 ## 🌦️ Description
 
-_[Insert Project (App) Name]_ is an interactive Flask-based **data science web application** developed as part of the Data Structures and Algorithms course at the Hertie School.
+**_Halcyon_** is an interactive Flask-based **data science web application** developed as part of the Data Structures and Algorithms course at the Hertie School.
 
 The project combines public data from NOAA, the CDC, and the U.S. Census to examine how **weather patterns** relate to **health outcomes** across U.S. metropolitan areas between 2013 and 2023. The integrated dataset supports both exploratory analysis and predictive modeling, with a focus on the following outcomes: physical distress, mental distress, asthma, and sleep.
 
@@ -37,36 +37,14 @@ The project includes a manual implementation of **Kernel Ridge Regression** (wit
 
 
 ## 📊 Data
-The project integrates multiple publicly available datasets, aligned at the **Metropolitan Statistical Area (MSA) level** over the period **2013--2023**:
 
-| Dataset          | Unit of Analysis       | Years       | Description                              | Source |
+| Dataset          | Unit of Analysis       | Years       | Features                              | Source |
 |------------------|----------------------|------------|------------------------------------------|--------|
-| NOAA GSOY        | Station → MSA-year   | 2013--2023  | Weather data (e.g., temperature, precipitation) | [NOAA](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-year) |
-| CDC Places       | Place / MSA          | 2013--2023  | Health outcomes (e.g., asthma, sleep)     | [CDC](https://data.cdc.gov/browse?category=500+Cities+%26+Places) |
-| US Census ACS    | MSA (CBSA)           | 2013--2023  | Socioeconomic and demographic variables   | [U.S. Census](https://data.census.gov/table) |
+| NOAA GSOY        | U.S. county   | 2013-2023  | Weather data (e.g., temperature, precipitation) | [NOAA](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-year) |
+| CDC Places       | U.S. county          | 2013-2023  | Health outcomes (e.g., asthma, sleep)     | [CDC](https://data.cdc.gov/browse?category=500+Cities+%26+Places) |
+| US Census ACS    | U.S. county           | 2013-2023  | Socioeconomic and demographic variables   | [U.S. Census](https://data.census.gov/table) |
 
-The final dataset contains **6,646 rows** and **52 columns**.
-
-
-## 🧪 Methodology
-The project follows an end-to-end analytical pipeline:
-
-1. **Data Collection and Integration**: Data is collected from NOAA, CDC Places, and the U.S. Census and aligned at the MSA level.
-2. **Data Cleaning and Preprocessing**: _[fill in]_
-3. **Exploratory Data Analysis:** Statistical summaries and visualizations are used to identify patterns and relationships within and between variables.
-4. **Feature Engineering:** _[fill in]_
-5. **Model Implementation:** A Kernel Ridge Regression with a Gaussian kernel is implemented from scratch, without assistance from external Machine Learning Libraries.
-6. **Visualization and User Interaction:** Results are presented through an interactive web application that uses Flask.
-
-
-## 🔄 Development Workflow
-Throughout the process, [standard developing practices](https://dev.to/speaklouder/be-a-better-developer-with-these-git-good-practices-13j9) were followed, including:
-
-* Meaningful commit messages.
-* Pull requests and code reviews.
-* Regular pulls from main.
-* Use of branches for new features and experimentation.
-* Regular synchronization with main.
+The final dataset contains **6,646 rows** and **41 columns**.
 
 
 ## 🗂️ Repository Structure
