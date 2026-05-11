@@ -92,17 +92,17 @@
         <ul style="list-style:none;padding:0;margin:0;">
           <li style="margin-bottom:14px;">
             <strong style="color:#1a3a2a;">NOAA — National Oceanic and Atmospheric Administration</strong><br>
-            <span style="font-size:13px;color:#555;">[ Short description ]</span><br>
+            <span style="font-size:13px;color:#555;"> This data comes from the National Ocean and Atmospheric Administration (NOAA) Global Summary of the Year, and supplies the Halycon app with temperature and weather data from across the United States. This data set provides 16 variables for this app, and the geographic basis for a 17th. </span><br>
             <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
           </li>
           <li style="margin-bottom:14px;">
             <strong style="color:#1a3a2a;">CDC Places</strong><br>
-            <span style="font-size:13px;color:#555;">[ Short description ]</span><br>
+            <span style="font-size:13px;color:#555;"> The CDC Places dataset supplies the Halcyon app with health data at the county level, including the app's predicted outcome variables: stroke incidence, mental health quality, physical health, asthma incidence, and sleep. </span><br>
             <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
           </li>
           <li>
             <strong style="color:#1a3a2a;">U.S. Census Bureau</strong><br>
-            <span style="font-size:13px;color:#555;">[ Short description ]</span><br>
+            <span style="font-size:13px;color:#555;"> The U.S. Census Bureau dataset supplies the Halycon app with demographic information at the county level, covering twelve variables used to eliminate non-climate variations between health outcomes. </span><br>
             <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
           </li>
         </ul>
@@ -146,27 +146,15 @@
           <tr><td><code>DT32</code></td><td>Number of days with minimum temperature ≤ 32°F (frost days)</td></tr>
           <tr><td><code>PRCP</code></td><td>Total annual precipitation (inches)</td></tr>
         </table>
-        <table>
-          <tr><th>Column</th><th>Description</th></tr>
-          <tr><td><code>CASTHMA</code></td><td>Current asthma prevalence</td></tr>
-          <tr><td><code>BPHIGH</code></td><td>High blood pressure prevalence</td></tr>
-          <tr><td><code>COPD</code></td><td>Chronic obstructive pulmonary disease prevalence</td></tr>
-          <tr><td><code>STROKE</code></td><td>Stroke prevalence</td></tr>
-          <tr><td><code>MHLTH</code></td><td>Frequent mental distress prevalence (14+ poor mental health days/month)</td></tr>
-          <tr><td><code>PHLTH</code></td><td>Frequent physical distress prevalence (14+ poor physical health days/month)</td></tr>
-          <tr><td><code>SLEEP</code></td><td>Insufficient sleep prevalence (&lt;7 hours/night) — 52% missing prior to 2016</td></tr>
-        </table>
  
         <p class="section-label" style="margin-top:16px;">CDC Places — Health outcomes <span style="font-weight:400;text-transform:none;letter-spacing:0;">(crude prevalence %, age-adjusted)</span></p>
         <table>
           <tr><th>Column</th><th>Description</th></tr>
           <tr><td><code>CASTHMA</code></td><td>Current asthma prevalence</td></tr>
-          <tr><td><code>BPHIGH</code></td><td>High blood pressure prevalence</td></tr>
-          <tr><td><code>COPD</code></td><td>Chronic obstructive pulmonary disease prevalence</td></tr>
           <tr><td><code>STROKE</code></td><td>Stroke prevalence</td></tr>
           <tr><td><code>MHLTH</code></td><td>Frequent mental distress prevalence (14+ poor mental health days/month)</td></tr>
           <tr><td><code>PHLTH</code></td><td>Frequent physical distress prevalence (14+ poor physical health days/month)</td></tr>
-          <tr><td><code>SLEEP</code></td><td>Insufficient sleep prevalence (&lt;7 hours/night) — 52% missing prior to 2016</td></tr>
+          <tr><td><code>SLEEP</code></td><td>Insufficient sleep prevalence (&lt;7 hours/night) — sleep data collected every two years. </td></tr>
         </table>
  
         <p class="section-label" style="margin-top:16px;">U.S. Census — Socioeconomic indicators</p>
@@ -240,7 +228,7 @@
         <table>
           <tr><th>Component</th><th>What it does</th></tr>
           <tr><td><code>OneHotEncoder</code></td><td>Converts <code>climate_type_short</code> (the only categorical column) into binary indicator columns. Drops the first category per column to avoid multicollinearity. Fit on training data only — unseen categories in val/test are handled using training categories.</td></tr>
-          <tr><td><code>SimpleImputer</code></td><td>Replaces NaNs with column means learned from training data. Most columns have &lt;10% missing; <code>SLEEP</code> is the exception at 52% (pre-2016 data gaps).</td></tr>
+          <tr><td><code>SimpleImputer</code></td><td>Replaces NaNs with column means learned from training data. Most columns have &lt;10% missing. </td></tr>
           <tr><td><code>StandardScaler</code></td><td>Standardizes each feature to mean=0, std=1 using <code>z = (x − μ) / σ</code>. Required because the RFF kernel is sensitive to feature scale. Constant columns (std=0) are left unchanged.</td></tr>
         </table>
         <p style="margin-top:12px;">The <code>fit_transform()</code> method is used on training data; <code>transform()</code> applies the saved statistics to validation and test data. This separation is the primary guard against data leakage.</p>
@@ -284,8 +272,8 @@
     <div class="section">
       <div class="section-header"><h2>XGBoost model (SLEEP only)</h2></div>
       <div class="card">
-        <p style="margin-bottom:14px;">The SLEEP target uses <code>XGBoostWrapper</code> instead of RFF. SLEEP has 52% missing values before 2016, making the training set substantially smaller and noisier — gradient boosting is more robust to this than the kernel approximation.</p>
-        <p><code>XGBoostWrapper</code> trains three models in parallel: a median model (<code>reg:squarederror</code>) for point predictions, and lower/upper quantile models (<code>reg:quantileerror</code> at α=0.025 and 0.975) for the 95% prediction interval. The quantile bounds are optionally widened by conformal calibration using the same residual-based correction as RFF.</p>
+        <p style="margin-bottom:14px;">The SLEEP target uses <code>XGBoostWrapper</code> instead of RFF. SLEEP data is collected every two years, making the training set smaller and noisier — gradient boosting is more robust to this than the kernel approximation.</p>
+        <p><code>XGBoostWrapper</code> trains three models in parallel: a median model (<code>reg:squarederror</code>) for point predictions, and lower/upper quantile models (<code>reg:quantileerror</code> at α=0.025 and 0.975) for the 90% prediction interval. The quantile bounds are optionally widened by conformal calibration using the same residual-based correction as RFF.</p>
         <table style="margin-top:12px;">
           <tr><th>Parameter</th><th>Description</th><th>Grid searched values</th></tr>
           <tr><td><code>n_estimators</code></td><td>Number of boosting rounds</td><td>100, 300</td></tr>
@@ -317,7 +305,7 @@
           <tr><td>Mental distress</td><td><code>MHLTH</code></td><td>RFF</td></tr>
           <tr><td>Physical distress</td><td><code>PHLTH</code></td><td>RFF</td></tr>
           <tr><td>Stroke</td><td><code>STROKE</code></td><td>RFF</td></tr>
-          <tr><td>Insufficient sleep</td><td><code>SLEEP</code></td><td>XGBoost (52% missing pre-2016)</td></tr>
+          <tr><td>Insufficient sleep</td><td><code>SLEEP</code></td><td>XGBoost </td></tr>
         </table>
       </div>
     </div>
@@ -333,57 +321,63 @@
           <tr><td>RFF vs sklearn KRR comparison</td><td>Cell 4–5 — <em>Comparison between our model and built-in tools</em></td><td><code>diagnostics_comparison.png</code></td><td>R², MSE, and runtime side-by-side — confirms custom RFF matches sklearn KRR while being faster at prediction</td></tr>
           <tr><td>Residuals vs predicted</td><td>Cell 6 — <em>Residuals</em></td><td><code>diagnostics_residuals.png</code></td><td>One panel per target; points should scatter randomly around the zero line — systematic patterns indicate bias</td></tr>
           <tr><td>Predicted vs actual</td><td>Cell 7 — <em>Predicted vs Actual</em></td><td><code>diagnostics_predicted_vs_actual.png</code></td><td>Points should cluster along the diagonal red line — deviation indicates underfitting or range compression</td></tr>
-          <tr><td>95% prediction intervals</td><td>Cell 8 — <em>Prediction Intervals</em></td><td><code>diagnostics_prediction_intervals.png</code></td><td>Shaded bands show conformal 95% intervals sorted by actual value; the red scatter (actual) should fall within the band for ~95% of points</td></tr>
+          <tr><td>90% prediction intervals</td><td>Cell 8 — <em>Prediction Intervals</em></td><td><code>diagnostics_prediction_intervals.png</code></td><td>Shaded bands show conformal 90% intervals sorted by actual value; the red scatter (actual) should fall within the band for ~90% of points</td></tr>
         </table>
         <p style="margin-top:14px;font-size:12px;color:#999;">[ Embed chart images here once generated — e.g. <code>&lt;img src="/static/diagnostics_model_comparison.png"&gt;</code> ]</p>
       </div>
     </div>
  
-    <div class="section">
+      <div class="section">
       <div class="section-header"><h2>Testing</h2></div>
       <div class="card">
         <p style="margin-bottom:14px;">The test suite covers all core pipeline modules with unit tests and one integration test. Tests are organized into per-file subfolders and run with pytest. Each test module imports directly from the <code>app/functions</code> directory so no installation step is required.</p>
  
-        <p class="section-label" style="margin-top:4px;">Assessment — <code>test_r2_score.py</code>, <code>test_mean_squared_error.py</code></p>
-        <p style="margin-bottom:16px;">Verifies the two metric implementations against known hand-computed values. R² returns 1.0 for perfect predictions; MSE returns the correct average squared error. These are intentionally minimal — the formulas are simple and the tests serve as regression guards.</p>
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Assessment — <code>test_r2_score.py</code>, <code>test_mean_squared_error.py</code></p>
+        <p style="margin-bottom:14px;">Verifies the two metric implementations against known hand-computed values. R² returns 1.0 for perfect predictions; MSE returns the correct average squared error. These are intentionally minimal — the formulas are simple and the tests serve as regression guards.</p>
  
-        <p class="section-label">Preprocessing — <code>test_simple_imputer.py</code>, <code>test_standard_scaler.py</code>, <code>test_one_hot_encoder.py</code>, <code>test_detect_categorical_columns.py</code>, <code>test_preprocessor.py</code></p>
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Preprocessing — <code>test_simple_imputer.py</code>, <code>test_standard_scaler.py</code>, <code>test_one_hot_encoder.py</code>, <code>test_detect_categorical_columns.py</code>, <code>test_preprocessor.py</code></p>
         <p style="margin-bottom:8px;">Each preprocessing component is tested independently and then together through <code>Preprocessor</code>. Key cases covered:</p>
-        <ul style="margin-bottom:16px;">
-          <li><code>SimpleImputer</code> — replaces NaNs with column means; handles the all-NaN column edge case by falling back to 0 (a NumPy warning is expected here and noted in the test)</li>
-          <li><code>StandardScaler</code> — output has mean=0 and std=1; constant columns (std=0) are left unchanged to avoid division by zero; <code>transform()</code> uses training statistics, not test statistics</li>
-          <li><code>OneHotEncoder</code> — drops the first category to avoid multicollinearity; handles multiple categories correctly; unseen categories at inference time become all-zeros rather than raising an error</li>
-          <li><code>detect_categorical_columns()</code> — returns correct indices for object and category dtype columns; returns an empty list when no categorical columns are present</li>
-          <li><code>Preprocessor</code> — end-to-end: imputes and scales numeric data to mean=0, std=1; handles mixed numeric/categorical input; <code>transform()</code> applies the pipeline fitted on training data without refitting</li>
-        </ul>
+        <div class="math-block" style="font-family:inherit;line-height:2;">
+          <strong><code>SimpleImputer</code></strong> — replaces NaNs with column means; handles the all-NaN column edge case by falling back to 0 (a NumPy warning is expected here and noted in the test)<br>
+          <strong><code>StandardScaler</code></strong> — output has mean=0 and std=1; constant columns (std=0) are left unchanged to avoid division by zero; <code>transform()</code> uses training statistics, not test statistics<br>
+          <strong><code>OneHotEncoder</code></strong> — drops the first category to avoid multicollinearity; handles multiple categories correctly; unseen categories at inference time become all-zeros rather than raising an error<br>
+          <strong><code>detect_categorical_columns()</code></strong> — returns correct indices for object and category dtype columns; returns an empty list when no categorical columns are present<br>
+          <strong><code>Preprocessor</code></strong> — end-to-end: imputes and scales numeric data to mean=0, std=1; handles mixed numeric/categorical input; <code>transform()</code> applies the pipeline fitted on training data without refitting
+        </div>
  
-        <p class="section-label">Splitter — <code>test_splitter.py</code>, <code>test_prepare_data.py</code></p>
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Splitter — <code>test_splitter.py</code>, <code>test_prepare_data.py</code></p>
         <p style="margin-bottom:8px;">Covers data preparation and fold generation:</p>
-        <ul style="margin-bottom:16px;">
-          <li><code>prepare_data()</code> — keeps the target column in y and drops it from X; drops all other health outcomes and all identifier columns; correctly drops rows where the target is NaN (critical for SLEEP)</li>
-          <li><code>Splitter</code> — correctly assigns the last year as the held-out test year and all earlier years as training; <code>time_series_splits()</code> produces expanding windows with the correct train/val arrays at each fold; <code>get_test_split()</code> returns the full training set and the held-out test year</li>
-        </ul>
+        <div class="math-block" style="font-family:inherit;line-height:2;">
+          <strong><code>prepare_data()</code></strong> — keeps the target column in y and drops it from X; drops all other health outcomes and all identifier columns; correctly drops rows where the target is NaN (critical for SLEEP)<br>
+          <strong><code>Splitter</code></strong> — correctly assigns the last year as the held-out test year and all earlier years as training; <code>time_series_splits()</code> produces expanding windows with the correct train/val arrays at each fold; <code>get_test_split()</code> returns the full training set and the held-out test year
+        </div>
  
-        <p class="section-label">CrossValidator — <code>test_cross_validator.py</code></p>
-        <p style="margin-bottom:16px;">Uses a minimal <code>MeanModel</code> stub (predicts the training mean) to test the CV loop in isolation without depending on the RFF model. Verifies that <code>cross_val_score()</code> returns both <code>mse</code> and <code>r2</code> keys, produces one score per scored fold, and that all scores are finite.</p>
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">CrossValidator — <code>test_cross_validator.py</code></p>
+        <p style="margin-bottom:14px;">Uses a minimal <code>MeanModel</code> stub (predicts the training mean) to test the CV loop in isolation without depending on the RFF model. Verifies that <code>cross_val_score()</code> returns both <code>mse</code> and <code>r2</code> keys, produces one score per scored fold, and that all scores are finite.</p>
  
-        <p class="section-label">RFF model — <code>test_random_fourier_features.py</code></p>
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">RFF model — <code>test_random_fourier_features.py</code></p>
         <p style="margin-bottom:8px;">Six tests covering the full RFF interface:</p>
-        <ul style="margin-bottom:16px;">
-          <li><code>rff_features()</code> — output shape is (n_samples, R); results are exactly reproducible given the same seed</li>
-          <li><code>fit()</code> — coefficients exist after fitting and have shape (R,)</li>
-          <li><code>predict()</code> — returns one prediction per test row</li>
-          <li><code>predict_interval()</code> — raises <code>RuntimeError</code> if called before <code>calibrate()</code>; after calibration, lower ≤ predicted ≤ upper for all test points</li>
-        </ul>
+        <div class="math-block" style="font-family:inherit;line-height:2;">
+          <strong><code>rff_features()</code></strong> — output shape is (n_samples, R); results are exactly reproducible given the same seed<br>
+          <strong><code>fit()</code></strong> — coefficients exist after fitting and have shape (R,)<br>
+          <strong><code>predict()</code></strong> — returns one prediction per test row<br>
+          <strong><code>predict_interval()</code></strong> — raises <code>RuntimeError</code> if called before <code>calibrate()</code>; after calibration, lower ≤ predicted ≤ upper for all test points
+        </div>
  
-        <p class="section-label">Scenarios — <code>test__compute_trend.py</code>, <code>test_generate_scenario.py</code></p>
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Scenarios — <code>test__compute_trend.py</code>, <code>test_generate_scenario.py</code></p>
         <p style="margin-bottom:8px;">Tests for the future projection logic used by the Flask app:</p>
-        <ul style="margin-bottom:16px;">
-          <li><code>_compute_trend()</code> — returns 0.0 when fewer than 3 data points are available; enforces physically consistent slope direction (positive for warming variables like TAVG, negative for cooling variables like HTDD) regardless of the observed trend direction in the data</li>
-          <li><code>generate_scenario()</code> — returns the correct future year range; drops all identifier and health outcome columns from the feature matrix; projects warming variables forward by the correct cumulative amount; raises <code>ValueError</code> with a descriptive message when the baseline county/year combination is missing</li>
-        </ul>
+        <div class="math-block" style="font-family:inherit;line-height:2;">
+          <strong><code>_compute_trend()</code></strong> — returns 0.0 when fewer than 3 data points are available; enforces physically consistent slope direction (positive for warming variables like TAVG, negative for cooling variables like HTDD) regardless of the observed trend direction in the data<br>
+          <strong><code>generate_scenario()</code></strong> — returns the correct future year range; drops all identifier and health outcome columns from the feature matrix; projects warming variables forward by the correct cumulative amount; raises <code>ValueError</code> with a descriptive message when the baseline county/year combination is missing
+        </div>
  
-        <p class="section-label">Flask integration — <code>test_prediction_page.py</code></p>
+        <hr class="divider">
+        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Flask integration — <code>test_prediction_page.py</code></p>
         <p>Uses Flask's test client to test the <code>/predict</code> route end-to-end against the running app. Verifies that the page returns HTTP 200 and contains the prediction form with the required fields (<code>county_state</code>, <code>target</code>, <code>scenario</code>); that all five target outcomes and all four climate scenarios are present in the rendered HTML; and that a real POST request for Alameda County returns a results page with predicted value and confidence interval columns and no error message. This is the only test that requires the saved <code>.pkl</code> model files to be present.</p>
       </div>
     </div>
