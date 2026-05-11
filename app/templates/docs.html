@@ -43,6 +43,10 @@
   .math-block { background: #f5f7f5; border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 16px; font-family: monospace; font-size: 13px; color: #1a3a2a; margin: 8px 0 14px; line-height: 1.8; }
   .placeholder { color: #999; font-style: italic; font-size: 13px; }
   hr.divider { border: none; border-top: 1px solid #eee; margin: 1rem 0; }
+  .diag-btn { background:#fff; border:1px solid #ddd; padding:6px 16px; font-size:12px; color:#666; cursor:pointer; border-radius:6px; font-family:sans-serif; font-weight:600; }
+  .diag-btn.active { background:#1a3a2a; color:#fff; border-color:#1a3a2a; }
+  .diag-btn:hover:not(.active) { color:#1a3a2a; }
+  .diag-notes { border-top:1px solid #eee; margin-top:12px; padding-top:4px; }
 </style>
 
 <div class="eda-wrap">
@@ -93,17 +97,17 @@
           <li style="margin-bottom:14px;">
             <strong style="color:#1a3a2a;">NOAA — National Oceanic and Atmospheric Administration</strong><br>
             <span style="font-size:13px;color:#555;"> This data comes from the National Ocean and Atmospheric Administration (NOAA) Global Summary of the Year, and supplies the Halycon app with temperature and weather data from across the United States. This data set provides 16 variables for this app, and the geographic basis for a 17th. </span><br>
-            <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
+            <a href="#" style="font-size:13px;color:#1a3a2a;">https://www.ncei.noaa.gov/cdo-web/</a>
           </li>
           <li style="margin-bottom:14px;">
             <strong style="color:#1a3a2a;">CDC Places</strong><br>
             <span style="font-size:13px;color:#555;"> The CDC Places dataset supplies the Halcyon app with health data at the county level, including the app's predicted outcome variables: stroke incidence, mental health quality, physical health, asthma incidence, and sleep. </span><br>
-            <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
+            <a href="#" style="font-size:13px;color:#1a3a2a;">https://www.cdc.gov/places/tools/data-portal.html</a>
           </li>
           <li>
             <strong style="color:#1a3a2a;">U.S. Census Bureau</strong><br>
             <span style="font-size:13px;color:#555;"> The U.S. Census Bureau dataset supplies the Halycon app with demographic information at the county level, covering twelve variables used to eliminate non-climate variations between health outcomes. </span><br>
-            <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
+            <a href="#" style="font-size:13px;color:#1a3a2a;">https://www.census.gov/data/developers/data-sets/acs-5year.html</a>
           </li>
         </ul>
       </div>
@@ -179,7 +183,28 @@
     <div class="section">
       <div class="section-header"><h2>Known issues &amp; limitations</h2></div>
       <div class="card">
-        <p class="placeholder">[To be completed — e.g. known data gaps, edge cases, etc.]</p>
+        <p style="margin-bottom:14px;">While every effort has been made to make the models as robust as possible, several limitations exist that should be taken into account before drawing any conclusions from the predicted values.</p>
+         <ul style="list-style:none;padding:0;margin:0;">
+          <li style="margin-bottom:14px;">
+            <strong style="color:#1a3a2a;">Data</strong><br>
+            <span style="font-size:13px;color:#555;">The dataset used to train the models only contained data for 10 years, which is a relatively short time period for slow moving variables such as health outcomes and annual weather patterns. As a result, models are heavily biased towards events in this short time period and may not accurately reflect more long-term trends. </span><br>
+          </li>
+          <li style="margin-bottom:14px;">
+            <strong style="color:#1a3a2a;">Models</strong><br>
+            <span style="font-size:13px;color:#555;">Not all models are equally robust. As the technical documentation shows, while models for Stroke, Mental Health and Asthma show lower error rates for the available data, Physical Health and Sleep both perform poorly and findings from those two models should be assessed with heavy qualifications.</span><br>
+          </li>
+          <li style="margin-bottom:14px;">
+            <strong style="color:#1a3a2a;">Confidence Intervals</strong><br>
+            <span style="font-size:13px;color:#555;">Due to limited data availability, a trade-off was made during model training between better point predictions and better accuracy of confidence intervals by models to be retrained on a set of the data that was used to calibrate prediction intervals. Diagnostics in the technical documentation reveal that this has not significantly affected CI coverage, with coverage only being poor for the two weaker models (Physical Health and Sleep) but users should still assume that existing confidence intervals may provide more optimistic coverage than may be desired.</span><br>
+          </li>
+         </ul> 
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Code sources</h2></div>
+      <div class="card">
+        <p style="margin-bottom:14px;">Code for the custom RFF features was adapted from Drew Dimmery's lecture material for the 2026 Data Structures and Algorithms course. In addition, AI coding assistance has been used for several sections of the app code, though all such instances have undergone detailed reviews from the developers.</p>
       </div>
     </div>
  
@@ -262,8 +287,8 @@
         <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Hyperparameters</p>
         <table>
           <tr><th>Parameter</th><th>Description</th><th>Grid searched values</th></tr>
-          <tr><td><code>sigma</code></td><td>Kernel bandwidth — controls how quickly similarity decays with distance</td><td>0.1, 0.5, 1.0, 2.0</td></tr>
-          <tr><td><code>lamb</code> (λ)</td><td>Regularization strength — higher values reduce overfitting</td><td>1e-5, 1e-3, 1e-1</td></tr>
+          <tr><td><code>sigma</code></td><td>Kernel bandwidth — controls how quickly similarity decays with distance</td><td>0.1, 0.5, 1.0, 2.0, 5.0</td></tr>
+          <tr><td><code>lamb</code> (λ)</td><td>Regularization strength — higher values reduce overfitting</td><td>1e-5, 1e-4, 1e-3, 1e-2, 1e-1</td></tr>
           <tr><td><code>R</code></td><td>Number of random Fourier features — higher R gives a better kernel approximation at the cost of compute</td><td>200, 500, 1000</td></tr>
         </table>
       </div>
@@ -273,7 +298,7 @@
       <div class="section-header"><h2>XGBoost model (SLEEP only)</h2></div>
       <div class="card">
         <p style="margin-bottom:14px;">The SLEEP target uses <code>XGBoostWrapper</code> instead of RFF. SLEEP data is collected every two years, making the training set smaller and noisier — gradient boosting is more robust to this than the kernel approximation.</p>
-        <p><code>XGBoostWrapper</code> trains three models in parallel: a median model (<code>reg:squarederror</code>) for point predictions, and lower/upper quantile models (<code>reg:quantileerror</code> at α=0.025 and 0.975) for the 90% prediction interval. The quantile bounds are optionally widened by conformal calibration using the same residual-based correction as RFF.</p>
+        <p><code>XGBoostWrapper</code> trains three models in parallel: a median model (<code>reg:squarederror</code>) for point predictions, and lower/upper quantile models (<code>reg:quantileerror</code> at α=0.05 and 0.95) for the 90% prediction interval. The quantile bounds are optionally widened by conformal calibration using the same residual-based correction as RFF.</p>
         <table style="margin-top:12px;">
           <tr><th>Parameter</th><th>Description</th><th>Grid searched values</th></tr>
           <tr><td><code>n_estimators</code></td><td>Number of boosting rounds</td><td>100, 300</td></tr>
@@ -313,17 +338,91 @@
     <div class="section">
       <div class="section-header"><h2>Model diagnostics</h2></div>
       <div class="card">
-        <p style="margin-bottom:14px;">All diagnostic charts are generated by <code>diagnostics.ipynb</code>. The notebook loads saved <code>.pkl</code> models via <code>load_model()</code> from <code>train.py</code> and reproduces the exact 2023 test split used during training. Charts are saved as <code>.png</code> files in the notebook directory.</p>
-        <p style="margin-bottom: 6px;">To add charts to this documentation page, save the <code>.png</code> outputs from the notebook and embed them here with an <code>&lt;img&gt;</code> tag, or render them as base64 inline. The five chart sets produced are:</p>
-        <table>
-          <tr><th>Chart</th><th>Notebook cell</th><th>Saved as</th><th>What to look for</th></tr>
-          <tr><td>R² and MSE bar charts</td><td>Cell 3 — <em>R2 and MSE Bar Charts</em></td><td><code>diagnostics_model_comparison.png</code></td><td>Overall model quality per target; RFF bars are dark green, XGBoost is light green</td></tr>
-          <tr><td>RFF vs sklearn KRR comparison</td><td>Cell 4–5 — <em>Comparison between our model and built-in tools</em></td><td><code>diagnostics_comparison.png</code></td><td>R², MSE, and runtime side-by-side — confirms custom RFF matches sklearn KRR while being faster at prediction</td></tr>
-          <tr><td>Residuals vs predicted</td><td>Cell 6 — <em>Residuals</em></td><td><code>diagnostics_residuals.png</code></td><td>One panel per target; points should scatter randomly around the zero line — systematic patterns indicate bias</td></tr>
-          <tr><td>Predicted vs actual</td><td>Cell 7 — <em>Predicted vs Actual</em></td><td><code>diagnostics_predicted_vs_actual.png</code></td><td>Points should cluster along the diagonal red line — deviation indicates underfitting or range compression</td></tr>
-          <tr><td>90% prediction intervals</td><td>Cell 8 — <em>Prediction Intervals</em></td><td><code>diagnostics_prediction_intervals.png</code></td><td>Shaded bands show conformal 90% intervals sorted by actual value; the red scatter (actual) should fall within the band for ~90% of points</td></tr>
-        </table>
-        <p style="margin-top:14px;font-size:12px;color:#999;">[ Embed chart images here once generated — e.g. <code>&lt;img src="/static/diagnostics_model_comparison.png"&gt;</code> ]</p>
+        <p style="margin-bottom:14px;">All diagnostic charts are generated by <code>diagnostics.ipynb</code>. The notebook loads saved <code>.pkl</code> models via <code>load_model()</code> from <code>train.py</code> and reproduces the exact 2023 test split used during training.</p>
+
+        <!-- diagnostic chart tabs -->
+        <div class="diag-tabs" style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+          <button class="diag-btn active" onclick="switchDiag('perf',event)">R² &amp; MSE</button>
+          <button class="diag-btn" onclick="switchDiag('compare',event)">Model comparison</button>
+          <button class="diag-btn" onclick="switchDiag('resid',event)">Residuals</button>
+          <button class="diag-btn" onclick="switchDiag('predact',event)">Predicted vs actual</button>
+          <button class="diag-btn" onclick="switchDiag('intervals',event)">Prediction intervals</button>
+        </div>
+
+        <div id="diag-perf" class="diag-panel active">
+          <img src="{{ url_for('static', filename='diagnostics_model_performance.png') }}"
+               alt="R² and MSE per outcome"
+               style="width:100%;border-radius:8px;border:1px solid #e0e0e0;">
+          <div class="diag-notes" contenteditable="false">
+            <p style="margin-top:14px;font-size:13px;color:#555;line-height:1.7;">
+              Model performance varies across outcomes. Stroke has the strongest predictive performance, 
+              with an R² close to 1 and low MSE. Asthma and mental health show modest R² values (~0.5). 
+              Physical health performs poorly (negative R²), indicating the model underperforms a simple 
+              mean prediction. Sleep, modelled with XGBoost, shows moderate predictive performance.
+            </p>
+          </div>
+        </div>
+
+        <div id="diag-compare" class="diag-panel" style="display:none;">
+          <img src="{{ url_for('static', filename='diagnostics_comparison.png') }}"
+               alt="Custom RFF vs sklearn KRR vs sklearn RFF"
+               style="width:100%;border-radius:8px;border:1px solid #e0e0e0;">
+          <div class="diag-notes">
+            <p style="margin-top:14px;font-size:13px;color:#555;line-height:1.7;">
+              Performance is broadly consistent across all three approaches. The custom RFF and sklearn 
+              RFF approximation produce similar R² and MSE values and are substantially faster than exact 
+              sklearn KRR. The main divergence is for Physical Health, where the custom RFF shows a 
+              slightly more negative R², though all three models perform weakly on that target. Runtime 
+              figures exclude hyperparameter tuning and reflect final-pipeline inference only.
+            </p>
+          </div>
+        </div>
+
+        <div id="diag-resid" class="diag-panel" style="display:none;">
+          <img src="{{ url_for('static', filename='diagnostics_residuals.png') }}"
+               alt="Residuals vs predicted values"
+               style="width:100%;border-radius:8px;border:1px solid #e0e0e0;">
+          <div class="diag-notes">
+            <p style="margin-top:14px;font-size:13px;color:#555;line-height:1.7;">
+              Residuals are largely randomly scattered around zero for Asthma, Mental Health, and Stroke, 
+              suggesting no systematic bias for those models. Physical Health shows a near-linear residual 
+              pattern, confirming model weakness. Residuals for most targets skew positive, indicating 
+              predictions tend to fall below actual values. Stroke residuals are closest to zero, 
+              consistent with its high R².
+            </p>
+          </div>
+        </div>
+
+        <div id="diag-predact" class="diag-panel" style="display:none;">
+          <img src="{{ url_for('static', filename='diagnostics_predicted_vs_actual.png') }}"
+               alt="Predicted vs actual values"
+               style="width:100%;border-radius:8px;border:1px solid #e0e0e0;">
+          <div class="diag-notes">
+            <p style="margin-top:14px;font-size:13px;color:#555;line-height:1.7;">
+              Points close to the diagonal red line indicate accurate predictions. Stroke, Asthma, and 
+              Mental Health cluster tightly along the diagonal. Physical Health shows systematic 
+              underprediction — points lie above the line throughout the range. Sleep displays range 
+              compression: the slope of the predicted-vs-actual curve is much shallower than the ideal 
+              diagonal, meaning the model struggles to capture the full variation in sleep outcomes.
+            </p>
+          </div>
+        </div>
+
+        <div id="diag-intervals" class="diag-panel" style="display:none;">
+          <img src="{{ url_for('static', filename='diagnostics_prediction_intervals.png') }}"
+               alt="90% prediction intervals"
+               style="width:100%;border-radius:8px;border:1px solid #e0e0e0;">
+          <div class="diag-notes">
+            <p style="margin-top:14px;font-size:13px;color:#555;line-height:1.7;">
+              Shaded bands are 90% conformal prediction intervals; red dots are actuals sorted by true 
+              value. Stroke, Asthma, and Mental Health show strong coverage, with the bands capturing 
+              actuals even at the extremes. Physical Health intervals cover all actuals but predictions 
+              remain systematically low. Sleep intervals fail to capture actuals at the tails, 
+              reflecting the range-compression issue seen in the predicted-vs-actual chart.
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
  
@@ -390,6 +489,12 @@
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+  function switchDiag(name, event) {
+    document.querySelectorAll('.diag-panel').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.diag-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('diag-' + name).style.display = 'block';
     event.target.classList.add('active');
   }
 </script>
