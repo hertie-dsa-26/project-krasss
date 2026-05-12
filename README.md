@@ -67,9 +67,8 @@ project-krasss/
 │   └── merged_final_transformed.csv
 │
 ├── docs/                                  # Project documentation and app planning files
-│   ├── KRASSS_documentation_outline.docx
-│   ├── KRASSS_documentation_second_draft.docx
 │   ├── app_map.html
+│   ├── halcyon_documentation_full.pdf
 │   └── user_requirements.md
 │
 ├── preparation/                           # Data preparation, EDA, and model experimentation
