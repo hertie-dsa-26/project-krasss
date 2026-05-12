@@ -43,6 +43,10 @@
   .math-block { background: #f5f7f5; border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 16px; font-family: monospace; font-size: 13px; color: #1a3a2a; margin: 8px 0 14px; line-height: 1.8; }
   .placeholder { color: #999; font-style: italic; font-size: 13px; }
   hr.divider { border: none; border-top: 1px solid #eee; margin: 1rem 0; }
+  .diag-btn { background:#fff; border:1px solid #ddd; padding:6px 16px; font-size:12px; color:#666; cursor:pointer; border-radius:6px; font-family:sans-serif; font-weight:600; }
+  .diag-btn.active { background:#1a3a2a; color:#fff; border-color:#1a3a2a; }
+  .diag-btn:hover:not(.active) { color:#1a3a2a; }
+  .diag-notes { border-top:1px solid #eee; margin-top:12px; padding-top:4px; }
 </style>
 
 <div class="eda-wrap">
@@ -93,17 +97,17 @@
           <li style="margin-bottom:14px;">
             <strong style="color:#1a3a2a;">NOAA — National Oceanic and Atmospheric Administration</strong><br>
             <span style="font-size:13px;color:#555;"> This data comes from the National Ocean and Atmospheric Administration (NOAA) Global Summary of the Year, and supplies the Halycon app with temperature and weather data from across the United States. This data set provides 16 variables for this app, and the geographic basis for a 17th. </span><br>
-            <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
+            <a href="#" style="font-size:13px;color:#1a3a2a;">https://www.ncei.noaa.gov/cdo-web/</a>
           </li>
           <li style="margin-bottom:14px;">
             <strong style="color:#1a3a2a;">CDC Places</strong><br>
             <span style="font-size:13px;color:#555;"> The CDC Places dataset supplies the Halcyon app with health data at the county level, including the app's predicted outcome variables: stroke incidence, mental health quality, physical health, asthma incidence, and sleep. </span><br>
-            <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
+            <a href="#" style="font-size:13px;color:#1a3a2a;">https://www.cdc.gov/places/tools/data-portal.html</a>
           </li>
           <li>
             <strong style="color:#1a3a2a;">U.S. Census Bureau</strong><br>
             <span style="font-size:13px;color:#555;"> The U.S. Census Bureau dataset supplies the Halycon app with demographic information at the county level, covering twelve variables used to eliminate non-climate variations between health outcomes. </span><br>
-            <a href="#" style="font-size:13px;color:#1a3a2a;">[ Link ]</a>
+            <a href="#" style="font-size:13px;color:#1a3a2a;">https://www.census.gov/data/developers/data-sets/acs-5year.html</a>
           </li>
         </ul>
       </div>
@@ -179,7 +183,29 @@
     <div class="section">
       <div class="section-header"><h2>Known issues &amp; limitations</h2></div>
       <div class="card">
-        <p class="placeholder">[To be completed — e.g. known data gaps, edge cases, etc.]</p>
+        <p style="margin-bottom:14px;">While every effort has been made to make the models as robust as possible, several limitations exist that should be taken into account before drawing any conclusions from the predicted values.</p>
+         <ul style="list-style:none;padding:0;margin:0;">
+          <li style="margin-bottom:14px;">
+            <strong style="color:#1a3a2a;">Data</strong><br>
+            <span style="font-size:13px;color:#555;">The dataset used to train the models only contained data for 10 years, which is a relatively short time period for slow moving variables such as health outcomes and annual weather patterns. As a result, models are heavily biased towards events in this short time period and may not accurately reflect more long-term trends. </span><br>
+          </li>
+          <li style="margin-bottom:14px;">
+            <strong style="color:#1a3a2a;">Models</strong><br>
+            <span style="font-size:13px;color:#555;">Not all models are equally robust. As the technical documentation shows, while models for Stroke, Mental Health and Asthma show lower error rates for the available data, Physical Health and Sleep both perform poorly and findings from those two models should be assessed with heavy qualifications.</span><br>
+          </li>
+          <li style="margin-bottom:14px;">
+            <strong style="color:#1a3a2a;">Confidence Intervals</strong><br>
+            <span style="font-size:13px;color:#555;">Due to limited data availability, a trade-off was made during model training between better point predictions and better accuracy of confidence intervals by retraining models on a set of the data that was used to calibrate prediction intervals. Diagnostics in the technical documentation reveal that this has not significantly affected CI coverage, with coverage only being poor for the two weaker models (Physical Health and Sleep) but users should still assume that existing confidence intervals may provide more optimistic coverage than may be desired.</span><br>
+          </li>
+         </ul> 
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-header"><h2>Code sources</h2></div>
+      <div class="card">
+        <p style="margin-bottom:14px;">Code for the custom RFF function was adapted from Drew Dimmery's lecture material for the 2026 Data Structures and Algorithms course, available at the class <a href="https://github.com/hertie-ml-26/lecture-slides/tree/main/src/ml26" target="_blank" style="color:#1a3a2a;">Github Repository</a>.
+          In addition, AI coding assistance was used for several sections of the app code, in particular HTML formatting for some of the interactive features on the app. All such instances, however, have undergone detailed reviews from the developers to ensure that the AI-generated code reflects the design and user interface goals of the app. </p>
       </div>
     </div>
  
@@ -254,7 +280,7 @@
  
         <hr class="divider">
         <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Conformal prediction intervals</p>
-        <p>After fitting, <code>calibrate()</code> stores nonconformity scores (absolute residuals) on the 2022 held-out calibration set. At inference, <code>predict_interval()</code> computes the finite-sample corrected quantile from Angelopoulos &amp; Bates (2022):</p>
+        <p>After fitting, <code>calibrate()</code> stores nonconformity scores (absolute residuals) on the 2022 held-out calibration set. At inference, <code>predict_interval()</code> computes the finite-sample corrected quantile from <a href="https://arxiv.org/abs/2107.07511" target="_blank" style="color:#1a3a2a;">Angelopoulos &amp; Bates (2022)</a>:</p>
         <div class="math-block">q_level = ceil((1 − α)(n_cal + 1)) / n_cal</div>
         <p>The prediction interval is then <code>[ŷ − q, ŷ + q]</code>. This gives a coverage guarantee: at least (1 − α) of test points will fall within the interval.</p>
  
@@ -262,8 +288,8 @@
         <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Hyperparameters</p>
         <table>
           <tr><th>Parameter</th><th>Description</th><th>Grid searched values</th></tr>
-          <tr><td><code>sigma</code></td><td>Kernel bandwidth — controls how quickly similarity decays with distance</td><td>0.1, 0.5, 1.0, 2.0</td></tr>
-          <tr><td><code>lamb</code> (λ)</td><td>Regularization strength — higher values reduce overfitting</td><td>1e-5, 1e-3, 1e-1</td></tr>
+          <tr><td><code>sigma</code></td><td>Kernel bandwidth — controls how quickly similarity decays with distance</td><td>0.1, 0.5, 1.0, 2.0, 5.0</td></tr>
+          <tr><td><code>lamb</code> (λ)</td><td>Regularization strength — higher values reduce overfitting</td><td>1e-5, 1e-4, 1e-3, 1e-2, 1e-1</td></tr>
           <tr><td><code>R</code></td><td>Number of random Fourier features — higher R gives a better kernel approximation at the cost of compute</td><td>200, 500, 1000</td></tr>
         </table>
       </div>
@@ -273,7 +299,7 @@
       <div class="section-header"><h2>XGBoost model (SLEEP only)</h2></div>
       <div class="card">
         <p style="margin-bottom:14px;">The SLEEP target uses <code>XGBoostWrapper</code> instead of RFF. SLEEP data is collected every two years, making the training set smaller and noisier — gradient boosting is more robust to this than the kernel approximation.</p>
-        <p><code>XGBoostWrapper</code> trains three models in parallel: a median model (<code>reg:squarederror</code>) for point predictions, and lower/upper quantile models (<code>reg:quantileerror</code> at α=0.025 and 0.975) for the 90% prediction interval. The quantile bounds are optionally widened by conformal calibration using the same residual-based correction as RFF.</p>
+        <p><code>XGBoostWrapper</code> trains three models in parallel: a median model (<code>reg:squarederror</code>) for point predictions, and lower/upper quantile models (<code>reg:quantileerror</code> at α=0.025 and 0.975) producing a base 95% quantile interval. These bounds are then optionally <strong>narrowed or widened</strong> by conformal calibration — the correction takes <code>min(lower, ŷ − q)</code> and <code>max(upper, ŷ + q)</code>, where q is the same finite-sample corrected residual quantile used in RFF — to achieve the requested coverage level (default 90%).</p>
         <table style="margin-top:12px;">
           <tr><th>Parameter</th><th>Description</th><th>Grid searched values</th></tr>
           <tr><td><code>n_estimators</code></td><td>Number of boosting rounds</td><td>100, 300</td></tr>
@@ -313,72 +339,189 @@
     <div class="section">
       <div class="section-header"><h2>Model diagnostics</h2></div>
       <div class="card">
-        <p style="margin-bottom:14px;">All diagnostic charts are generated by <code>diagnostics.ipynb</code>. The notebook loads saved <code>.pkl</code> models via <code>load_model()</code> from <code>train.py</code> and reproduces the exact 2023 test split used during training. Charts are saved as <code>.png</code> files in the notebook directory.</p>
-        <p style="margin-bottom: 6px;">To add charts to this documentation page, save the <code>.png</code> outputs from the notebook and embed them here with an <code>&lt;img&gt;</code> tag, or render them as base64 inline. The five chart sets produced are:</p>
-        <table>
-          <tr><th>Chart</th><th>Notebook cell</th><th>Saved as</th><th>What to look for</th></tr>
-          <tr><td>R² and MSE bar charts</td><td>Cell 3 — <em>R2 and MSE Bar Charts</em></td><td><code>diagnostics_model_comparison.png</code></td><td>Overall model quality per target; RFF bars are dark green, XGBoost is light green</td></tr>
-          <tr><td>RFF vs sklearn KRR comparison</td><td>Cell 4–5 — <em>Comparison between our model and built-in tools</em></td><td><code>diagnostics_comparison.png</code></td><td>R², MSE, and runtime side-by-side — confirms custom RFF matches sklearn KRR while being faster at prediction</td></tr>
-          <tr><td>Residuals vs predicted</td><td>Cell 6 — <em>Residuals</em></td><td><code>diagnostics_residuals.png</code></td><td>One panel per target; points should scatter randomly around the zero line — systematic patterns indicate bias</td></tr>
-          <tr><td>Predicted vs actual</td><td>Cell 7 — <em>Predicted vs Actual</em></td><td><code>diagnostics_predicted_vs_actual.png</code></td><td>Points should cluster along the diagonal red line — deviation indicates underfitting or range compression</td></tr>
-          <tr><td>90% prediction intervals</td><td>Cell 8 — <em>Prediction Intervals</em></td><td><code>diagnostics_prediction_intervals.png</code></td><td>Shaded bands show conformal 90% intervals sorted by actual value; the red scatter (actual) should fall within the band for ~90% of points</td></tr>
-        </table>
-        <p style="margin-top:14px;font-size:12px;color:#999;">[ Embed chart images here once generated — e.g. <code>&lt;img src="/static/diagnostics_model_comparison.png"&gt;</code> ]</p>
+        <p style="margin-bottom:14px;">All diagnostic charts are generated by <code>diagnostics.ipynb</code>. The notebook loads saved <code>.pkl</code> models via <code>load_model()</code> from <code>train.py</code> and reproduces the exact 2023 test split used during training.</p>
+
+        <!-- diagnostic chart tabs -->
+        <div class="diag-tabs" style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+          <button class="diag-btn active" onclick="switchDiag('perf',event)">R² &amp; MSE</button>
+          <button class="diag-btn" onclick="switchDiag('compare',event)">Model comparison</button>
+          <button class="diag-btn" onclick="switchDiag('resid',event)">Residuals</button>
+          <button class="diag-btn" onclick="switchDiag('predact',event)">Predicted vs actual</button>
+          <button class="diag-btn" onclick="switchDiag('intervals',event)">Prediction intervals</button>
+        </div>
+
+        <div id="diag-perf" class="diag-panel active">
+          <img src="{{ url_for('static', filename='diagnostics_model_performance.png') }}"
+               alt="R² and MSE per outcome"
+               style="width:100%;border-radius:8px;border:1px solid #e0e0e0;">
+          <div class="diag-notes" contenteditable="false">
+            <p style="margin-top:14px;font-size:13px;color:#555;line-height:1.7;">
+              Model performance varies across outcomes. Stroke has the strongest predictive performance, 
+              with an R² close to 1 and low MSE. Asthma and mental health show modest R² values (~0.5). 
+              Physical health performs poorly (negative R²), indicating the model underperforms a simple 
+              mean prediction. Sleep, modelled with XGBoost, shows moderate predictive performance.
+            </p>
+          </div>
+        </div>
+
+        <div id="diag-compare" class="diag-panel" style="display:none;">
+          <img src="{{ url_for('static', filename='diagnostics_comparison.png') }}"
+               alt="Custom RFF vs sklearn KRR vs sklearn RFF"
+               style="width:100%;border-radius:8px;border:1px solid #e0e0e0;">
+          <div class="diag-notes">
+            <p style="margin-top:14px;font-size:13px;color:#555;line-height:1.7;">
+              Performance is broadly consistent across all three approaches. The custom RFF and sklearn 
+              RFF approximation produce similar R² and MSE values and are substantially faster than exact 
+              sklearn KRR. The main divergence is for Physical Health, where the custom RFF shows a 
+              slightly more negative R², though all three models perform weakly on that target. Runtime 
+              figures exclude hyperparameter tuning and reflect final-pipeline inference only.
+            </p>
+          </div>
+        </div>
+
+        <div id="diag-resid" class="diag-panel" style="display:none;">
+          <img src="{{ url_for('static', filename='diagnostics_residuals.png') }}"
+               alt="Residuals vs predicted values"
+               style="width:100%;border-radius:8px;border:1px solid #e0e0e0;">
+          <div class="diag-notes">
+            <p style="margin-top:14px;font-size:13px;color:#555;line-height:1.7;">
+              Residuals are largely randomly scattered around zero for Asthma, Mental Health, and Stroke, 
+              suggesting no systematic bias for those models. Physical health shows a downward bias, confirming 
+              model weakness: the model is underpredicting for lower predicted cases, which constitute the majority. 
+              Residuals for most targets skew positive, indicating predictions tend to fall below actual values. 
+              Stroke residuals are closest to zero, consistent with its high R².
+            </p>
+          </div>
+        </div>
+
+        <div id="diag-predact" class="diag-panel" style="display:none;">
+          <img src="{{ url_for('static', filename='diagnostics_predicted_vs_actual.png') }}"
+               alt="Predicted vs actual values"
+               style="width:100%;border-radius:8px;border:1px solid #e0e0e0;">
+          <div class="diag-notes">
+            <p style="margin-top:14px;font-size:13px;color:#555;line-height:1.7;">
+              Points close to the diagonal red line indicate accurate predictions. Stroke, Asthma, and 
+              Mental Health cluster tightly along the diagonal. Physical Health shows systematic 
+              underprediction — points lie above the line throughout the range. Sleep displays range 
+              compression: the slope of the predicted-vs-actual curve is much shallower than the ideal 
+              diagonal, meaning the model struggles to capture the full variation in sleep outcomes.
+            </p>
+          </div>
+        </div>
+
+        <div id="diag-intervals" class="diag-panel" style="display:none;">
+          <img src="{{ url_for('static', filename='diagnostics_prediction_intervals.png') }}"
+               alt="90% prediction intervals"
+               style="width:100%;border-radius:8px;border:1px solid #e0e0e0;">
+          <div class="diag-notes">
+            <p style="margin-top:14px;font-size:13px;color:#555;line-height:1.7;">
+              Shaded bands are 90% conformal prediction intervals; red dots are actuals sorted by true 
+              value. Stroke, Asthma, and Mental Health show strong coverage, with the bands capturing 
+              actuals even at the extremes. Physical Health intervals cover all actuals but predictions 
+              remain systematically low. Sleep intervals fail to capture actuals at the tails, 
+              reflecting the range-compression issue seen in the predicted-vs-actual chart.
+            </p>
+          </div>
+        </div>
+
       </div>
     </div>
  
-      <div class="section">
+    <div class="section">
       <div class="section-header"><h2>Testing</h2></div>
       <div class="card">
-        <p style="margin-bottom:14px;">The test suite covers all core pipeline modules with unit tests and one integration test. Tests are organized into per-file subfolders and run with pytest. Each test module imports directly from the <code>app/functions</code> directory so no installation step is required.</p>
- 
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Assessment — <code>test_r2_score.py</code>, <code>test_mean_squared_error.py</code></p>
-        <p style="margin-bottom:14px;">Verifies the two metric implementations against known hand-computed values. R² returns 1.0 for perfect predictions; MSE returns the correct average squared error. These are intentionally minimal — the formulas are simple and the tests serve as regression guards.</p>
- 
-        <hr class="divider">
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Preprocessing — <code>test_simple_imputer.py</code>, <code>test_standard_scaler.py</code>, <code>test_one_hot_encoder.py</code>, <code>test_detect_categorical_columns.py</code>, <code>test_preprocessor.py</code></p>
-        <p style="margin-bottom:8px;">Each preprocessing component is tested independently and then together through <code>Preprocessor</code>. Key cases covered:</p>
-        <div class="math-block" style="font-family:inherit;line-height:2;">
-          <strong><code>SimpleImputer</code></strong> — replaces NaNs with column means; handles the all-NaN column edge case by falling back to 0 (a NumPy warning is expected here and noted in the test)<br>
-          <strong><code>StandardScaler</code></strong> — output has mean=0 and std=1; constant columns (std=0) are left unchanged to avoid division by zero; <code>transform()</code> uses training statistics, not test statistics<br>
-          <strong><code>OneHotEncoder</code></strong> — drops the first category to avoid multicollinearity; handles multiple categories correctly; unseen categories at inference time become all-zeros rather than raising an error<br>
-          <strong><code>detect_categorical_columns()</code></strong> — returns correct indices for object and category dtype columns; returns an empty list when no categorical columns are present<br>
-          <strong><code>Preprocessor</code></strong> — end-to-end: imputes and scales numeric data to mean=0, std=1; handles mixed numeric/categorical input; <code>transform()</code> applies the pipeline fitted on training data without refitting
+        <p style="margin-bottom:16px;">The test suite covers all core pipeline modules across three layers: unit tests, integration tests, and one end-to-end test. Tests are organised into a three-tier folder structure and run with pytest. Each test module imports directly from <code>app/functions</code> so no installation step is required.</p>
+
+        <!-- test tier tabs -->
+        <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+          <button class="diag-btn active" onclick="switchTest('unit',event)">Unit tests</button>
+          <button class="diag-btn" onclick="switchTest('integration',event)">Integration tests</button>
+          <button class="diag-btn" onclick="switchTest('e2e',event)">End-to-end tests</button>
         </div>
- 
-        <hr class="divider">
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Splitter — <code>test_splitter.py</code>, <code>test_prepare_data.py</code></p>
-        <p style="margin-bottom:8px;">Covers data preparation and fold generation:</p>
-        <div class="math-block" style="font-family:inherit;line-height:2;">
-          <strong><code>prepare_data()</code></strong> — keeps the target column in y and drops it from X; drops all other health outcomes and all identifier columns; correctly drops rows where the target is NaN (critical for SLEEP)<br>
-          <strong><code>Splitter</code></strong> — correctly assigns the last year as the held-out test year and all earlier years as training; <code>time_series_splits()</code> produces expanding windows with the correct train/val arrays at each fold; <code>get_test_split()</code> returns the full training set and the held-out test year
+
+        <!-- UNIT TESTS -->
+        <div id="test-unit" class="test-panel">
+
+          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Assessment — <code>test_r2_score.py</code>, <code>test_mean_squared_error.py</code></p>
+          <p style="margin-bottom:14px;">Verifies the two metric implementations against known hand-computed values. R² returns 1.0 for perfect predictions and 0.0 when predicting the mean. MSE returns the correct average squared error. These are intentionally minimal — the formulas are simple and the tests serve as regression guards.</p>
+
+          <hr class="divider">
+          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Preprocessing — <code>test_simple_imputer.py</code>, <code>test_standard_scaler.py</code>, <code>test_one_hot_encoder.py</code>, <code>test_detect_categorical_columns.py</code>, <code>test_preprocessor.py</code></p>
+          <p style="margin-bottom:8px;">Each preprocessing component is tested independently and then together through <code>Preprocessor</code>. Key cases covered:</p>
+          <div class="math-block" style="font-family:inherit;line-height:2;">
+            <strong><code>SimpleImputer</code></strong> — replaces NaNs with column means; handles the all-NaN column edge case by falling back to 0 (a NumPy warning is expected here and noted in the test)<br>
+            <strong><code>StandardScaler</code></strong> — output has mean=0 and std=1; constant columns (std=0) are left unchanged to avoid division by zero; <code>transform()</code> uses training statistics, not test statistics<br>
+            <strong><code>OneHotEncoder</code></strong> — drops the first category to avoid multicollinearity; handles multiple categories correctly; unseen categories at inference time become all-zeros rather than raising an error<br>
+            <strong><code>detect_categorical_columns()</code></strong> — returns correct indices for object and category dtype columns; returns an empty list when no categorical columns are present<br>
+            <strong><code>Preprocessor</code></strong> — end-to-end: imputes and scales numeric data to mean=0, std=1; handles mixed numeric/categorical input; <code>transform()</code> applies the pipeline fitted on training data without refitting
+          </div>
+
+          <hr class="divider">
+          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Splitter — <code>test_splitter.py</code>, <code>test_prepare_data.py</code></p>
+          <p style="margin-bottom:8px;">Covers data preparation and fold generation:</p>
+          <div class="math-block" style="font-family:inherit;line-height:2;">
+            <strong><code>prepare_data()</code></strong> — keeps the target column in y and drops it from X; drops all other health outcomes and all identifier columns; correctly drops rows where the target is NaN (critical for SLEEP)<br>
+            <strong><code>Splitter</code></strong> — correctly assigns the last year as the held-out test year and all earlier years as training; <code>time_series_splits()</code> produces expanding windows with the correct train/val arrays at each fold; <code>get_test_split()</code> returns the full training set and the held-out test year
+          </div>
+
+          <hr class="divider">
+          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">CrossValidator — <code>test_cross_validator.py</code></p>
+          <p style="margin-bottom:14px;">Uses a minimal <code>MeanModel</code> stub (predicts the training mean) to test the CV loop in isolation without depending on the RFF model. Verifies that <code>cross_val_score()</code> returns both <code>mse</code> and <code>r2</code> keys, produces one score per scored fold, and that all scores are finite.</p>
+
+          <hr class="divider">
+          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">KRR baseline — <code>test_krr.py</code></p>
+          <p style="margin-bottom:14px;">Tests the exact Kernel Ridge Regression implementation used as a baseline comparison against the RFF approximation. Verifies that <code>fit()</code> and <code>predict()</code> produce finite outputs of the correct shape, and that the kernel matrix is computed correctly for the Gaussian kernel. This model is not used in the production Flask app but is evaluated in <code>diagnostics.ipynb</code> to benchmark the RFF approximation.</p>
+
+          <hr class="divider">
+          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">RFF model — <code>test_random_fourier_features.py</code></p>
+          <p style="margin-bottom:8px;">Six tests covering the full RFF interface:</p>
+          <div class="math-block" style="font-family:inherit;line-height:2;">
+            <strong><code>rff_features()</code></strong> — output shape is (n_samples, R); results are exactly reproducible given the same seed<br>
+            <strong><code>fit()</code></strong> — coefficients exist after fitting and have shape (R,)<br>
+            <strong><code>predict()</code></strong> — returns one prediction per test row<br>
+            <strong><code>predict_interval()</code></strong> — raises <code>RuntimeError</code> if called before <code>calibrate()</code>; after calibration, lower ≤ predicted ≤ upper for all test points
+          </div>
+
+          <hr class="divider">
+          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Scenarios — <code>test__compute_trend.py</code>, <code>test_generate_scenario.py</code></p>
+          <p style="margin-bottom:8px;">Tests for the future projection logic used by the Flask app:</p>
+          <div class="math-block" style="font-family:inherit;line-height:2;">
+            <strong><code>_compute_trend()</code></strong> — returns 0.0 when fewer than 3 data points are available; enforces physically consistent slope direction (positive for warming variables like TAVG, negative for cooling variables like HTDD) regardless of the observed trend direction in the data<br>
+            <strong><code>generate_scenario()</code></strong> — returns the correct future year range; drops all identifier and health outcome columns from the feature matrix; projects warming variables forward by the correct cumulative amount; raises <code>ValueError</code> with a descriptive message when the baseline county/year combination is missing
+          </div>
+
         </div>
- 
-        <hr class="divider">
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">CrossValidator — <code>test_cross_validator.py</code></p>
-        <p style="margin-bottom:14px;">Uses a minimal <code>MeanModel</code> stub (predicts the training mean) to test the CV loop in isolation without depending on the RFF model. Verifies that <code>cross_val_score()</code> returns both <code>mse</code> and <code>r2</code> keys, produces one score per scored fold, and that all scores are finite.</p>
- 
-        <hr class="divider">
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">RFF model — <code>test_random_fourier_features.py</code></p>
-        <p style="margin-bottom:8px;">Six tests covering the full RFF interface:</p>
-        <div class="math-block" style="font-family:inherit;line-height:2;">
-          <strong><code>rff_features()</code></strong> — output shape is (n_samples, R); results are exactly reproducible given the same seed<br>
-          <strong><code>fit()</code></strong> — coefficients exist after fitting and have shape (R,)<br>
-          <strong><code>predict()</code></strong> — returns one prediction per test row<br>
-          <strong><code>predict_interval()</code></strong> — raises <code>RuntimeError</code> if called before <code>calibrate()</code>; after calibration, lower ≤ predicted ≤ upper for all test points
+
+        <!-- INTEGRATION TESTS -->
+        <div id="test-integration" class="test-panel" style="display:none;">
+
+          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Basic routes — <code>test_basic_routes.py</code></p>
+          <p style="margin-bottom:14px;">Uses Flask's test client to verify that all page routes return HTTP 200 and render without errors. Covers <code>/</code>, <code>/explore</code>, <code>/predict</code>, and <code>/docs</code>. Does not require model <code>.pkl</code> files — tests only that routing and template rendering are functional.</p>
+
+          <hr class="divider">
+          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">API routes — <code>test_map_data_api.py</code>, <code>test_snapshot_api.py</code>, <code>test_summary_api.py</code>, <code>test_timeseries_api.py</code></p>
+          <p style="margin-bottom:8px;">Tests the four JSON endpoints consumed by the explore page's charts and map:</p>
+          <div class="math-block" style="font-family:inherit;line-height:2;">
+            <strong><code>/api/map-data</code></strong> — returns valid GeoJSON with the correct structure; filters correctly by year and variable; returns an error for unknown variables<br>
+            <strong><code>/api/snapshot</code></strong> — returns county-level summary statistics for a given year; handles missing county/year combinations gracefully<br>
+            <strong><code>/api/summary</code></strong> — returns aggregated statistics across all counties; response includes expected keys for all five health outcomes<br>
+            <strong><code>/api/timeseries</code></strong> — returns year-indexed data for a given county and variable; verifies correct year ordering and that only the requested county's data is returned
+          </div>
+
+          <hr class="divider">
+          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Prediction page — <code>test_prediction_page.py</code></p>
+          <p>Tests the <code>/predict</code> route end-to-end against the running app. Verifies that the page returns HTTP 200 and contains the prediction form with the required fields (<code>county_state</code>, <code>target</code>, <code>scenario</code>); that all five target outcomes and all four climate scenarios are present in the rendered HTML; and that a real POST request for Alameda County returns a results page with predicted value and confidence interval columns and no error message. This test requires the saved <code>.pkl</code> model files to be present.</p>
+
         </div>
- 
-        <hr class="divider">
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Scenarios — <code>test__compute_trend.py</code>, <code>test_generate_scenario.py</code></p>
-        <p style="margin-bottom:8px;">Tests for the future projection logic used by the Flask app:</p>
-        <div class="math-block" style="font-family:inherit;line-height:2;">
-          <strong><code>_compute_trend()</code></strong> — returns 0.0 when fewer than 3 data points are available; enforces physically consistent slope direction (positive for warming variables like TAVG, negative for cooling variables like HTDD) regardless of the observed trend direction in the data<br>
-          <strong><code>generate_scenario()</code></strong> — returns the correct future year range; drops all identifier and health outcome columns from the feature matrix; projects warming variables forward by the correct cumulative amount; raises <code>ValueError</code> with a descriptive message when the baseline county/year combination is missing
+
+        <!-- E2E TESTS -->
+        <div id="test-e2e" class="test-panel" style="display:none;">
+
+          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Navigation flow — <code>test_navigation_flow.py</code></p>
+          <p>Simulates a complete user journey through the application using Flask's test client. Verifies that a user can navigate from the landing page to the explore page, apply filters, move to the predict page, submit a prediction form, and reach the docs page — all returning HTTP 200 at each step with no server errors. This is the only test that exercises the full application stack in sequence.</p>
+
         </div>
- 
-        <hr class="divider">
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Flask integration — <code>test_prediction_page.py</code></p>
-        <p>Uses Flask's test client to test the <code>/predict</code> route end-to-end against the running app. Verifies that the page returns HTTP 200 and contains the prediction form with the required fields (<code>county_state</code>, <code>target</code>, <code>scenario</code>); that all five target outcomes and all four climate scenarios are present in the rendered HTML; and that a real POST request for Alameda County returns a results page with predicted value and confidence interval columns and no error message. This is the only test that requires the saved <code>.pkl</code> model files to be present.</p>
+
       </div>
     </div>
  
@@ -390,6 +533,22 @@
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+  function switchDiag(name, event) {
+    document.querySelectorAll('.diag-panel').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.diag-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('diag-' + name).style.display = 'block';
+    event.target.classList.add('active');
+  }
+  function switchTest(name, event) {
+    document.querySelectorAll('.test-panel').forEach(p => p.style.display = 'none');
+    document.querySelectorAll('.diag-btn').forEach(b => {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes('switchTest')) {
+        b.classList.remove('active');
+      }
+    });
+    document.getElementById('test-' + name).style.display = 'block';
     event.target.classList.add('active');
   }
 </script>
