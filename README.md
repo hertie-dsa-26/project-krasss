@@ -36,7 +36,7 @@ The project also emphasizes **software engineering principles**, including modul
 | CDC Places       | U.S. county          | 2013-2023  | Health outcomes (e.g., asthma, sleep)     | [Link](https://www.cdc.gov/places/tools/data-portal.html) |
 | U.S. Census Bureau    | U.S. county           | 2013-2023  | Socioeconomic and demographic variables   | [Link](https://www.census.gov/data/developers/data-sets/acs-5year.html) |
 
-The final dataset contains **6,646 rows** and **41 columns**.
+The final dataset contains **6,646 rows** and **39 columns**.
 
 
 ## 🗂️ Repository Structure
