@@ -9,11 +9,11 @@
         max-width: 1100px;
         margin: 0 auto;
         padding: 1.5rem;
-        font-family: sans-serif;
+        font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
         color: #222;
     }
 
-    .page-title { font-size: 26px; font-weight: 700; color: #1a3a2a; margin-bottom: 4px; }
+    .page-title { font-size: 26px; font-weight: 700; color: #1e3a8a; margin-bottom: 4px; }
     .page-sub { font-size: 14px; color: #666; margin-bottom: 1.5rem; }
 
     .card {
@@ -32,7 +32,7 @@
     .section-header {
         display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px;
     }
-    .section-header h2 { font-size: 17px; font-weight: 700; color: #1a3a2a; }
+    .section-header h2 { font-size: 17px; font-weight: 700; color: #1e3a8a; }
     .section-header span { font-size: 12px; color: #999; }
 
     .section-divider { border: none; border-top: 1px solid #eee; margin: 1.5rem 0; }
@@ -62,11 +62,11 @@
     }
 
     .apply-btn {
-        padding: 8px 20px; background: #1a3a2a; color: #fff;
+        padding: 8px 20px; background: #1e3a8a; color: #fff;
         border: none; border-radius: 7px; cursor: pointer;
         font-size: 13px; font-weight: 600;
     }
-    .apply-btn:hover { background: #2d5a3d; }
+    .apply-btn:hover { background: #1d4ed8; }
 
     .error-box {
         background: #fff5f5;
@@ -85,11 +85,11 @@
         margin-bottom: 1.5rem;
     }
     .how-card {
-        background: #f7f9f7; border-radius: 10px; padding: 1rem 1.1rem;
+        background: #f0f4ff; border-radius: 10px; padding: 1rem 1.1rem;
         border: 1px solid #e0e0e0;
     }
-    .how-step { font-size: 11px; font-weight: 700; color: #4a8a6a; letter-spacing: 0.08em; margin-bottom: 4px; }
-    .how-title { font-size: 13px; font-weight: 600; color: #1a3a2a; margin-bottom: 4px; }
+    .how-step { font-size: 11px; font-weight: 700; color: #4a6ab0; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .how-title { font-size: 13px; font-weight: 600; color: #1e3a8a; margin-bottom: 4px; }
     .how-desc { font-size: 12px; color: #666; line-height: 1.5; }
 
     /* RESULTS */
@@ -102,12 +102,12 @@
     }
     tbody td { padding: 0.55rem 0.6rem; border-bottom: 1px solid #eee; color: #222; font-size: 13px; }
     tbody tr:last-child td { border-bottom: none; }
-    tbody tr:hover { background: #f7f9f7; }
+    tbody tr:hover { background: #f0f4ff; }
 
     .result-badge {
         display: inline-block; font-size: 11px; font-weight: 700;
         padding: 3px 8px; border-radius: 4px;
-        background: #f0f7f4; color: #1a3a2a; border: 1px solid #c6e8d8;
+        background: #f0f4ff; color: #1e3a8a; border: 1px solid #c7d7f8;
     }
 </style>
 
@@ -120,31 +120,31 @@
         <div style="display:flex;align-items:center;justify-content:center;gap:0;min-width:500px;">
             <div style="text-align:center;flex:1;">
                 <div style="width:52px;height:52px;background:#f0f4ff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 8px;">🏛️</div>
-                <div style="font-size:12px;font-weight:700;color:#1a3a2a;margin-bottom:2px;">Location</div>
+                <div style="font-size:12px;font-weight:700;color:#1e3a8a;margin-bottom:2px;">Location</div>
                 <div style="font-size:11px;color:#999;">State + county</div>
             </div>
-            <div style="color:#c6e8d8;font-size:20px;font-weight:300;padding:0 4px;margin-bottom:20px;">→</div>
+            <div style="color:#c7d7f8;font-size:20px;font-weight:300;padding:0 4px;margin-bottom:20px;">→</div>
             <div style="text-align:center;flex:1;">
                 <div style="width:52px;height:52px;background:#fff5f5;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 8px;">🧠</div>
-                <div style="font-size:12px;font-weight:700;color:#1a3a2a;margin-bottom:2px;">Health outcome</div>
+                <div style="font-size:12px;font-weight:700;color:#1e3a8a;margin-bottom:2px;">Health outcome</div>
                 <div style="font-size:11px;color:#999;">5 variables</div>
             </div>
-            <div style="color:#c6e8d8;font-size:20px;font-weight:300;padding:0 4px;margin-bottom:20px;">→</div>
+            <div style="color:#c7d7f8;font-size:20px;font-weight:300;padding:0 4px;margin-bottom:20px;">→</div>
             <div style="text-align:center;flex:1;">
                 <div style="width:52px;height:52px;background:#fffbeb;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 8px;">🌡️</div>
-                <div style="font-size:12px;font-weight:700;color:#1a3a2a;margin-bottom:2px;">Climate scenario</div>
+                <div style="font-size:12px;font-weight:700;color:#1e3a8a;margin-bottom:2px;">Climate scenario</div>
                 <div style="font-size:11px;color:#999;">Low / mid / high / very high</div>
             </div>
-            <div style="color:#c6e8d8;font-size:20px;font-weight:300;padding:0 4px;margin-bottom:20px;">→</div>
+            <div style="color:#c7d7f8;font-size:20px;font-weight:300;padding:0 4px;margin-bottom:20px;">→</div>
             <div style="text-align:center;flex:1;">
-                <div style="width:52px;height:52px;background:#f0f7f4;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 8px;">⚙️</div>
-                <div style="font-size:12px;font-weight:700;color:#1a3a2a;margin-bottom:2px;">ML models</div>
+                <div style="width:52px;height:52px;background:#f0f4ff;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 8px;">⚙️</div>
+                <div style="font-size:12px;font-weight:700;color:#1e3a8a;margin-bottom:2px;">ML models</div>
                 <div style="font-size:11px;color:#999;">KRR with RFF approximating the Gaussian kernel and XGBoost</div>
             </div>
-            <div style="color:#c6e8d8;font-size:20px;font-weight:300;padding:0 4px;margin-bottom:20px;">→</div>
+            <div style="color:#c7d7f8;font-size:20px;font-weight:300;padding:0 4px;margin-bottom:20px;">→</div>
             <div style="text-align:center;flex:1;">
-                <div style="width:52px;height:52px;background:#f0f7f4;border:2px solid #4caf82;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 8px;">📈</div>
-                <div style="font-size:12px;font-weight:700;color:#1a3a2a;margin-bottom:2px;">10-year forecast</div>
+                <div style="width:52px;height:52px;background:#f0f4ff;border:2px solid #4a6ab0;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;margin:0 auto 8px;">📈</div>
+                <div style="font-size:12px;font-weight:700;color:#1e3a8a;margin-bottom:2px;">10-year forecast</div>
                 <div style="font-size:11px;color:#999;">With 90% CI</div>
             </div>
         </div>
@@ -351,9 +351,9 @@
             data: {
                 labels: allLabels,
                 datasets: [
-                    { label: 'Historical', data: allLabels.map(y => histMap[y] ?? null), borderColor: '#1a3a2a', backgroundColor: 'transparent', pointRadius: 4, tension: 0.3, spanGaps: true, order: 1 },
-                    { label: '_bridge', data: allLabels.map(y => bridgeMap[y] ?? null), borderColor: '#2d5a3d', backgroundColor: 'transparent', borderDash: [5,4], pointRadius: 0, tension: 0.3, spanGaps: true, order: 2 },
-                    { label: 'Predicted', data: allLabels.map(y => predMap[y] ?? null), borderColor: '#4caf82', backgroundColor: 'transparent', borderDash: [5,4], pointRadius: 4, tension: 0.3, spanGaps: false, order: 3 },
+                    { label: 'Historical', data: allLabels.map(y => histMap[y] ?? null), borderColor: '#1e3a8a', backgroundColor: 'transparent', pointRadius: 4, tension: 0.3, spanGaps: true, order: 1 },
+                    { label: '_bridge', data: allLabels.map(y => bridgeMap[y] ?? null), borderColor: '#1d4ed8', backgroundColor: 'transparent', borderDash: [5,4], pointRadius: 0, tension: 0.3, spanGaps: true, order: 2 },
+                    { label: 'Predicted', data: allLabels.map(y => predMap[y] ?? null), borderColor: '#4a6ab0', backgroundColor: 'transparent', borderDash: [5,4], pointRadius: 4, tension: 0.3, spanGaps: false, order: 3 },
                     { label: 'Upper 90% CI', data: allLabels.map(y => upperMap[y] ?? null), borderColor: 'rgba(76,175,130,0.25)', backgroundColor: 'rgba(76,175,130,0.08)', borderDash: [2,3], pointRadius: 0, fill: '+1', tension: 0.3, spanGaps: false, order: 4 },
                     { label: 'Lower 90% CI', data: allLabels.map(y => lowerMap[y] ?? null), borderColor: 'rgba(76,175,130,0.25)', backgroundColor: 'rgba(76,175,130,0.08)', borderDash: [2,3], pointRadius: 0, fill: false, tension: 0.3, spanGaps: false, order: 5 }
                 ]
@@ -382,7 +382,7 @@
         available historical data for the selected county. That trend is then scaled by a
         scenario multiplier and applied cumulatively from the 2023 baseline:
       </p>
-      <div style="background:#f5f7f5;border:1px solid #e0e0e0;border-radius:8px;padding:12px 16px;font-family:monospace;font-size:12px;color:#1a3a2a;margin-bottom:14px;">
+      <div style="background:#f5f7f5;border:1px solid #e0e0e0;border-radius:8px;padding:12px 16px;font-family:monospace;font-size:12px;color:#1e3a8a;margin-bottom:14px;">
         projected_value(year) = baseline_2023 + (slope × multiplier) × (year − 2023)
       </div>
       <p style="font-size:13px;color:#555;line-height:1.7;margin-bottom:14px;">

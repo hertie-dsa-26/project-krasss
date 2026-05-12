@@ -4,17 +4,17 @@
 
 <style>
   .eda-wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
-  .page-title { font-size: 26px; font-weight: 700; color: #1a3a2a; margin-bottom: 6px; }
+  .page-title { font-size: 26px; font-weight: 700; color: #1e3a8a; margin-bottom: 6px; }
   .subtitle { color: #666; font-size: 14px; margin-bottom: 32px; line-height: 1.6; padding-bottom: 20px; }
   .tabs { display: flex; gap: 8px; margin-bottom: 28px; padding-bottom: 12px; border-bottom: 2px solid #e0e0e0; }
   .tab-btn { background: #fff; border: 1px solid #ddd; padding: 8px 22px; font-size: 13px; color: #666; cursor: pointer; border-radius: 7px; font-family: sans-serif; font-weight: 600; }
-  .tab-btn.active { background: #1a3a2a; color: #fff; border-color: #1a3a2a; }
-  .tab-btn:hover:not(.active) { color: #1a3a2a; }
+  .tab-btn.active { background: #1e3a8a; color: #fff; border-color: #1e3a8a; }
+  .tab-btn:hover:not(.active) { color: #1e3a8a; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
   .section { margin-bottom: 36px; }
   .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
-  .section-header h2 { font-size: 17px; font-weight: 700; color: #1a3a2a; }
+  .section-header h2 { font-size: 17px; font-weight: 700; color: #1e3a8a; }
   .section-header span { font-size: 12px; color: #999; }
   .section-label { font-size: 11px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
   .card { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1.25rem; }
@@ -22,37 +22,37 @@
   .section ul { padding-left: 20px; }
   .section li { margin-bottom: 4px; }
   .route-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 12px; }
-  .route-card { background: #fff; border: 1px solid #e0e0e0; border-left: 4px solid #1a3a2a; border-radius: 12px; padding: 14px 16px; }
-  .route-card .method { font-size: 11px; font-weight: 700; background: #1a3a2a; color: #fff; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
-  .route-card .path { font-family: monospace; font-size: 14px; color: #1a3a2a; font-weight: bold; margin-bottom: 4px; }
+  .route-card { background: #fff; border: 1px solid #e0e0e0; border-left: 4px solid #1e3a8a; border-radius: 12px; padding: 14px 16px; }
+  .route-card .method { font-size: 11px; font-weight: 700; background: #1e3a8a; color: #fff; padding: 2px 8px; border-radius: 4px; display: inline-block; margin-bottom: 8px; }
+  .route-card .path { font-family: monospace; font-size: 14px; color: #1e3a8a; font-weight: bold; margin-bottom: 4px; }
   .route-card .desc { font-size: 12px; color: #666; line-height: 1.6; }
   .api-block { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1.25rem; margin-top: 12px; }
   .endpoint-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .badge-post { background: #1a3a2a; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; }
-  .endpoint-path { font-family: monospace; font-size: 15px; color: #1a3a2a; font-weight: bold; }
+  .badge-post { background: #1e3a8a; color: #fff; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; }
+  .endpoint-path { font-family: monospace; font-size: 15px; color: #1e3a8a; font-weight: bold; }
   .api-block p { font-size: 13px; color: #555; margin-bottom: 14px; line-height: 1.6; }
   .api-block h4 { font-size: 11px; font-weight: 700; color: #999; margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.08em; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 14px; }
-  th { background: #f0f7f4; color: #1a3a2a; text-align: left; padding: 8px 12px; font-weight: 700; font-size: 12px; }
+  th { background: #f0f4ff; color: #1e3a8a; text-align: left; padding: 8px 12px; font-weight: 700; font-size: 12px; }
   td { padding: 8px 12px; border-bottom: 1px solid #eee; color: #555; vertical-align: top; font-size: 13px; }
-  td code, th code { font-family: monospace; background: #f0f7f4; padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #1a3a2a; }
+  td code, th code { font-family: monospace; background: #f0f4ff; padding: 1px 5px; border-radius: 3px; font-size: 12px; color: #1e3a8a; }
   pre { background: #f5f7f5; border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 16px; font-size: 12px; overflow-x: auto; color: #333; line-height: 1.6; margin: 0; }
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .col-label { font-size: 11px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
   .error-badge { display: inline-block; background: #fff5f5; color: #b91c1c; border: 1px solid #fecaca; border-radius: 4px; font-size: 12px; padding: 2px 8px; font-family: monospace; }
-  .math-block { background: #f5f7f5; border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 16px; font-family: monospace; font-size: 13px; color: #1a3a2a; margin: 8px 0 14px; line-height: 1.8; }
+  .math-block { background: #f5f7f5; border: 1px solid #e0e0e0; border-radius: 8px; padding: 14px 16px; font-family: monospace; font-size: 13px; color: #1e3a8a; margin: 8px 0 14px; line-height: 1.8; }
   .placeholder { color: #999; font-style: italic; font-size: 13px; }
   hr.divider { border: none; border-top: 1px solid #eee; margin: 1rem 0; }
   .diag-btn { background:#fff; border:1px solid #ddd; padding:6px 16px; font-size:12px; color:#666; cursor:pointer; border-radius:6px; font-family:sans-serif; font-weight:600; }
-  .diag-btn.active { background:#1a3a2a; color:#fff; border-color:#1a3a2a; }
-  .diag-btn:hover:not(.active) { color:#1a3a2a; }
+  .diag-btn.active { background:#1e3a8a; color:#fff; border-color:#1e3a8a; }
+  .diag-btn:hover:not(.active) { color:#1e3a8a; }
   .diag-notes { border-top:1px solid #eee; margin-top:12px; padding-top:4px; }
 </style>
 
 <div class="eda-wrap">
   <h1 class="page-title">Documentation</h1>
   <p class="subtitle">
-    HALCYON is a Flask-based web application for exploring relationships between
+    <strong>HALCYON</strong> is a Flask-based web application for exploring relationships between
     weather patterns and health outcomes across U.S. counties (2013–2023), using data from NOAA, CDC, and the U.S. Census.
   </p>
 
@@ -95,19 +95,19 @@
       <div class="card">
         <ul style="list-style:none;padding:0;margin:0;">
           <li style="margin-bottom:14px;">
-            <strong style="color:#1a3a2a;">NOAA — National Oceanic and Atmospheric Administration</strong><br>
-            <span style="font-size:13px;color:#555;"> This data comes from the National Ocean and Atmospheric Administration (NOAA) Global Summary of the Year, and supplies the Halycon app with temperature and weather data from across the United States. This data set provides 16 variables for this app, and the geographic basis for a 17th. </span><br>
-            <a href="#" style="font-size:13px;color:#1a3a2a;">https://www.ncei.noaa.gov/cdo-web/</a>
+            <strong style="color:#1e3a8a;">NOAA — National Oceanic and Atmospheric Administration</strong><br>
+            <span style="font-size:13px;color:#555;"> This data comes from the National Ocean and Atmospheric Administration (NOAA) Global Summary of the Year, and supplies the Halcyon app with temperature and weather data from across the United States. This data set provides 16 variables for this app, and the geographic basis for a 17th. </span><br>
+            <a href="https://www.ncei.noaa.gov/cdo-web/" target="_blank" style="font-size:13px;color:#1e3a8a;">https://www.ncei.noaa.gov/cdo-web/</a>
           </li>
           <li style="margin-bottom:14px;">
-            <strong style="color:#1a3a2a;">CDC Places</strong><br>
+            <strong style="color:#1e3a8a;">CDC Places</strong><br>
             <span style="font-size:13px;color:#555;"> The CDC Places dataset supplies the Halcyon app with health data at the county level, including the app's predicted outcome variables: stroke incidence, mental health quality, physical health, asthma incidence, and sleep. </span><br>
-            <a href="#" style="font-size:13px;color:#1a3a2a;">https://www.cdc.gov/places/tools/data-portal.html</a>
+            <a href="https://www.cdc.gov/places/tools/data-portal.html" target="_blank" style="font-size:13px;color:#1e3a8a;">https://www.cdc.gov/places/tools/data-portal.html</a>
           </li>
           <li>
-            <strong style="color:#1a3a2a;">U.S. Census Bureau</strong><br>
-            <span style="font-size:13px;color:#555;"> The U.S. Census Bureau dataset supplies the Halycon app with demographic information at the county level, covering twelve variables used to eliminate non-climate variations between health outcomes. </span><br>
-            <a href="#" style="font-size:13px;color:#1a3a2a;">https://www.census.gov/data/developers/data-sets/acs-5year.html</a>
+            <strong style="color:#1e3a8a;">U.S. Census Bureau</strong><br>
+            <span style="font-size:13px;color:#555;"> The U.S. Census Bureau dataset supplies the Halcyon app with demographic information at the county level, covering twelve variables used to eliminate non-climate variations between health outcomes. </span><br>
+            <a href="https://www.census.gov/data/developers/data-sets/acs-5year.html" target="_blank" style="font-size:13px;color:#1e3a8a;">https://www.census.gov/data/developers/data-sets/acs-5year.html</a>
           </li>
         </ul>
       </div>
@@ -186,15 +186,15 @@
         <p style="margin-bottom:14px;">While every effort has been made to make the models as robust as possible, several limitations exist that should be taken into account before drawing any conclusions from the predicted values.</p>
          <ul style="list-style:none;padding:0;margin:0;">
           <li style="margin-bottom:14px;">
-            <strong style="color:#1a3a2a;">Data</strong><br>
+            <strong style="color:#1e3a8a;">Data</strong><br>
             <span style="font-size:13px;color:#555;">The dataset used to train the models only contained data for 10 years, which is a relatively short time period for slow moving variables such as health outcomes and annual weather patterns. As a result, models are heavily biased towards events in this short time period and may not accurately reflect more long-term trends. </span><br>
           </li>
           <li style="margin-bottom:14px;">
-            <strong style="color:#1a3a2a;">Models</strong><br>
+            <strong style="color:#1e3a8a;">Models</strong><br>
             <span style="font-size:13px;color:#555;">Not all models are equally robust. As the technical documentation shows, while models for Stroke, Mental Health and Asthma show lower error rates for the available data, Physical Health and Sleep both perform poorly and findings from those two models should be assessed with heavy qualifications.</span><br>
           </li>
           <li style="margin-bottom:14px;">
-            <strong style="color:#1a3a2a;">Confidence Intervals</strong><br>
+            <strong style="color:#1e3a8a;">Confidence Intervals</strong><br>
             <span style="font-size:13px;color:#555;">Due to limited data availability, a trade-off was made during model training between better point predictions and better accuracy of confidence intervals by retraining models on a set of the data that was used to calibrate prediction intervals. Diagnostics in the technical documentation reveal that this has not significantly affected CI coverage, with coverage only being poor for the two weaker models (Physical Health and Sleep) but users should still assume that existing confidence intervals may provide more optimistic coverage than may be desired.</span><br>
           </li>
          </ul> 
@@ -204,7 +204,7 @@
     <div class="section">
       <div class="section-header"><h2>Code sources</h2></div>
       <div class="card">
-        <p style="margin-bottom:14px;">Code for the custom RFF function was adapted from Drew Dimmery's lecture material for the 2026 Data Structures and Algorithms course, available at the class <a href="https://github.com/hertie-ml-26/lecture-slides/tree/main/src/ml26" target="_blank" style="color:#1a3a2a;">Github Repository</a>.
+        <p style="margin-bottom:14px;">Code for the custom RFF function was adapted from Drew Dimmery's lecture material for the 2026 Data Structures and Algorithms course, available at the class <a href="https://github.com/hertie-ml-26/lecture-slides/tree/main/src/ml26" target="_blank" style="color:#1e3a8a;">Github Repository</a>.
           In addition, AI coding assistance was used for several sections of the app code, in particular HTML formatting for some of the interactive features on the app. All such instances, however, have undergone detailed reviews from the developers to ensure that the AI-generated code reflects the design and user interface goals of the app. </p>
       </div>
     </div>
@@ -266,26 +266,26 @@
       <div class="card">
         <p style="margin-bottom:12px;">Kernel Ridge Regression (KRR) solves <code>α = (K + λI)⁻¹ y</code> exactly, but this requires building and inverting an n×n kernel matrix — O(n³) in time and O(n²) in memory. For large datasets this becomes infeasible. Random Fourier Features approximate the kernel implicitly, reducing the problem to ordinary ridge regression on a low-dimensional feature map Z.</p>
  
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Feature map</p>
+        <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Feature map</p>
         <p>R random frequencies W are drawn from N(0, 1) and phases B from U(0, 2π), then:</p>
         <div class="math-block">Z = √(2/R) · cos( σ · X Wᵀ + B )</div>
         <p style="margin-bottom:12px;">This gives an (n, R) matrix Z such that ZZᵀ ≈ K for the Gaussian kernel with bandwidth σ.</p>
  
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Fitting</p>
+        <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Fitting</p>
         <p>Coefficients are solved directly using ridge regression on Z:</p>
         <div class="math-block">coef = (Zᵀ Z + λ I)⁻¹ Zᵀ y</div>
  
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Prediction</p>
+        <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Prediction</p>
         <div class="math-block">ŷ = Z_test · coef</div>
  
         <hr class="divider">
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Conformal prediction intervals</p>
-        <p>After fitting, <code>calibrate()</code> stores nonconformity scores (absolute residuals) on the 2022 held-out calibration set. At inference, <code>predict_interval()</code> computes the finite-sample corrected quantile from <a href="https://arxiv.org/abs/2107.07511" target="_blank" style="color:#1a3a2a;">Angelopoulos &amp; Bates (2022)</a>:</p>
+        <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Conformal prediction intervals</p>
+        <p>After fitting, <code>calibrate()</code> stores nonconformity scores (absolute residuals) on the 2022 held-out calibration set. At inference, <code>predict_interval()</code> computes the finite-sample corrected quantile from <a href="https://arxiv.org/abs/2107.07511" target="_blank" style="color:#1e3a8a;">Angelopoulos &amp; Bates (2022)</a>:</p>
         <div class="math-block">q_level = ceil((1 − α)(n_cal + 1)) / n_cal</div>
         <p>The prediction interval is then <code>[ŷ − q, ŷ + q]</code>. This gives a coverage guarantee: at least (1 − α) of test points will fall within the interval.</p>
  
         <hr class="divider">
-        <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Hyperparameters</p>
+        <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Hyperparameters</p>
         <table>
           <tr><th>Parameter</th><th>Description</th><th>Grid searched values</th></tr>
           <tr><td><code>sigma</code></td><td>Kernel bandwidth — controls how quickly similarity decays with distance</td><td>0.1, 0.5, 1.0, 2.0, 5.0</td></tr>
@@ -442,11 +442,11 @@
         <!-- UNIT TESTS -->
         <div id="test-unit" class="test-panel">
 
-          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Assessment — <code>test_r2_score.py</code>, <code>test_mean_squared_error.py</code></p>
+          <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Assessment — <code>test_r2_score.py</code>, <code>test_mean_squared_error.py</code></p>
           <p style="margin-bottom:14px;">Verifies the two metric implementations against known hand-computed values. R² returns 1.0 for perfect predictions and 0.0 when predicting the mean. MSE returns the correct average squared error. These are intentionally minimal — the formulas are simple and the tests serve as regression guards.</p>
 
           <hr class="divider">
-          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Preprocessing — <code>test_simple_imputer.py</code>, <code>test_standard_scaler.py</code>, <code>test_one_hot_encoder.py</code>, <code>test_detect_categorical_columns.py</code>, <code>test_preprocessor.py</code></p>
+          <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Preprocessing — <code>test_simple_imputer.py</code>, <code>test_standard_scaler.py</code>, <code>test_one_hot_encoder.py</code>, <code>test_detect_categorical_columns.py</code>, <code>test_preprocessor.py</code></p>
           <p style="margin-bottom:8px;">Each preprocessing component is tested independently and then together through <code>Preprocessor</code>. Key cases covered:</p>
           <div class="math-block" style="font-family:inherit;line-height:2;">
             <strong><code>SimpleImputer</code></strong> — replaces NaNs with column means; handles the all-NaN column edge case by falling back to 0 (a NumPy warning is expected here and noted in the test)<br>
@@ -457,7 +457,7 @@
           </div>
 
           <hr class="divider">
-          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Splitter — <code>test_splitter.py</code>, <code>test_prepare_data.py</code></p>
+          <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Splitter — <code>test_splitter.py</code>, <code>test_prepare_data.py</code></p>
           <p style="margin-bottom:8px;">Covers data preparation and fold generation:</p>
           <div class="math-block" style="font-family:inherit;line-height:2;">
             <strong><code>prepare_data()</code></strong> — keeps the target column in y and drops it from X; drops all other health outcomes and all identifier columns; correctly drops rows where the target is NaN (critical for SLEEP)<br>
@@ -465,15 +465,15 @@
           </div>
 
           <hr class="divider">
-          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">CrossValidator — <code>test_cross_validator.py</code></p>
+          <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">CrossValidator — <code>test_cross_validator.py</code></p>
           <p style="margin-bottom:14px;">Uses a minimal <code>MeanModel</code> stub (predicts the training mean) to test the CV loop in isolation without depending on the RFF model. Verifies that <code>cross_val_score()</code> returns both <code>mse</code> and <code>r2</code> keys, produces one score per scored fold, and that all scores are finite.</p>
 
           <hr class="divider">
-          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">KRR baseline — <code>test_krr.py</code></p>
+          <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">KRR baseline — <code>test_krr.py</code></p>
           <p style="margin-bottom:14px;">Tests the exact Kernel Ridge Regression implementation used as a baseline comparison against the RFF approximation. Verifies that <code>fit()</code> and <code>predict()</code> produce finite outputs of the correct shape, and that the kernel matrix is computed correctly for the Gaussian kernel. This model is not used in the production Flask app but is evaluated in <code>diagnostics.ipynb</code> to benchmark the RFF approximation.</p>
 
           <hr class="divider">
-          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">RFF model — <code>test_random_fourier_features.py</code></p>
+          <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">RFF model — <code>test_random_fourier_features.py</code></p>
           <p style="margin-bottom:8px;">Six tests covering the full RFF interface:</p>
           <div class="math-block" style="font-family:inherit;line-height:2;">
             <strong><code>rff_features()</code></strong> — output shape is (n_samples, R); results are exactly reproducible given the same seed<br>
@@ -483,7 +483,7 @@
           </div>
 
           <hr class="divider">
-          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Scenarios — <code>test__compute_trend.py</code>, <code>test_generate_scenario.py</code></p>
+          <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Scenarios — <code>test__compute_trend.py</code>, <code>test_generate_scenario.py</code></p>
           <p style="margin-bottom:8px;">Tests for the future projection logic used by the Flask app:</p>
           <div class="math-block" style="font-family:inherit;line-height:2;">
             <strong><code>_compute_trend()</code></strong> — returns 0.0 when fewer than 3 data points are available; enforces physically consistent slope direction (positive for warming variables like TAVG, negative for cooling variables like HTDD) regardless of the observed trend direction in the data<br>
@@ -495,11 +495,11 @@
         <!-- INTEGRATION TESTS -->
         <div id="test-integration" class="test-panel" style="display:none;">
 
-          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Basic routes — <code>test_basic_routes.py</code></p>
+          <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Basic routes — <code>test_basic_routes.py</code></p>
           <p style="margin-bottom:14px;">Uses Flask's test client to verify that all page routes return HTTP 200 and render without errors. Covers <code>/</code>, <code>/explore</code>, <code>/predict</code>, and <code>/docs</code>. Does not require model <code>.pkl</code> files — tests only that routing and template rendering are functional.</p>
 
           <hr class="divider">
-          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">API routes — <code>test_map_data_api.py</code>, <code>test_snapshot_api.py</code>, <code>test_summary_api.py</code>, <code>test_timeseries_api.py</code></p>
+          <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">API routes — <code>test_map_data_api.py</code>, <code>test_snapshot_api.py</code>, <code>test_summary_api.py</code>, <code>test_timeseries_api.py</code></p>
           <p style="margin-bottom:8px;">Tests the four JSON endpoints consumed by the explore page's charts and map:</p>
           <div class="math-block" style="font-family:inherit;line-height:2;">
             <strong><code>/api/map-data</code></strong> — returns valid GeoJSON with the correct structure; filters correctly by year and variable; returns an error for unknown variables<br>
@@ -509,7 +509,7 @@
           </div>
 
           <hr class="divider">
-          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Prediction page — <code>test_prediction_page.py</code></p>
+          <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Prediction page — <code>test_prediction_page.py</code></p>
           <p>Tests the <code>/predict</code> route end-to-end against the running app. Verifies that the page returns HTTP 200 and contains the prediction form with the required fields (<code>county_state</code>, <code>target</code>, <code>scenario</code>); that all five target outcomes and all four climate scenarios are present in the rendered HTML; and that a real POST request for Alameda County returns a results page with predicted value and confidence interval columns and no error message. This test requires the saved <code>.pkl</code> model files to be present.</p>
 
         </div>
@@ -517,7 +517,7 @@
         <!-- E2E TESTS -->
         <div id="test-e2e" class="test-panel" style="display:none;">
 
-          <p style="font-size:13px;font-weight:600;color:#1a3a2a;margin-bottom:6px;">Navigation flow — <code>test_navigation_flow.py</code></p>
+          <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Navigation flow — <code>test_navigation_flow.py</code></p>
           <p>Simulates a complete user journey through the application using Flask's test client. Verifies that a user can navigate from the landing page to the explore page, apply filters, move to the predict page, submit a prediction form, and reach the docs page — all returning HTTP 200 at each step with no server errors. This is the only test that exercises the full application stack in sequence.</p>
 
         </div>

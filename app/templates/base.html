@@ -6,7 +6,8 @@
     <title>{% block title %}Climate & Health Explorer{% endblock %}</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: sans-serif; background: #f5f7f5; color: #222; }
+        select, input, button { font-family: inherit; }
+        body { font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif; background: #f5f7f5; color: #222; }
 
         /* ── NAV ── */
         nav {
@@ -18,7 +19,7 @@
             border-bottom: 1px solid #e0e0e0;
         }
         .nav-brand {
-            font-size: 13px; font-weight: 700; color: #1a3a2a;
+            font-size: 13px; font-weight: 700; color: #1e3a8a;
             letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none;
         }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
@@ -29,10 +30,10 @@
         }
         .nav-links a::after {
             content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
-            height: 1px; background: #1a3a2a;
+            height: 1px; background: #1e3a8a;
             transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease;
         }
-        .nav-links a:hover { color: #1a3a2a; }
+        .nav-links a:hover { color: #1e3a8a; }
         .nav-links a:hover::after { transform: scaleX(1); }
         .nav-links .coming-soon { color: #999; cursor: default; pointer-events: none; }
         .nav-links .coming-soon::after { display: none; }

@@ -8,7 +8,7 @@
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: sans-serif;
+            font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
             background: #f5f7f5;
             color: #222;
             min-height: 100vh;
@@ -33,11 +33,11 @@
             backdrop-filter: blur(12px);
             border-bottom: 1px solid #e0e0e0;
         }
-        .nav-brand { font-size: 13px; font-weight: 700; color: #1a3a2a; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; }
+        .nav-brand { font-size: 13px; font-weight: 700; color: #1e3a8a; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; }
         .nav-links { display: flex; gap: 2rem; list-style: none; }
         .nav-links a { font-size: 13px; font-weight: 500; color: #555; text-decoration: none; letter-spacing: 0.04em; transition: color 0.2s; position: relative; }
-        .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 1px; background: #1a3a2a; transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease; }
-        .nav-links a:hover { color: #1a3a2a; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 1px; background: #1e3a8a; transform: scaleX(0); transform-origin: left; transition: transform 0.25s ease; }
+        .nav-links a:hover { color: #1e3a8a; }
         .nav-links a:hover::after { transform: scaleX(1); }
 
         main { padding: 0; max-width: 100%; position: relative; z-index: 1; }
@@ -48,10 +48,10 @@
         }
 
         .hero-tag { font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #999; margin-bottom: 1.25rem; opacity: 0; animation: fadeUp 0.6s ease forwards 0.1s; }
-        .hero-title { font-size: clamp(3rem, 6vw, 5rem); font-weight: 700; line-height: 1.05; color: #1a3a2a; margin-bottom: 0.5rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s; }
-        .hero-definition { font-size: 12px; font-weight: 500; color: #4a8a6a; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.25rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.3s; }
+        .hero-title { font-size: clamp(3rem, 6vw, 5rem); font-weight: 700; line-height: 1.05; color: #1e3a8a; margin-bottom: 0.5rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.2s; }
+        .hero-definition { font-size: 12px; font-weight: 500; color: #4a6ab0; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.25rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.3s; }
         .hero-definition em { font-style: italic; font-weight: 400; }
-        .hero-meaning { font-size: 16px; font-weight: 600; color: #1a3a2a; line-height: 1.6; max-width: 520px; margin-bottom: 0.6rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.4s; }
+        .hero-meaning { font-size: 16px; font-weight: 600; color: #1e3a8a; line-height: 1.6; max-width: 520px; margin-bottom: 0.6rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.4s; }
         .hero-subtitle { font-size: 13px; color: #888; line-height: 1.7; max-width: 520px; margin-bottom: 2.5rem; opacity: 0; animation: fadeUp 0.7s ease forwards 0.5s; }
 
         .snapshot-section { padding: 0 3rem 2rem; max-width: 1100px; margin: 0 auto; opacity: 0; animation: fadeUp 0.7s ease forwards 0.65s; }
@@ -62,30 +62,30 @@
         .snap-value { font-size: 26px; font-weight: 700; line-height: 1.1; }
         .snap-sub { font-size: 11px; margin-top: 3px; }
 
-        .section-divider { border: none; border-top: 1px solid #e0e0e0; max-width: 1100px; margin: 0 auto 2rem; padding: 0 3rem; }
+        .section-divider { border: none; border-top: 1px solid rgba(180,210,240,0.5); max-width: 900px; margin: 0 auto 2rem; }
 
         .cards-section { padding: 0 3rem 4rem; max-width: 1100px; margin: 0 auto; }
         .cards-label { font-size: 11px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
-        .cards-title { font-size: 20px; font-weight: 700; color: #1a3a2a; margin-bottom: 1.25rem; }
+        .cards-title { font-size: 20px; font-weight: 700; color: #1e3a8a; margin-bottom: 1.25rem; }
 
         .pages-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
         .btn-cta-primary { transition: background 0.2s; }
         .btn-cta-primary:hover { background: #2d5a3d !important; }
         .btn-cta-secondary { transition: background 0.2s; }
-        .btn-cta-secondary:hover { background: #f0f7f4 !important; }
+        .btn-cta-secondary:hover { background: #f0f4ff !important; }
         @media (max-width: 768px) {
             .hero > div { grid-template-columns: 1fr !important; }
             .snapshot-grid { grid-template-columns: repeat(2, 1fr) !important; }
             .pages-grid { grid-template-columns: 1fr !important; }
         }
         .page-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1.5rem; text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 0.75rem; transition: background 0.2s, box-shadow 0.2s, transform 0.2s; position: relative; overflow: hidden; }
-        .page-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #1a3a2a; transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
-        .page-card:hover { background: #f0f7f4; box-shadow: 0 4px 16px rgba(26,58,42,0.1); transform: translateY(-2px); }
+        .page-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #1e3a8a; transform: scaleX(0); transform-origin: left; transition: transform 0.3s ease; }
+        .page-card:hover { background: #f0f4ff; box-shadow: 0 4px 16px rgba(26,58,42,0.1); transform: translateY(-2px); }
         .page-card:hover::before { transform: scaleX(1); }
-        .page-card-icon { width: 44px; height: 44px; border-radius: 10px; background: #c6e8d8; display: flex; align-items: center; justify-content: center; font-size: 22px; }
-        .page-card-title { font-size: 17px; font-weight: 700; color: #1a3a2a; }
+        .page-card-icon { width: 44px; height: 44px; border-radius: 10px; background: #c7d7f8; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .page-card-title { font-size: 17px; font-weight: 700; color: #1e3a8a; }
         .page-card-desc { font-size: 12px; color: #555; line-height: 1.6; flex: 1; }
-        .page-card-link { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1a3a2a; }
+        .page-card-link { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #1e3a8a; }
 
         @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
         .fade-in { opacity: 0; transform: translateY(16px); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -104,131 +104,95 @@
     </nav>
 
     <main>
-        <section class="hero">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;">
-                <div>
+        <!-- Shared background wrapper for hero + stats cards -->
+        <div style="position:relative;border-radius:16px 16px 0 0;overflow:hidden;margin-bottom:0;">
+            <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%;">
+              <defs>
+                <linearGradient id="skyG" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#b8d4f0"/><stop offset="100%" stop-color="#ddeeff"/>
+                </linearGradient>
+                <radialGradient id="sunG" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#fff7c0" stop-opacity="0.7"/><stop offset="100%" stop-color="#fff7c0" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="snowG" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#eef4fb"/><stop offset="100%" stop-color="#d4e8f8"/>
+                </linearGradient>
+              </defs>
+              <rect width="900" height="520" fill="url(#skyG)"/>
+              <circle cx="720" cy="200" r="90" fill="url(#sunG)"/>
+              <circle cx="720" cy="200" r="34" fill="#fde68a"/>
+              <g stroke="#fde68a" stroke-width="3" stroke-linecap="round" opacity="0.8">
+                <line x1="720" y1="154" x2="720" y2="144"/><line x1="720" y1="246" x2="720" y2="256"/>
+                <line x1="674" y1="200" x2="664" y2="200"/><line x1="766" y1="200" x2="776" y2="200"/>
+                <line x1="687" y1="167" x2="680" y2="160"/><line x1="753" y1="233" x2="760" y2="240"/>
+                <line x1="753" y1="167" x2="760" y2="160"/><line x1="687" y1="233" x2="680" y2="240"/>
+              </g>
+              <ellipse cx="200" cy="400" rx="280" ry="50" fill="#ccdfe8" opacity="0.4"/>
+              <ellipse cx="700" cy="410" rx="240" ry="45" fill="#c8d8e8" opacity="0.3"/>
+              <!-- Falling snow particles -->
+              <g fill="#fff" opacity="0.7">
+                <circle cx="80" cy="80" r="3"/><circle cx="150" cy="40" r="2"/>
+                <circle cx="220" cy="120" r="3.5"/><circle cx="310" cy="60" r="2.5"/>
+                <circle cx="390" cy="100" r="2"/><circle cx="460" cy="50" r="3"/>
+                <circle cx="530" cy="130" r="2.5"/><circle cx="600" cy="70" r="2"/>
+                <circle cx="100" cy="200" r="2.5"/><circle cx="180" cy="160" r="3"/>
+                <circle cx="260" cy="240" r="2"/><circle cx="340" cy="180" r="3.5"/>
+                <circle cx="420" cy="220" r="2.5"/><circle cx="500" cy="170" r="2"/>
+                <circle cx="570" cy="250" r="3"/><circle cx="640" cy="200" r="2.5"/>
+                <circle cx="130" cy="310" r="2"/><circle cx="200" cy="280" r="3"/>
+                <circle cx="290" cy="330" r="2.5"/><circle cx="370" cy="290" r="2"/>
+                <circle cx="450" cy="340" r="3"/><circle cx="520" cy="300" r="2.5"/>
+                <circle cx="50" cy="350" r="2"/><circle cx="670" cy="280" r="2"/>
+                <circle cx="750" cy="320" r="2.5"/><circle cx="830" cy="260" r="3"/>
+                <circle cx="880" cy="340" r="2"/><circle cx="780" cy="180" r="2.5"/>
+                <circle cx="860" cy="130" r="3"/><circle cx="900" cy="200" r="2"/>
+              </g>
+              <!-- Slightly larger flakes -->
+              <g fill="#e8f4ff" opacity="0.5">
+                <circle cx="120" cy="140" r="4.5"/><circle cx="350" cy="220" r="4"/>
+                <circle cx="490" cy="260" r="5"/><circle cx="660" cy="150" r="4.5"/>
+                <circle cx="810" cy="220" r="4"/><circle cx="240" cy="360" r="5"/>
+                <circle cx="580" cy="380" r="4.5"/>
+              </g>
+              <path d="M0,410 Q150,392 300,400 Q500,412 650,396 Q780,382 900,402 L900,520 L0,520 Z" fill="url(#snowG)"/>
+              <ellipse cx="200" cy="414" rx="120" ry="16" fill="#eef4fb" opacity="0.7"/>
+              <ellipse cx="580" cy="406" rx="100" ry="13" fill="#eef4fb" opacity="0.6"/>
+              <ellipse cx="820" cy="412" rx="80" ry="11" fill="#f5f9fd" opacity="0.5"/>
+              <ellipse cx="780" cy="428" rx="60" ry="10" fill="#fde68a" opacity="0.1"/>
+            </svg>
+            <div style="position:absolute;inset:0;background:rgba(210,230,248,0.28);"></div>
+            <!-- Fade to page background at bottom -->
+            <div style="position:absolute;bottom:0;left:0;right:0;height:120px;background:linear-gradient(to bottom, transparent, #f5f7f5);"></div>
+
+            <!-- Hero text -->
+            <section class="hero" style="position:relative;z-index:1;">
+                <div style="padding:0.5rem 0 0;">
                     <p class="hero-tag">Hertie School &mdash; DSA 2026</p>
                     <h1 class="hero-title">Halcyon</h1>
                     <p class="hero-definition">hal·cy·on &nbsp;/ˈhalsēən/</p>
                     <p class="hero-meaning">A warm sunny day in the midst of freezing winters.</p>
-                    <p class="hero-subtitle">
+                    <p class="hero-subtitle" style="max-width:480px;">
                         An interactive data science application exploring how weather patterns relate to health
                         outcomes across U.S. counties from 2013 to 2023 and projecting what the next decade may hold.
                     </p>
+                    <p style="font-size:10px;color:#7a9ab0;margin-top:1.5rem;letter-spacing:0.03em;">Illustration: SVG generated with Claude (Anthropic)</p>
                 </div>
-                <div style="opacity:0;animation:fadeUp 0.8s ease forwards 0.4s;">
-                    <svg viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;border-radius:16px;overflow:hidden;">
-  <defs>
-    <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#b8d4f0"/>
-      <stop offset="100%" stop-color="#ddeeff"/>
-    </linearGradient>
-    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#fff7c0" stop-opacity="0.7"/>
-      <stop offset="100%" stop-color="#fff7c0" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="snowGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#eef4fb"/>
-      <stop offset="100%" stop-color="#d4e8f8"/>
-    </linearGradient>
-    <linearGradient id="hillGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ddeeff"/>
-      <stop offset="100%" stop-color="#c8dcf0"/>
-    </linearGradient>
-  </defs>
+            </section>
 
-  <!-- Sky -->
-  <rect width="360" height="280" fill="url(#skyGrad)"/>
-
-  <!-- Sun glow -->
-  <circle cx="280" cy="72" r="70" fill="url(#sunGlow)"/>
-
-  <!-- Sun -->
-  <circle cx="280" cy="72" r="28" fill="#fde68a"/>
-  <!-- Sun rays -->
-  <g stroke="#fde68a" stroke-width="2.5" stroke-linecap="round" opacity="0.8">
-    <line x1="280" y1="34" x2="280" y2="26"/>
-    <line x1="280" y1="110" x2="280" y2="118"/>
-    <line x1="242" y1="72" x2="234" y2="72"/>
-    <line x1="318" y1="72" x2="326" y2="72"/>
-    <line x1="253" y1="45" x2="247" y2="39"/>
-    <line x1="307" y1="99" x2="313" y2="105"/>
-    <line x1="307" y1="45" x2="313" y2="39"/>
-    <line x1="253" y1="99" x2="247" y2="105"/>
-  </g>
-
-  <!-- Distant snowy hills -->
-  <ellipse cx="80" cy="185" rx="130" ry="40" fill="#ccdfe8" opacity="0.6"/>
-  <ellipse cx="300" cy="190" rx="100" ry="35" fill="#c8d8e8" opacity="0.5"/>
-
-  <!-- Bare tree left -->
-  <line x1="55" y1="220" x2="55" y2="150" stroke="#8fa8b8" stroke-width="4" stroke-linecap="round"/>
-  <line x1="55" y1="165" x2="32" y2="148" stroke="#8fa8b8" stroke-width="2.5" stroke-linecap="round"/>
-  <line x1="55" y1="158" x2="75" y2="140" stroke="#8fa8b8" stroke-width="2" stroke-linecap="round"/>
-  <line x1="55" y1="172" x2="28" y2="162" stroke="#8fa8b8" stroke-width="2" stroke-linecap="round"/>
-  <line x1="55" y1="180" x2="78" y2="168" stroke="#8fa8b8" stroke-width="2" stroke-linecap="round"/>
-  <line x1="32" y1="148" x2="22" y2="138" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
-  <line x1="32" y1="148" x2="36" y2="136" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
-  <line x1="75" y1="140" x2="84" y2="130" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
-  <line x1="75" y1="140" x2="68" y2="128" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
-
-  <!-- Bare tree right -->
-  <line x1="155" y1="222" x2="155" y2="162" stroke="#8fa8b8" stroke-width="3.5" stroke-linecap="round"/>
-  <line x1="155" y1="175" x2="135" y2="160" stroke="#8fa8b8" stroke-width="2" stroke-linecap="round"/>
-  <line x1="155" y1="168" x2="172" y2="153" stroke="#8fa8b8" stroke-width="2" stroke-linecap="round"/>
-  <line x1="135" y1="160" x2="125" y2="150" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
-  <line x1="172" y1="153" x2="180" y2="143" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
-  <line x1="172" y1="153" x2="166" y2="143" stroke="#8fa8b8" stroke-width="1.5" stroke-linecap="round"/>
-
-  <!-- Snow ground -->
-  <path d="M0,210 Q60,198 120,205 Q180,212 240,204 Q300,196 360,208 L360,280 L0,280 Z" fill="url(#snowGrad)"/>
-
-  <!-- Snow bumps / drifts -->
-  <ellipse cx="90" cy="212" rx="55" ry="12" fill="#eef4fb" opacity="0.7"/>
-  <ellipse cx="250" cy="208" rx="45" ry="10" fill="#eef4fb" opacity="0.6"/>
-  <ellipse cx="180" cy="216" rx="35" ry="9" fill="#f5f9fd" opacity="0.5"/>
-
-  <!-- Snow sparkles on ground -->
-  <g fill="#fff" opacity="0.8">
-    <circle cx="40" cy="220" r="1.2"/>
-    <circle cx="88" cy="215" r="1"/>
-    <circle cx="135" cy="222" r="1.2"/>
-    <circle cx="200" cy="218" r="1"/>
-    <circle cx="265" cy="213" r="1.2"/>
-    <circle cx="320" cy="218" r="1"/>
-  </g>
-
-  <!-- Floating snow particles in air -->
-  <g fill="#c8dff0" opacity="0.6">
-    <circle cx="110" cy="155" r="1.5"/>
-    <circle cx="190" cy="130" r="1.2"/>
-    <circle cx="230" cy="160" r="1.5"/>
-    <circle cx="310" cy="145" r="1.2"/>
-    <circle cx="340" cy="170" r="1"/>
-    <circle cx="20" cy="170" r="1.2"/>
-  </g>
-
-  <!-- Warm sun reflection on snow -->
-  <ellipse cx="285" cy="225" rx="40" ry="8" fill="#fde68a" opacity="0.12"/>
-
-  
-                </div>
-            </div>
-        </section>
-
-        <div class="snapshot-section">
-            <div class="snapshot-grid">
+            <!-- Stats cards -->
+            <div class="snapshot-section" style="position:relative;z-index:1;">
+                <div class="snapshot-grid">
                 <div class="snap-card" style="background:#f0f4ff;">
                     <div class="snap-icon" style="background:#c7d7f8;">🏛️</div>
                     <div class="snap-label" style="color:#1e3a8a;">States covered</div>
                     <div class="snap-value" style="color:#1e3a8a;" id="snap-states">—</div>
                     <div class="snap-sub" style="color:#4a6ab0;">U.S. states in dataset</div>
                 </div>
-                <div class="snap-card" style="background:#f0f7f4;">
-                    <div class="snap-icon" style="background:#c6e8d8;">🗺️</div>
-                    <div class="snap-label" style="color:#1a5c3a;">Counties covered</div>
-                    <div class="snap-value" style="color:#1a3a2a;" id="snap-counties">—</div>
-                    <div class="snap-sub" style="color:#4a8a6a;">unique counties in dataset</div>
+                <div class="snap-card" style="background:#f0f4ff;">
+                    <div class="snap-icon" style="background:#c7d7f8;">🗺️</div>
+                    <div class="snap-label" style="color:#1d4ed8;">Counties covered</div>
+                    <div class="snap-value" style="color:#1e3a8a;" id="snap-counties">—</div>
+                    <div class="snap-sub" style="color:#4a6ab0;">unique counties in dataset</div>
                 </div>
                 <div class="snap-card" style="background:#fff5f5;">
                     <div class="snap-icon" style="background:#fecaca;">📅</div>
@@ -243,12 +207,13 @@
                     <div class="snap-sub" style="color:#b45309;">across health, weather &amp; demographics</div>
                 </div>
             </div>
+            </div>
         </div>
 
         <hr class="section-divider">
 
         <div class="cards-section fade-in">
-            <p class="cards-label">Where to next</p>
+            
             <h2 class="cards-title">What would you like to do?</h2>
             <div class="pages-grid">
                 <a href="/explore" class="page-card">

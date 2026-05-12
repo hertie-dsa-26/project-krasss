@@ -3,14 +3,14 @@
 
 {% block content %}
 <style>
-  .eda-wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem; font-family: sans-serif; }
-  .page-title { font-size: 26px; font-weight: 700; color: #1a3a2a; margin-bottom: 4px; }
+  .eda-wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem; }
+  .page-title { font-size: 26px; font-weight: 700; color: #1e3a8a; margin-bottom: 4px; }
   .page-sub { font-size: 14px; color: #666; margin-bottom: 1.5rem; }
   .card { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1.25rem; margin-bottom: 1.25rem; }
   .section-label { font-size: 11px; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
   .section-divider { border: none; border-top: 1px solid #eee; margin: 1.5rem 0; }
   .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px; }
-  .section-header h2 { font-size: 17px; font-weight: 700; color: #1a3a2a; }
+  .section-header h2 { font-size: 17px; font-weight: 700; color: #1e3a8a; }
   .section-header span { font-size: 12px; color: #999; }
 
 
@@ -20,20 +20,20 @@
   .filter-bar { display: grid; grid-template-columns: 1fr 1fr 2fr auto; gap: 12px; align-items: end; }
   .filter-group label { display: block; font-size: 12px; color: #555; margin-bottom: 5px; font-weight: 500; }
   .filter-group select { width: 100%; padding: 7px 8px; border: 1px solid #ccc; border-radius: 7px; font-size: 13px; background: #fff; }
-  .apply-btn { padding: 8px 20px; background: #1a3a2a; color: #fff; border: none; border-radius: 7px;
+  .apply-btn { padding: 8px 20px; background: #1e3a8a; color: #fff; border: none; border-radius: 7px;
     cursor: pointer; font-size: 13px; font-weight: 600; white-space: nowrap; height: 36px; }
-  .apply-btn:hover { background: #2d5a3d; }
+  .apply-btn:hover { background: #1d4ed8; }
 
   /* DUAL RANGE */
   .range-wrap { position: relative; height: 36px; }
   .range-wrap input[type=range] { position: absolute; width: 100%; pointer-events: none;
     appearance: none; height: 4px; background: transparent; top: 50%; transform: translateY(-50%); }
   .range-wrap input[type=range]::-webkit-slider-thumb { pointer-events: all; appearance: none;
-    width: 16px; height: 16px; border-radius: 50%; background: #1a3a2a; cursor: pointer;
-    border: 2px solid #fff; box-shadow: 0 0 0 1px #1a3a2a; }
+    width: 16px; height: 16px; border-radius: 50%; background: #1e3a8a; cursor: pointer;
+    border: 2px solid #fff; box-shadow: 0 0 0 1px #1e3a8a; }
   .range-track { position: absolute; height: 4px; background: #e0e0e0; width: 100%;
     top: 50%; transform: translateY(-50%); border-radius: 2px; }
-  .range-fill { position: absolute; height: 4px; background: #1a3a2a;
+  .range-fill { position: absolute; height: 4px; background: #1e3a8a;
     top: 50%; transform: translateY(-50%); border-radius: 2px; }
 
   /* MAP */
@@ -44,14 +44,14 @@
   #tooltip { position: absolute; background: #fff; border: 1px solid #e0e0e0; border-radius: 10px;
     padding: 12px 16px; font-size: 13px; min-width: 230px; pointer-events: none; display: none;
     z-index: 10; box-shadow: 0 4px 14px rgba(0,0,0,0.1); }
-  .t-county { font-weight: 700; font-size: 15px; color: #1a3a2a; margin-bottom: 10px; }
+  .t-county { font-weight: 700; font-size: 15px; color: #1e3a8a; margin-bottom: 10px; }
   .t-section { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #bbb; margin: 8px 0 4px; }
   .t-row { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 4px; font-size: 12px; }
   .t-row .t-lbl { color: #777; }
   .t-row .t-val { font-weight: 700; color: #111; }
   .t-compare { font-size: 11px; margin-top: 2px; margin-bottom: 4px; }
   .t-above { color: #b91c1c; font-weight: 700; }
-  .t-below { color: #15803d; font-weight: 700; }
+  .t-below { color: #4a6ab0; font-weight: 700; }
   .t-divider { border: none; border-top: 1px solid #f0f0f0; margin: 8px 0; }
   .t-pop { font-size: 11px; color: #888; margin-top: 6px; }
   #map-legend { position: absolute; bottom: 12px; left: 12px; background: rgba(255,255,255,0.96);
@@ -68,7 +68,7 @@
   .tab-row { display: flex; gap: 6px; margin-bottom: 1rem; }
   .tab { font-size: 12px; padding: 5px 14px; border-radius: 6px; border: 1px solid #ddd;
     cursor: pointer; background: #fff; color: #666; font-weight: 500; }
-  .tab.active { background: #1a3a2a; color: #fff; border-color: #1a3a2a; }
+  .tab.active { background: #1e3a8a; color: #fff; border-color: #1e3a8a; }
   .ts-panel { display: none; } .ts-panel.active { display: block; }
 
   /* INSIGHTS */
@@ -76,7 +76,7 @@
   .insight-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 1rem 1.25rem; }
   .insight-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center;
     justify-content: center; font-size: 20px; margin-bottom: 8px; }
-  .insight-title { font-size: 13px; font-weight: 700; color: #1a3a2a; margin-bottom: 5px; }
+  .insight-title { font-size: 13px; font-weight: 700; color: #1e3a8a; margin-bottom: 5px; }
   .insight-body { font-size: 12px; color: #666; line-height: 1.6; }
   .insight-stat { font-size: 13px; font-weight: 700; margin-top: 8px; }
 </style>
@@ -91,22 +91,21 @@
   <!-- FILTERS -->
   <div class="card">
     <!-- Step labels -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 2fr auto;gap:12px;margin-bottom:6px;">
-      <div style="background:#f0f7f4;border-radius:6px;padding:5px 10px;border-left:3px solid #4a8a6a;">
-        <span style="font-size:10px;font-weight:700;color:#4a8a6a;letter-spacing:0.06em;text-transform:uppercase;">Step 01</span>
-        <span style="font-size:11px;font-weight:600;color:#1a3a2a;margin-left:4px;">Health</span>
+    <div style="display:grid;grid-template-columns:1fr 1fr 2fr;gap:12px;margin-bottom:6px;">
+      <div style="background:#f0f4ff;border-radius:6px;padding:5px 10px;border-left:3px solid #4a6ab0;">
+        <span style="font-size:10px;font-weight:700;color:#4a6ab0;letter-spacing:0.06em;text-transform:uppercase;">Step 01</span>
+        <span style="font-size:11px;font-weight:600;color:#1e3a8a;margin-left:4px;">Health</span>
       </div>
-      <div style="background:#f0f7f4;border-radius:6px;padding:5px 10px;border-left:3px solid #4a8a6a;">
-        <span style="font-size:10px;font-weight:700;color:#4a8a6a;letter-spacing:0.06em;text-transform:uppercase;">Step 02</span>
-        <span style="font-size:11px;font-weight:600;color:#1a3a2a;margin-left:4px;">Weather</span>
+      <div style="background:#f0f4ff;border-radius:6px;padding:5px 10px;border-left:3px solid #4a6ab0;">
+        <span style="font-size:10px;font-weight:700;color:#4a6ab0;letter-spacing:0.06em;text-transform:uppercase;">Step 02</span>
+        <span style="font-size:11px;font-weight:600;color:#1e3a8a;margin-left:4px;">Weather</span>
       </div>
-      <div style="background:#f0f7f4;border-radius:6px;padding:5px 10px;border-left:3px solid #4a8a6a;">
-        <span style="font-size:10px;font-weight:700;color:#4a8a6a;letter-spacing:0.06em;text-transform:uppercase;">Step 03</span>
-        <span style="font-size:11px;font-weight:600;color:#1a3a2a;margin-left:4px;">Year range</span>
+      <div style="background:#f0f4ff;border-radius:6px;padding:5px 10px;border-left:3px solid #4a6ab0;">
+        <span style="font-size:10px;font-weight:700;color:#4a6ab0;letter-spacing:0.06em;text-transform:uppercase;">Step 03</span>
+        <span style="font-size:11px;font-weight:600;color:#1e3a8a;margin-left:4px;">Year range</span>
       </div>
-      <div></div>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 2fr auto;gap:12px;align-items:end;margin-bottom:12px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 2fr;gap:12px;align-items:end;margin-bottom:12px;">
       <div class="filter-group">
         <label>Select a health variable</label>
         <select id="var-health">
@@ -125,9 +124,9 @@
           <option value="TMAX">Max temperature (TMAX)</option>
           <option value="TMIN">Min temperature (TMIN)</option>
           <option value="DX90">Days above 90°F (DX90)</option>
-          <option value="PRCP">Precipitation (PRCP)</option>
-          <option value="EMXT">Extreme max temp (EMXT)</option>
-          <option value="EMNT">Extreme min temp (EMNT)</option>
+          <option value="PRCP">Precipitation (inches) (PRCP)</option>
+          <option value="EMXT">Extreme max temperature (EMXT)</option>
+          <option value="EMNT">Extreme min temperature (EMNT)</option>
         </select>
       </div>
       <div class="filter-group">
@@ -139,45 +138,53 @@
           <input type="range" id="yr-end"   min="2013" max="2023" value="2023" step="1">
         </div>
       </div>
-      <div>
-        <button class="apply-btn" onclick="loadMap()">Apply filters</button>
-      </div>
     </div>
 
     <!-- Step 04: Demographics -->
     <div style="border-top:1px solid #f0f0f0;padding-top:12px;">
       <div style="margin-bottom:8px;">
-        <span style="font-size:10px;font-weight:700;color:#4a8a6a;letter-spacing:0.06em;text-transform:uppercase;background:#f0f7f4;border-radius:6px;padding:4px 10px;border-left:3px solid #4a8a6a;display:inline-block;">Step 04</span><span style="font-size:11px;font-weight:600;color:#1a3a2a;margin-left:6px;">Demographics</span>
+        <span style="font-size:10px;font-weight:700;color:#4a6ab0;letter-spacing:0.06em;text-transform:uppercase;background:#f0f4ff;border-radius:6px;padding:4px 10px;border-left:3px solid #4a6ab0;display:inline-block;">Step 04</span><span style="font-size:11px;font-weight:600;color:#1e3a8a;margin-left:6px;">Demographics</span>
         <span style="font-size:11px;color:#999;margin-left:8px;">shown on hover · select up to 3</span>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap;" id="demo-checkboxes">
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f0f4ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
           <input type="checkbox" value="median_household_income" onchange="handleDemoCheck(this)"> Median income
         </label>
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f0f4ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="median_age" onchange="handleDemoCheck(this)"> Median age
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f0f4ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
           <input type="checkbox" value="pct_less_than_hs" onchange="handleDemoCheck(this)"> % Less than HS
         </label>
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
-          <input type="checkbox" value="pct_bachelors_plus" onchange="handleDemoCheck(this)"> % College educated
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f0f4ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="pct_bachelors_plus" onchange="handleDemoCheck(this)"> % Bachelor's degree+
         </label>
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f0f4ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+          <input type="checkbox" value="pct_graduate_degree" onchange="handleDemoCheck(this)"> % Graduate degree
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f0f4ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
           <input type="checkbox" value="pct_white" onchange="handleDemoCheck(this)"> % White
         </label>
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f0f4ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
           <input type="checkbox" value="pct_black" onchange="handleDemoCheck(this)"> % Black
         </label>
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f0f4ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
           <input type="checkbox" value="pct_hispanic" onchange="handleDemoCheck(this)"> % Hispanic
         </label>
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f0f4ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
           <input type="checkbox" value="pct_asian" onchange="handleDemoCheck(this)"> % Asian
         </label>
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f0f4ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
           <input type="checkbox" value="pct_female" onchange="handleDemoCheck(this)"> % Female
         </label>
-        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f7f9f7;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
+        <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:#555;cursor:pointer;background:#f0f4ff;border:1px solid #e0e0e0;border-radius:6px;padding:5px 10px;">
           <input type="checkbox" value="pct_male" onchange="handleDemoCheck(this)"> % Male
         </label>
+      </div>
+      <!-- Action buttons -->
+      <div style="display:flex;gap:8px;margin-top:14px;">
+        <button class="apply-btn" onclick="loadMap()">Apply filters</button>
+        <button onclick="resetFilters()" style="padding:8px 20px;background:#fff;color:#555;border:1px solid #ccc;border-radius:7px;cursor:pointer;font-size:13px;font-weight:600;height:36px;">Reset filters</button>
       </div>
     </div>
   </div>
@@ -228,7 +235,7 @@
     <span>Driven by your filter selections above</span>
   </div>
 
-  <!-- Time series variable selectors -->
+  <!-- Time series variable selectors + state comparison all in one row -->
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1rem;align-items:flex-end;">
   <div class="filter-group" style="min-width:180px;">
     <label>Health variable</label>
@@ -248,34 +255,30 @@
       <option value="TMAX">Max temperature (TMAX)</option>
       <option value="TMIN">Min temperature (TMIN)</option>
       <option value="DX90">Days above 90°F (DX90)</option>
-      <option value="PRCP">Precipitation (PRCP)</option>
-      <option value="EMXT">Extreme max temp (EMXT)</option>
-      <option value="EMNT">Extreme min temp (EMNT)</option>
+      <option value="PRCP">Precipitation (inches) (PRCP)</option>
+      <option value="EMXT">Extreme max temperature (EMXT)</option>
+      <option value="EMNT">Extreme min temperature (EMNT)</option>
     </select>
   </div>
+  <div class="filter-group" style="min-width:200px;">
+    <label>Compare a state vs national average</label>
+    <select id="ts-state">
+      <option value="all">National average only</option>
+      {% for abbr, name in states %}
+      <option value="{{ abbr }}">{{ name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <button class="apply-btn" onclick="loadTimeSeries()">Update charts</button>
 </div>
- 
+
   <div class="card">
-    <!-- State selector -->
-    <div style="display:flex;align-items:flex-end;gap:12px;margin-bottom:1.25rem;flex-wrap:wrap;">
-      <div class="filter-group" style="min-width:180px;">
-        <label>Compare a state vs national average</label>
-        <select id="ts-state">
-          <option value="all">National average only</option>
-          {% for abbr, name in states %}
-          <option value="{{ abbr }}">{{ name }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <button class="apply-btn" onclick="loadTimeSeries()">Update charts</button>
-    </div>
- 
     <!-- Two side-by-side charts -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:1.25rem;">
  
       <!-- Health chart -->
       <div>
-        <div style="font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:2px;" id="ts-health-title">Health variable</div>
+        <div style="font-size:13px;font-weight:700;color:#1e3a8a;margin-bottom:2px;" id="ts-health-title">Health variable</div>
         <div style="font-size:11px;color:#999;margin-bottom:8px;">Annual national average · select a state to compare</div>
         <svg id="ts-health-svg" width="100%" viewBox="0 0 320 180" style="display:block;"></svg>
         <div id="ts-health-legend" style="display:flex;gap:12px;margin-top:6px;flex-wrap:wrap;"></div>
@@ -283,7 +286,7 @@
  
       <!-- Weather chart -->
       <div>
-        <div style="font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:2px;" id="ts-weather-title">Weather variable</div>
+        <div style="font-size:13px;font-weight:700;color:#1e3a8a;margin-bottom:2px;" id="ts-weather-title">Weather variable</div>
         <div style="font-size:11px;color:#999;margin-bottom:8px;">Annual national average · select a state to compare</div>
         <svg id="ts-weather-svg" width="100%" viewBox="0 0 320 180" style="display:block;"></svg>
         <div id="ts-weather-legend" style="display:flex;gap:12px;margin-top:6px;flex-wrap:wrap;"></div>
@@ -300,11 +303,11 @@
     <div id="panel-heatmap" class="ts-panel" style="display:none;">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;overflow-x:auto;">
         <div>
-          <div style="font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:6px;" id="hm-title-health">Health variable by state × year</div>
+          <div style="font-size:13px;font-weight:700;color:#1e3a8a;margin-bottom:6px;" id="hm-title-health">Health variable by state × year</div>
           <div style="overflow-x:auto;"><svg id="hm-svg-health" style="display:block;"></svg></div>
         </div>
         <div>
-          <div style="font-size:13px;font-weight:700;color:#1a3a2a;margin-bottom:6px;" id="hm-title-weather">Weather variable by state × year</div>
+          <div style="font-size:13px;font-weight:700;color:#1e3a8a;margin-bottom:6px;" id="hm-title-weather">Weather variable by state × year</div>
           <div style="overflow-x:auto;"><svg id="hm-svg-weather" style="display:block;"></svg></div>
         </div>
       </div>
@@ -312,7 +315,7 @@
  
     <!-- Summary stats table -->
     <div style="border-top:1px solid #eee;padding-top:1rem;">
-      <div style="font-size:12px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Summary statistics · full dataset (all years, all counties)</div>
+      <div id="stats-heading" style="font-size:12px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:10px;">Summary statistics · full dataset (all years, all counties)</div>
       <div style="overflow-x:auto;">
         <table id="stats-table" style="width:100%;border-collapse:collapse;font-size:13px;">
           <thead>
@@ -365,24 +368,24 @@
  
     <div class="insight-card">
       <div class="insight-icon" style="background:#fce7f3;">🌡️</div>
-      <div class="insight-title">Heat linked to higher blood pressure and sleep problems</div>
+      <div class="insight-title">Warmer counties report worse sleep</div>
       <div class="insight-body">
-        Warmer counties show consistently higher rates of high blood pressure — TAVG correlates at r = 0.29
-        and precipitation at r = 0.33 with blood pressure. Counties in the hottest quartile (DX90) also report
-        15.8% mental distress vs 14.8% in the coolest quartile — a 1pp gap across all counties.
+        Temperature is the strongest weather predictor of poor sleep across the dataset (r = 0.31).
+        Counties in the hottest quartile report 36.8% poor sleep on average vs 32.6% in the coldest —
+        a 4.3pp gap. Extreme heat days (DX90) also correlate positively with physical distress (r = 0.23).
       </div>
-      <div class="insight-stat" style="color:#9d174d;">+1pp mental distress in hottest vs coolest counties</div>
+      <div class="insight-stat" style="color:#9d174d;">+4.3pp poor sleep in hottest vs coldest counties</div>
     </div>
  
     <div class="insight-card">
-      <div class="insight-icon" style="background:#d1fae5;">📍</div>
+      <div class="insight-icon" style="background:#dbeafe;">📍</div>
       <div class="insight-title">Large geographic variation in mental distress</div>
       <div class="insight-body">
         West Virginia has the highest average mental distress at 19.2%, followed by Arkansas (17.8%) and
         Louisiana (17.7%). South Dakota has the lowest at 12.6%, with North Dakota (12.7%) and Nebraska
         (12.8%) also among the best. That's a 6.6pp gap between best and worst states.
       </div>
-      <div class="insight-stat" style="color:#065f46;">WV 19.2% vs SD 12.6% — 6.6pp gap</div>
+      <div class="insight-stat" style="color:#1d4ed8;">WV 19.2% vs SD 12.6% — 6.6pp gap</div>
     </div>
  
   </div>
@@ -392,7 +395,7 @@
 <script>
 const varMeta = {
   MHLTH:  { label:"Mental distress",     color:["#dbeafe","#1d4ed8"], unit:"%" },
-  SLEEP:  { label:"Poor sleep",          color:["#d1fae5","#065f46"], unit:"%" },
+  SLEEP:  { label:"Poor sleep",          color:["#dbeafe","#1d4ed8"], unit:"%" },
   CASTHMA:{ label:"Asthma",              color:["#fef3c7","#92400e"], unit:"%" },
   PHLTH:  { label:"Physical distress",   color:["#fee2e2","#991b1b"], unit:"%" },
   BPHIGH: { label:"High blood pressure", color:["#ede9fe","#4c1d95"], unit:"%" },
@@ -403,8 +406,8 @@ const varMeta = {
   TMIN:   { label:"Min temperature",    color:["#dbeafe","#1e3a8a"], unit:"°F" },
   DX90:   { label:"Days above 90°F",    color:["#fef3c7","#92400e"], unit:" days" },
   PRCP:   { label:"Precipitation",      color:["#e0f2fe","#075985"], unit:" in" },
-  EMXT:   { label:"Extreme max temp",   color:["#fee2e2","#7f1d1d"], unit:"°F" },
-  EMNT:   { label:"Extreme min temp",   color:["#eff6ff","#1e40af"], unit:"°F" },
+  EMXT:   { label:"Extreme max temperature",   color:["#fee2e2","#7f1d1d"], unit:"°F" },
+  EMNT:   { label:"Extreme min temperature",   color:["#eff6ff","#1e40af"], unit:"°F" },
 };
 
 
@@ -451,23 +454,45 @@ function handleDemoCheck(cb) {
   // Update label styles
   document.querySelectorAll('#demo-checkboxes label').forEach(lbl => {
     const input = lbl.querySelector('input');
-    lbl.style.background   = input.checked ? '#1a3a2a' : '#f7f9f7';
+    lbl.style.background   = input.checked ? '#1e3a8a' : '#f0f4ff';
     lbl.style.color        = input.checked ? '#fff'    : '#555';
-    lbl.style.borderColor  = input.checked ? '#1a3a2a' : '#e0e0e0';
-    lbl.querySelector('input').style.accentColor = input.checked ? '#fff' : '#1a3a2a';
+    lbl.style.borderColor  = input.checked ? '#1e3a8a' : '#e0e0e0';
+    lbl.querySelector('input').style.accentColor = input.checked ? '#fff' : '#1e3a8a';
   });
+}
+
+function resetFilters() {
+  document.getElementById('var-health').value = 'CASTHMA';
+  document.getElementById('var-weather').value = 'TAVG';
+  document.getElementById('yr-start').value = 2013;
+  document.getElementById('yr-end').value = 2023;
+  updateSlider();
+  document.getElementById('ts-health-var').value = 'MHLTH';
+  document.getElementById('ts-weather-var').value = 'TAVG';
+  document.getElementById('ts-state').value = 'all';
+  document.querySelectorAll('#demo-checkboxes input:checked').forEach(cb => cb.checked = false);
+  // Reset label styles too
+  document.querySelectorAll('#demo-checkboxes label').forEach(lbl => {
+    lbl.style.background  = '#f0f4ff';
+    lbl.style.color       = '#555';
+    lbl.style.borderColor = '#e0e0e0';
+  });
+  loadMap();
+  loadTimeSeries();
 }
  
 const demoLabels = {
-  median_household_income: { label: 'Median income',      prefix: '$', suffix: '' },
-  pct_less_than_hs:        { label: '% Less than HS',     prefix: '',  suffix: '%' },
-  pct_bachelors_plus:      { label: '% College educated', prefix: '',  suffix: '%' },
-  pct_white:               { label: '% White',            prefix: '',  suffix: '%' },
-  pct_black:               { label: '% Black',            prefix: '',  suffix: '%' },
-  pct_hispanic:            { label: '% Hispanic',         prefix: '',  suffix: '%' },
-  pct_asian:               { label: '% Asian',            prefix: '',  suffix: '%' },
-  pct_female:              { label: '% Female',           prefix: '',  suffix: '%' },
-  pct_male:                { label: '% Male',             prefix: '',  suffix: '%' },
+  median_household_income: { label: 'Median income',       prefix: '$', suffix: '' },
+  median_age:              { label: 'Median age',          prefix: '',  suffix: ' yrs' },
+  pct_less_than_hs:        { label: '% Less than HS',      prefix: '',  suffix: '%' },
+  pct_bachelors_plus:      { label: "% Bachelor's degree+", prefix: '', suffix: '%' },
+  pct_graduate_degree:     { label: '% Graduate degree',   prefix: '',  suffix: '%' },
+  pct_white:               { label: '% White',             prefix: '',  suffix: '%' },
+  pct_black:               { label: '% Black',             prefix: '',  suffix: '%' },
+  pct_hispanic:            { label: '% Hispanic',          prefix: '',  suffix: '%' },
+  pct_asian:               { label: '% Asian',             prefix: '',  suffix: '%' },
+  pct_female:              { label: '% Female',            prefix: '',  suffix: '%' },
+  pct_male:                { label: '% Male',              prefix: '',  suffix: '%' },
 };
  
 function getSelectedDemos() {
@@ -500,7 +525,7 @@ function loadMap() {
  
 function drawMap(hv, wv, demoVars, data, healthNat, weatherNat) {
   if (!countyGeo) return;
-  const hmeta  = varMeta[hv] || { label: hv, color: ["#e5e7eb","#1a3a2a"], unit: "%" };
+  const hmeta  = varMeta[hv] || { label: hv, color: ["#e5e7eb","#1e3a8a"], unit: "%" };
   const wmeta  = wv ? (varMeta[wv] || { label: wv, unit: "" }) : null;
   const values = data.map(d => d.health_val).filter(x => x > 0 && isFinite(x));
   const vMin   = d3.quantile(values.sort(d3.ascending), 0.05);
@@ -565,7 +590,7 @@ function drawMap(hv, wv, demoVars, data, healthNat, weatherNat) {
           const disp  = val != null
             ? (dv === 'median_household_income'
                 ? '$' + Math.round(val).toLocaleString()
-                : val.toFixed(1) + meta.suffix)
+                : meta.prefix + val.toFixed(1) + meta.suffix)
             : 'N/A';
           return `<div class="t-row">
             <span class="t-lbl">${meta.label}</span>
@@ -580,10 +605,14 @@ function drawMap(hv, wv, demoVars, data, healthNat, weatherNat) {
       document.getElementById("t-pop").textContent = cd.population > 0 ? cd.population.toLocaleString() : "N/A";
  
       const wrapR = document.getElementById("map-container").getBoundingClientRect();
+      const tip = document.getElementById("tooltip");
+      const tipW = 245, tipH = tip.offsetHeight || 200;
       let tx = event.clientX - wrapR.left + 14;
       let ty = event.clientY - wrapR.top  - 10;
-      if (tx + 245 > wrapR.width) tx -= 255;
-      const tip = document.getElementById("tooltip");
+      if (tx + tipW > wrapR.width)  tx = event.clientX - wrapR.left - tipW - 14;
+      if (tx < 0)                   tx = 4;
+      if (ty + tipH > wrapR.height) ty = event.clientY - wrapR.top - tipH - 10;
+      if (ty < 0)                   ty = 4;
       tip.style.left = tx + "px"; tip.style.top = ty + "px"; tip.style.display = "block";
     })
     .on("mouseleave", () => { document.getElementById("tooltip").style.display = "none"; });
@@ -628,7 +657,7 @@ const wv    = document.getElementById('ts-weather-var').value;
         clearChart('ts-weather-svg', 'ts-weather-title', 'No weather variable selected');
       }
  
-      updateStatsTable(data.data, hv, wv);
+      updateStatsTable(data.data, hv, wv, state);
     });
 }
  
@@ -712,17 +741,23 @@ function clearChart(svgId, titleId, message) {
     .attr('font-size',12).attr('fill','#ccc').text(message);
 }
  
-function updateStatsTable(data, hv, wv) {
-  const tbody = document.getElementById('stats-tbody');
-  const rows  = [];
- 
+function updateStatsTable(data, hv, wv, state) {
+  const tbody   = document.getElementById('stats-tbody');
+  const heading = document.getElementById('stats-heading');
+  const rows    = [];
+  const isState = state && state !== 'all';
+
+  heading.textContent = isState
+    ? `Summary statistics · ${state} (all years, all counties in state)`
+    : 'Summary statistics · full dataset (all years, all counties)';
+
   [['health', hv], ['weather', wv]].forEach(([key, varName]) => {
     if (!data[key] || !varName) return;
     const meta  = varMeta[varName] || { label: varName, unit: '' };
-    const stats = data[key].stats;
+    const stats = (isState && data[key].state_stats) ? data[key].state_stats : data[key].stats;
     rows.push(`
       <tr style="border-bottom:1px solid #f5f5f5;">
-        <td style="padding:8px 10px;font-weight:600;color:#1a3a2a;">${meta.label}</td>
+        <td style="padding:8px 10px;font-weight:600;color:#1e3a8a;">${meta.label}</td>
         <td style="padding:8px 10px;text-align:right;">${stats.mean.toFixed(2)}${meta.unit}</td>
         <td style="padding:8px 10px;text-align:right;">${stats.median.toFixed(2)}${meta.unit}</td>
         <td style="padding:8px 10px;text-align:right;">${stats.min.toFixed(2)}${meta.unit}</td>
@@ -731,7 +766,7 @@ function updateStatsTable(data, hv, wv) {
         <td style="padding:8px 10px;text-align:right;">${stats.std.toFixed(2)}${meta.unit}</td>
       </tr>`);
   });
- 
+
   tbody.innerHTML = rows.length > 0 ? rows.join('') :
     '<tr><td colspan="7" style="padding:12px 10px;color:#bbb;font-size:12px;">No data available</td></tr>';
 }
@@ -776,7 +811,7 @@ function drawHeatmap(hv, wv) {
       d3.select('#' + svgId).selectAll('*').remove();
       return;
     }
-    const meta = varMeta[v] || { label: v, color: ["#e5e7eb","#1a3a2a"], unit: "" };
+    const meta = varMeta[v] || { label: v, color: ["#e5e7eb","#1e3a8a"], unit: "" };
     document.getElementById(titleId).textContent = meta.label + ' by state × year';
 
     fetch(`/api/timeseries/heatmap?var=${v}&states=${states.join(',')}`)

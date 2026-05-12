@@ -242,34 +242,67 @@ def timeseries():
     state       = request.args.get('state', 'all')
  
     result = {}
- 
+
+    def weighted_mean_by_year(data, var):
+        """Population-weighted mean per year."""
+        def wmean(g):
+            w = g['total_population'].fillna(0)
+            v = g[var]
+            mask = v.notna() & (w > 0)
+            if mask.sum() == 0:
+                return np.nan
+            return float(np.average(v[mask], weights=w[mask]))
+        series = data.groupby('year').apply(wmean).reset_index()
+        series.columns = ['year', var]
+        return series
+
+    def weighted_stats(data, var):
+        """Population-weighted summary stats."""
+        w = data['total_population'].fillna(0)
+        v = data[var]
+        mask = v.notna() & (w > 0)
+        v, w = v[mask], w[mask]
+        if len(v) == 0:
+            return {}
+        wmean = float(np.average(v, weights=w))
+        # weighted std
+        wstd  = float(np.sqrt(np.average((v - wmean)**2, weights=w)))
+        return {
+            'mean':   round(wmean, 2),
+            'min':    float(round(v.min(), 2)),
+            'max':    float(round(v.max(), 2)),
+            'range':  float(round(v.max() - v.min(), 2)),
+            'median': float(round(v.median(), 2)),
+            'std':    round(wstd, 2)
+        }
+
     for var, key in [(health_var, 'health'), (weather_var, 'weather')]:
         if not var or var not in df.columns:
             continue
+
         if state == 'all':
-            grouped = df.groupby('year')[var].mean().reset_index()
+            subset = df
         else:
-            grouped = df[df['StateAbbr'] == state].groupby('year')[var].mean().reset_index()
- 
-        national = df.groupby('year')[var].mean().reset_index()
- 
+            subset = df[df['StateAbbr'] == state]
+
+        grouped  = weighted_mean_by_year(subset, var)
+        national = weighted_mean_by_year(df, var)
+
         result[key] = {
-    'series':   [{'year': int(r['year']), 'value': round(r[var], 2)} for _, r in grouped.iterrows() if not pd.isna(r[var])],
-    'national': [{'year': int(r['year']), 'value': round(r[var], 2)} for _, r in national.iterrows() if not pd.isna(r[var])],
-    'var':      var
-}
- 
-        # Summary stats
-        col = df[var].dropna()
-        result[key]['stats'] = {
-            'mean':   float(round(col.mean(), 2)),
-            'min':    float(round(col.min(), 2)),
-            'max':    float(round(col.max(), 2)),
-            'range':  float(round(col.max() - col.min(), 2)),
-            'median': float(round(col.median(), 2)),
-            'std':    float(round(col.std(), 2))
+            'series':   [{'year': int(r['year']), 'value': round(r[var], 2)} for _, r in grouped.iterrows() if not pd.isna(r[var])],
+            'national': [{'year': int(r['year']), 'value': round(r[var], 2)} for _, r in national.iterrows() if not pd.isna(r[var])],
+            'var':      var
         }
- 
+
+        # National weighted stats
+        result[key]['stats'] = weighted_stats(df, var)
+
+        # State-specific weighted stats
+        if state != 'all':
+            state_data = df[df['StateAbbr'] == state]
+            if len(state_data) > 0:
+                result[key]['state_stats'] = weighted_stats(state_data, var)
+
     return jsonify({
         'data':  result,
         'state': state
