@@ -114,7 +114,7 @@
     </div>
  
     <div class="section">
-      <div class="section-header"><h2>Dataset</h2><span>6,646 rows · 41 columns</span></div>
+      <div class="section-header"><h2>Dataset</h2><span>6,646 rows · 39 columns</span></div>
       <div class="card">
         <p style="margin-bottom:16px;">The app loads <code>merged_final_transformed.csv</code> at startup. The dataset merges three sources: NOAA climate station data, CDC Places health estimates, and U.S. Census socioeconomic indicators — linked at the county level by year.</p>
  
@@ -143,7 +143,6 @@
           <tr><td><code>EMNT</code></td><td>Extreme minimum temperature — lowest recorded in the year (°F)</td></tr>
           <tr><td><code>CLDD</code></td><td>Cooling degree days — cumulative heat above 65°F baseline</td></tr>
           <tr><td><code>HTDD</code></td><td>Heating degree days — cumulative cold below 65°F baseline</td></tr>
-          <tr><td><code>DT100</code></td><td>Number of days with maximum temperature ≥ 100°F</td></tr>
           <tr><td><code>DX90</code></td><td>Number of days with maximum temperature ≥ 90°F</td></tr>
           <tr><td><code>DX70</code></td><td>Number of days with maximum temperature ≥ 70°F</td></tr>
           <tr><td><code>DX32</code></td><td>Number of days with maximum temperature ≤ 32°F (freeze days)</td></tr>
@@ -241,7 +240,7 @@
           <tr><td>1. Data prep</td><td><code>prepare_data()</code> drops all other health outcomes and non-feature identifiers, then splits into X, y, and year labels</td><td><code>splitter.py</code></td></tr>
           <tr><td>2. Fold creation</td><td><code>Splitter.time_series_splits()</code> builds expanding-window CV folds (2014→2015, 2014–2015→2016, … 2014–2021→2022); 2023 is held out as the test set throughout</td><td><code>splitter.py</code></td></tr>
           <tr><td>3. Grid search</td><td><code>CrossValidator</code> scores each hyperparameter combination using the last 3 stable folds; early folds are skipped because the training set is too small before 2018</td><td><code>cross_validator.py</code></td></tr>
-          <tr><td>4. Final fit</td><td>Best model is fit on 2013–2021, calibrated on 2022, then evaluated on the held-out 2023 test set</td><td><code>train.py</code></td></tr>
+          <tr><td>4. Final fit</td><td>Best model is fit on 2013–2021, calibrated on 2022, retrained on 2013-2022 data, and then evaluated on the held-out 2023 test set</td><td><code>train.py</code></td></tr>
           <tr><td>5. Save</td><td>Model + fitted preprocessor are pickled together as <code>models/{TARGET}.pkl</code> for the Flask app to load</td><td><code>train.py</code></td></tr>
         </table>
       </div>

@@ -164,7 +164,7 @@ def snapshot():
     n_states   = df['StateAbbr'].nunique()
     n_counties = df['County name'].nunique()
     n_years    = df['year'].nunique()
-    n_vars     = 41
+    n_vars     = 39
     return jsonify({
         'states':   n_states,
         'counties': n_counties,
