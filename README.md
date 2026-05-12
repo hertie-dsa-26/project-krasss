@@ -55,9 +55,11 @@ project-krasss/
 │   │   ├── splitter.py
 │   │   ├── train.py
 │   │   └── xgboost_wrapper.py
+│   ├── static/
 │   ├── templates/                         # HTML templates for the app
 │   ├── main.py                            # Main app entry point
 │   ├── pyproject.toml
+│   ├── style_guide.html
 │   └── uv.lock
 │
 ├── data/                                  # App-ready data
@@ -65,6 +67,8 @@ project-krasss/
 │   └── merged_final_transformed.csv
 │
 ├── docs/                                  # Project documentation and app planning files
+│   ├── KRASSS_documentation_outline.docx
+│   ├── KRASSS_documentation_second_draft.docx
 │   ├── app_map.html
 │   └── user_requirements.md
 │
@@ -84,6 +88,7 @@ project-krasss/
 ├── .gitignore
 └── README.md
 ```
+
 
 ## 🚀 Installation and Setup
 
