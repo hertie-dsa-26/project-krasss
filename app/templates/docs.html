@@ -204,7 +204,7 @@
       <div class="section-header"><h2>Code sources</h2></div>
       <div class="card">
         <p style="margin-bottom:14px;">Code for the custom RFF function was adapted from Drew Dimmery's lecture material for the 2026 Data Structures and Algorithms course, available at the class <a href="https://github.com/hertie-ml-26/lecture-slides/tree/main/src/ml26" target="_blank" style="color:#1e3a8a;">Github Repository</a>.
-          In addition, AI coding assistance was used for several sections of the app code, in particular HTML formatting for some of the interactive features on the app. All such instances, however, have undergone detailed reviews from the developers to ensure that the AI-generated code reflects the design and user interface goals of the app. </p>
+          In addition, AI coding assistance was used for several sections of the app code. All such instances, however, have undergone detailed reviews from the developers to ensure that the AI-generated code reflects the functionality, design and user interface goals of the app. </p>
       </div>
     </div>
  
@@ -442,7 +442,11 @@
         <div id="test-unit" class="test-panel">
 
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Assessment — <code>test_r2_score.py</code>, <code>test_mean_squared_error.py</code></p>
-          <p style="margin-bottom:14px;">Verifies the two metric implementations against known hand-computed values. R² returns 1.0 for perfect predictions and 0.0 when predicting the mean. MSE returns the correct average squared error. These are intentionally minimal as the formulas are simple and the tests serve as regression guards.</p>
+          <p style="margin-bottom:8px;">Verifies the two metric implementations against known hand-computed values. Key cases covered:</p>
+          <div class="math-block" style="font-family:inherit;line-height:2;">
+            <strong>R²</strong> — returns 1.0 for perfect predictions; returns 0.0 when predicting the mean (mean-baseline check); can be negative for predictions worse than the mean; never exceeds 1.0; handles the constant-target edge case (TSS=0) — returns 1.0 for a perfect prediction and 0.0 for an imperfect one, avoiding division by zero<br>
+            <strong>MSE</strong> — returns the correct average squared error against a hand-computed value; returns 0.0 for perfect predictions; handles negative input values correctly; verifies that the quadratic penalty is applied correctly — an error of 3 is penalized 9× more than an error of 1
+          </div>
 
           <hr class="divider">
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Preprocessing — <code>test_simple_imputer.py</code>, <code>test_standard_scaler.py</code>, <code>test_one_hot_encoder.py</code>, <code>test_detect_categorical_columns.py</code>, <code>test_preprocessor.py</code></p>
@@ -450,43 +454,50 @@
           <div class="math-block" style="font-family:inherit;line-height:2;">
             <strong><code>SimpleImputer</code></strong> — replaces NaNs with column means; handles the all-NaN column edge case by falling back to 0 (a NumPy warning is expected here and noted in the test)<br>
             <strong><code>StandardScaler</code></strong> — output has mean=0 and std=1; constant columns (std=0) are left unchanged to avoid division by zero; <code>transform()</code> uses training statistics, not test statistics<br>
-            <strong><code>OneHotEncoder</code></strong> — drops the first category to avoid multicollinearity; handles multiple categories correctly; unseen categories at inference time become all-zeros rather than raising an error<br>
-            <strong><code>detect_categorical_columns()</code></strong> — returns correct indices for object and category dtype columns; returns an empty list when no categorical columns are present<br>
-            <strong><code>Preprocessor</code></strong> — end-to-end: imputes and scales numeric data to mean=0, std=1; handles mixed numeric/categorical input; <code>transform()</code> applies the pipeline fitted on training data without refitting
+            <strong><code>OneHotEncoder</code></strong> — drops the first category to avoid multicollinearity; numeric columns are preserved unchanged alongside the encoded columns; handles multiple categories correctly; unseen categories at inference time become all-zeros rather than raising an error<br>
+            <strong><code>detect_categorical_columns()</code></strong> — returns correct indices for object and category dtype columns, including when both dtypes are present in the same dataframe; returns an empty list when no categorical columns are present<br>
+            <strong><code>Preprocessor</code></strong> — end-to-end: imputes and scales numeric data to mean=0, std=1 with all values finite; mixed numeric/categorical input produces a fully numeric output array; <code>transform()</code> applies the pipeline fitted on training data without refitting
           </div>
 
           <hr class="divider">
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Splitter — <code>test_splitter.py</code>, <code>test_prepare_data.py</code></p>
           <p style="margin-bottom:8px;">Covers data preparation and fold generation:</p>
           <div class="math-block" style="font-family:inherit;line-height:2;">
-            <strong><code>prepare_data()</code></strong> — keeps the target column in y and drops it from X; drops all other health outcomes and all identifier columns; correctly drops rows where the target is NaN (critical for SLEEP)<br>
-            <strong><code>Splitter</code></strong> — correctly assigns the last year as the held-out test year and all earlier years as training; <code>time_series_splits()</code> produces expanding windows with the correct train/val arrays at each fold; <code>get_test_split()</code> returns the full training set and the held-out test year
+            <strong><code>prepare_data()</code></strong> — keeps the target column in y and drops it from X; drops all other health outcomes (<code>CASTHMA</code>, <code>STROKE</code>, <code>MHLTH</code>, <code>PHLTH</code>, <code>SLEEP</code>, <code>BPHIGH</code>, <code>COPD</code>) and all identifier columns (<code>StateAbbr</code>, <code>County name</code>, <code>CountyFIPS</code>, <code>STATION</code>, <code>STATION_NAME</code>); <code>year</code> is explicitly <strong>retained</strong> as a feature in X alongside climate and socioeconomic variables; correctly drops rows where the target is NaN and adjusts the returned years array accordingly (critical for SLEEP, which is collected every two years)<br>
+            <strong><code>Splitter</code></strong> — correctly assigns the last year as the held-out test year and all earlier years as training; <code>time_series_splits()</code> produces expanding windows with the correct train/val arrays at each fold, verified against exact expected values; <code>get_test_split()</code> returns the full training set and the held-out test year, verified against exact expected values
           </div>
 
           <hr class="divider">
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">CrossValidator — <code>test_cross_validator.py</code></p>
-          <p style="margin-bottom:14px;">Uses a minimal <code>MeanModel</code> stub (predicts the training mean) to test the CV loop in isolation without depending on the RFF model. Verifies that <code>cross_val_score()</code> returns both <code>mse</code> and <code>r2</code> keys, produces one score per scored fold, and that all scores are finite.</p>
+          <p style="margin-bottom:14px;">Uses a minimal <code>MeanModel</code> stub (predicts the training mean) to test the CV loop in isolation without depending on the RFF model. <code>start_fold=0</code> is passed explicitly so that all folds are scored — unlike production training, which skips early folds where the training set is too small. Verifies that <code>cross_val_score()</code> returns both <code>mse</code> and <code>r2</code> keys, produces one score per fold, and that all scores are finite.</p>
 
           <hr class="divider">
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">KRR baseline — <code>test_krr.py</code></p>
-          <p style="margin-bottom:14px;">Tests the exact Kernel Ridge Regression implementation used as a baseline comparison against the RFF approximation. Verifies that <code>fit()</code> and <code>predict()</code> produce finite outputs of the correct shape, and that the kernel matrix is computed correctly for the Gaussian kernel. This model is not used in the production Flask app but is evaluated in <code>diagnostics.ipynb</code> to benchmark the RFF approximation.</p>
-
+          <p style="margin-bottom:8px;">Tests the exact Kernel Ridge Regression implementation used as a baseline comparison against the RFF approximation. Key cases covered:</p>
+          <div class="math-block" style="font-family:inherit;line-height:2;">
+            <strong><code>gaussian_kernel()</code></strong> — output shape is (n_X, n_Y) for inputs of different sizes; identical points have kernel similarity exactly 1.0 (verified on the diagonal); all kernel values are bounded between 0 and 1<br>
+            <strong><code>fit()</code></strong> — stores both <code>coef_</code> with shape (n_train,) and <code>X_train_</code> after fitting; retaining training data is required because KRR predictions are computed as a weighted sum over training kernel evaluations<br>
+            <strong><code>predict()</code></strong> — returns one prediction per test row with the correct output shape<br>
+            <strong><code>prediction_intervals()</code></strong> — returns three arrays (y_pred, lower, upper) each with the correct shape; bounds are ordered so that lower ≤ y_pred ≤ upper for all test points
+          </div>
+          <p style="margin-bottom:14px;">This model is not used in the production Flask app but is evaluated in <code>diagnostics.ipynb</code> to benchmark the RFF approximation.</p>
+          
           <hr class="divider">
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">RFF model — <code>test_random_fourier_features.py</code></p>
           <p style="margin-bottom:8px;">Six tests covering the full RFF interface:</p>
           <div class="math-block" style="font-family:inherit;line-height:2;">
             <strong><code>rff_features()</code></strong> — output shape is (n_samples, R); results are exactly reproducible given the same seed<br>
             <strong><code>fit()</code></strong> — coefficients exist after fitting and have shape (R,)<br>
-            <strong><code>predict()</code></strong> — returns one prediction per test row<br>
-            <strong><code>predict_interval()</code></strong> — raises <code>RuntimeError</code> if called before <code>calibrate()</code>; after calibration, lower ≤ predicted ≤ upper for all test points
+            <strong><code>predict()</code></strong> — returns one prediction per test row with the correct output shape<br>
+            <strong><code>predict_interval()</code></strong> — raises <code>RuntimeError</code> matching "calibrate" if called before <code>calibrate()</code>; after calibration, returns three arrays (<code>y_pred</code>, <code>lower</code>, <code>upper</code>) each with shape (n_test,); bounds are ordered so that lower ≤ y_pred ≤ upper for all test points
           </div>
 
           <hr class="divider">
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Scenarios — <code>test__compute_trend.py</code>, <code>test_generate_scenario.py</code></p>
           <p style="margin-bottom:8px;">Tests for the future projection logic used by the Flask app:</p>
           <div class="math-block" style="font-family:inherit;line-height:2;">
-            <strong><code>_compute_trend()</code></strong> — returns 0.0 when fewer than 3 data points are available; enforces physically consistent slope direction (positive for warming variables like TAVG, negative for cooling variables like HTDD) regardless of the observed trend direction in the data<br>
-            <strong><code>generate_scenario()</code></strong> — returns the correct future year range; drops all identifier and health outcome columns from the feature matrix; projects warming variables forward by the correct cumulative amount; raises <code>ValueError</code> with a descriptive message when the baseline county/year combination is missing
+            <strong><code>compute_trend()</code></strong> — returns 0.0 when fewer than 3 data points are available; enforces physically consistent slope direction for warming variables — a downward observed trend in TAVG is flipped to positive (+1.0); enforces the opposite for cooling variables — an upward observed trend in HTDD is flipped to negative (−5.0)<br>
+            <strong><code>generate_scenario()</code></strong> — returns the correct future year range and the correct number of rows; drops all identifier and health outcome columns from the feature matrix while retaining <code>year</code>, climate variables, and <code>climate_type_short</code>; projects both warming variables (TAVG: 13.0, 14.0) and cooling variables (HTDD: 35.0, 30.0) forward by the exact expected cumulative amounts under the middle-of-the-road scenario; raises <code>ValueError</code> matching "No data found" when the baseline county/year combination is missing
           </div>
 
         </div>
@@ -499,26 +510,32 @@
 
           <hr class="divider">
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">API routes — <code>test_map_data_api.py</code>, <code>test_snapshot_api.py</code>, <code>test_summary_api.py</code>, <code>test_timeseries_api.py</code></p>
-          <p style="margin-bottom:8px;">Tests the four JSON endpoints consumed by the explore page's charts and map:</p>
+          <p style="margin-bottom:8px;">Tests the JSON endpoints consumed by the explore page's charts and map:</p>
           <div class="math-block" style="font-family:inherit;line-height:2;">
-            <strong><code>/api/map-data</code></strong> — returns valid GeoJSON with the correct structure; filters correctly by year and variable; returns an error for unknown variables<br>
-            <strong><code>/api/snapshot</code></strong> — returns county-level summary statistics for a given year; handles missing county/year combinations gracefully<br>
-            <strong><code>/api/summary</code></strong> — returns aggregated statistics across all counties; response includes expected keys for all five health outcomes<br>
-            <strong><code>/api/timeseries</code></strong> — returns year-indexed data for a given county and variable; verifies correct year ordering and that only the requested county's data is returned
+            <strong><code>GET /api/map-data?var=</code></strong> — returns HTTP 200 for a valid health variable; response contains exactly the expected top-level keys (<code>data</code>, <code>health_nat_avg</code>, <code>weather_nat_avg</code>, <code>health_var</code>, <code>weather_var</code>, <code>demo_vars</code>, <code>year_start</code>, <code>year_end</code>); each record in <code>data</code> contains <code>fips</code>, <code>county</code>, <code>state</code>, <code>health_val</code>, and <code>population</code>; returns HTTP 400 with <code>{"error": "Invalid variable"}</code> for an unknown variable<br>
+            <strong><code>GET /api/snapshot</code></strong> — takes no parameters; returns HTTP 200 with exactly four dataset-level count keys (<code>states</code>, <code>counties</code>, <code>years</code>, <code>n_vars</code>); all four values are verified to be positive (non-empty dataset guard)<br>
+            <strong><code>POST /api/summary</code></strong> — accepts a JSON body with a <code>column</code> key; returns HTTP 200 with <code>column</code> and <code>stats</code> (including <code>mean</code>) for a valid column; returns HTTP 400 with <code>{"error": "Invalid column name"}</code> for an unknown column<br>
+            <strong><code>GET /api/timeseries?health=&amp;weather=&amp;state=</code></strong> — returns HTTP 200; response contains <code>state</code> and <code>data.health</code> / <code>data.weather</code> keys; the health series contains <code>series</code>, <code>national</code>, <code>var</code>, and <code>stats</code> sub-keys; <code>var</code> matches the requested health variable<br>
+            <strong><code>GET /api/timeseries/heatmap?var=&amp;states=</code></strong> — returns HTTP 200 with <code>variable</code> and <code>data</code> keys; <code>data</code> contains an entry per requested state (verified for CA and NY); returns HTTP 400 with <code>{"error": "Invalid variable"}</code> for an unknown variable
           </div>
 
           <hr class="divider">
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Prediction page — <code>test_prediction_page.py</code></p>
-          <p>Tests the <code>/predict</code> route end-to-end against the running app. Verifies that the page returns HTTP 200 and contains the prediction form with the required fields (<code>county_state</code>, <code>target</code>, <code>scenario</code>); that all five target outcomes and all four climate scenarios are present in the rendered HTML; and that a real POST request for Alameda County returns a results page with predicted value and confidence interval columns and no error message. This test requires the saved <code>.pkl</code> model files to be present.</p>
-
+          <p>Tests the <code>/predict</code> route against the running app across five tests. Verifies that the page returns HTTP 200 and contains a form with the exact action <code>action="/predict" method="POST"</code>; that the form contains all three required fields (<code>county_state</code>, <code>target</code>, <code>scenario</code>); that all five target outcome values (<code>CASTHMA</code>, <code>MHLTH</code>, <code>PHLTH</code>, <code>STROKE</code>, <code>SLEEP</code>) are present in the rendered HTML; that all four scenario values (<code>low_warming</code>, <code>middle_road</code>, <code>high_warming</code>, <code>very_high_warming</code>) are present; and that a POST request for Alameda County with target <code>CASTHMA</code> and scenario <code>middle_road</code> returns HTTP 200 with the heading <code>"CASTHMA — ALAMEDA COUNTY, CA"</code>, columns for <code>Predicted value (%)</code>, <code>Lower 90% CI</code>, and <code>Upper 90% CI</code>, and no <code>"There was a prediction error"</code> message. This test requires the saved <code>.pkl</code> model files to be present.</p>
         </div>
 
         <!-- E2E TESTS -->
         <div id="test-e2e" class="test-panel" style="display:none;">
 
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Navigation flow — <code>test_navigation_flow.py</code></p>
-          <p>Simulates a complete user journey through the application using Flask's test client. Verifies that a user can navigate from the landing page to the explore page, apply filters, move to the predict page, submit a prediction form, and reach the docs page — all returning HTTP 200 at each step with no server errors. This is the only test that exercises the full application stack in sequence.</p>
-
+          <p style="margin-bottom:8px;">Uses <strong>Playwright</strong> to simulate a real browser session against the live app running at <code>http://127.0.0.1:5000</code> — the Flask server must be started manually before this test is run. A single test function covers the full user journey:</p>
+          <div class="math-block" style="font-family:inherit;line-height:2;">
+            <strong>Home page</strong> — verifies the heading "Halcyon" and "What would you like to do?" are visible<br>
+            <strong>Explore page</strong> — navigates via the "Explore data →" link; verifies the "Exploratory data analysis" heading and that the four filter controls (<code>#var-health</code>, <code>#var-weather</code>, <code>#yr-start</code>, <code>#yr-end</code>) and the map SVG (<code>#map-svg</code>) are all visible<br>
+            <strong>Predict page</strong> — navigates via the "Open predictor →" link; selects state CA and verifies the county dropdown updates to show CA-specific options; selects Alameda County, target CASTHMA, and scenario middle_road; clicks "Run prediction →"; verifies the result heading reads exactly "CASTHMA — ALAMEDA COUNTY, CA", that all three result columns (<code>Predicted value (%)</code>, <code>Lower 90% CI</code>, <code>Upper 90% CI</code>) are visible, and that no prediction error message is shown<br>
+            <strong>Docs page</strong> — navigates via the "About the data →" link; verifies <code>h1.page-title</code> contains exactly "Documentation"
+          </div>
+          <p style="font-size:12px;color:#999;margin-top:8px;">Manual exploratory testing was also performed alongside the automated suite to cover interactions not easily captured in Playwright assertions.</p>
         </div>
 
       </div>
