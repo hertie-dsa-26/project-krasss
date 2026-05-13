@@ -116,7 +116,7 @@
     <div class="section">
       <div class="section-header"><h2>Dataset</h2><span>6,646 rows · 39 columns</span></div>
       <div class="card">
-        <p style="margin-bottom:16px;">The app loads <code>merged_final_transformed.csv</code> at startup. The dataset merges three sources: NOAA climate station data, CDC Places health estimates, and U.S. Census socioeconomic indicators — linked at the county level by year.</p>
+        <p style="margin-bottom:16px;">The app loads <code>merged_final_transformed.csv</code> at startup. The dataset merges three sources: NOAA climate station data, CDC Places health estimates, and U.S. Census socioeconomic indicators, which are linked at the county level by year.</p>
  
         <p class="section-label" style="margin-top:4px;">Identifiers</p>
         <table>
@@ -216,7 +216,7 @@
     <div class="section">
       <div class="section-header"><h2>Architecture overview</h2></div>
       <div class="card">
-        <p style="margin-bottom:14px;">The ML pipeline is split across eight files. No external ML libraries (e.g. scikit-learn) are used for the core model — all components are implemented from scratch using NumPy and Pandas. XGBoost is used for the SLEEP target only.</p>
+        <p style="margin-bottom:14px;">The ML pipeline is split across eight files. No external ML libraries (e.g. scikit-learn) are used for the core model; all components are implemented from scratch using NumPy and Pandas. XGBoost is used for the SLEEP target only.</p>
         <table>
           <tr><th>File</th><th>Class / function</th><th>Responsibility</th></tr>
           <tr><td><code>splitter.py</code></td><td><code>Splitter</code>, <code>prepare_data()</code></td><td>Drops non-features, creates time-series CV folds and the final train/test split</td></tr>
@@ -297,7 +297,7 @@
     <div class="section">
       <div class="section-header"><h2>XGBoost model (SLEEP only)</h2></div>
       <div class="card">
-        <p style="margin-bottom:14px;">The SLEEP target uses <code>XGBoostWrapper</code> instead of RFF. SLEEP data is collected every two years, making the training set smaller and noisier — gradient boosting is more robust to this than the kernel approximation.</p>
+        <p style="margin-bottom:14px;">The SLEEP target uses <code>XGBoostWrapper</code> instead of RFF. SLEEP data is collected every two years, making the training set smaller and noisier. Gradient boosting is more robust to this than the kernel approximation.</p>
         <p><code>XGBoostWrapper</code> trains three models in parallel: a median model (<code>reg:squarederror</code>) for point predictions, and lower/upper quantile models (<code>reg:quantileerror</code> at α=0.025 and 0.975) producing a base 95% quantile interval. These bounds are then optionally <strong>narrowed or widened</strong> by conformal calibration — the correction takes <code>min(lower, ŷ − q)</code> and <code>max(upper, ŷ + q)</code>, where q is the same finite-sample corrected residual quantile used in RFF — to achieve the requested coverage level (default 90%).</p>
         <table style="margin-top:12px;">
           <tr><th>Parameter</th><th>Description</th><th>Grid searched values</th></tr>
@@ -314,7 +314,7 @@
         <p style="margin-bottom:14px;">The <code>Assessment</code> class in <code>assessment.py</code> implements two metrics used at different stages of the pipeline:</p>
         <table>
           <tr><th>Metric</th><th>Formula</th><th>Used for</th></tr>
-          <tr><td>MSE</td><td><code>mean((y_test − y_pred)²)</code></td><td>Hyperparameter selection during grid search — minimized to pick the best configuration</td></tr>
+          <tr><td>MSE</td><td><code>mean((y_test − y_pred)²)</code></td><td>Hyperparameter selection during grid search, minimized to pick the best configuration</td></tr>
           <tr><td>R²</td><td><code>1 − (RSS / TSS)</code></td><td>Final reporting and interpretation — 1.0 is perfect, 0 = predicting the mean, &lt;0 = worse than the mean</td></tr>
         </table>
       </div>
@@ -401,7 +401,7 @@
             <p style="margin-top:14px;font-size:13px;color:#555;line-height:1.7;">
               Points close to the diagonal red line indicate accurate predictions. Stroke, Asthma, and 
               Mental Health cluster tightly along the diagonal. Physical Health shows systematic 
-              underprediction — points lie above the line throughout the range. Sleep displays range 
+              underprediction with points lying above the line throughout the range. Sleep displays range 
               compression: the slope of the predicted-vs-actual curve is much shallower than the ideal 
               diagonal, meaning the model struggles to capture the full variation in sleep outcomes.
             </p>
@@ -442,7 +442,7 @@
         <div id="test-unit" class="test-panel">
 
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Assessment — <code>test_r2_score.py</code>, <code>test_mean_squared_error.py</code></p>
-          <p style="margin-bottom:14px;">Verifies the two metric implementations against known hand-computed values. R² returns 1.0 for perfect predictions and 0.0 when predicting the mean. MSE returns the correct average squared error. These are intentionally minimal — the formulas are simple and the tests serve as regression guards.</p>
+          <p style="margin-bottom:14px;">Verifies the two metric implementations against known hand-computed values. R² returns 1.0 for perfect predictions and 0.0 when predicting the mean. MSE returns the correct average squared error. These are intentionally minimal as the formulas are simple and the tests serve as regression guards.</p>
 
           <hr class="divider">
           <p style="font-size:13px;font-weight:600;color:#1e3a8a;margin-bottom:6px;">Preprocessing — <code>test_simple_imputer.py</code>, <code>test_standard_scaler.py</code>, <code>test_one_hot_encoder.py</code>, <code>test_detect_categorical_columns.py</code>, <code>test_preprocessor.py</code></p>
