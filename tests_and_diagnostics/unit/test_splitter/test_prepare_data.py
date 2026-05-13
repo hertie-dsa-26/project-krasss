@@ -33,12 +33,13 @@ def test_prepare_data_keeps_target_and_drops_intended_vars():
     X, y, years = prepare_data(df, target="MHLTH")
 
     assert "MHLTH" not in X.columns
+    assert "year" in X.columns
     assert "TAVG" in X.columns
     assert "climate_type_short" in X.columns
 
     dropped_columns = {
         "StateAbbr", "County name", "CountyFIPS", "STATION", "STATION_NAME",
-        "BPHIGH", "CASTHMA", "COPD", "PHLTH", "SLEEP", "STROKE", "year",
+        "BPHIGH", "CASTHMA", "COPD", "PHLTH", "SLEEP", "STROKE",
     }
 
     assert dropped_columns.isdisjoint(X.columns)

@@ -67,7 +67,7 @@ def test_predict_post_returns_prediction_results():
 
     assert response.status_code == 200
     assert "CASTHMA — ALAMEDA COUNTY, CA" in html
-    assert "Predicted Value (%)" in html
+    assert "Predicted value (%)" in html
     assert "Lower 90% CI" in html
     assert "Upper 90% CI" in html
     assert "There was a prediction error" not in html

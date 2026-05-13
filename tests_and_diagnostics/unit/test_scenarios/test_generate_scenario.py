@@ -71,12 +71,13 @@ def test_generate_scenario_drops_non_feature_columns():
     )
 
     dropped_columns = {
-        "year", "StateAbbr", "County name", "CountyFIPS",
+        "StateAbbr", "County name", "CountyFIPS",
         "STATION", "STATION_NAME",
         "BPHIGH", "CASTHMA", "COPD", "MHLTH", "PHLTH", "SLEEP", "STROKE",
     }
 
     assert dropped_columns.isdisjoint(X_future.columns)
+    assert "year" in X_future.columns
     assert "TAVG" in X_future.columns
     assert "climate_type_short" in X_future.columns
 
